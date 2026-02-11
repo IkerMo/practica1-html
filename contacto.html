@@ -20,11 +20,11 @@
 <h2> Estamos aquí para ayudarte. Completa el formulario y nos pondremos en contacto contigo.</h2>
 <form action="mailto:aafernan@ucm.es" method="post" enctype="text/plain"> 
 Nombre:    
-<input type="text" name="nombre" value="" />
+<input type="text" name="nombre" value="" required/>
 <br>
 <br>
 Correo:
-<input type="text" name="correo" value="" />
+<input type="email" name="correo" value="" required/>
 <br>
 <br>
 Motivo de la consulta:
@@ -32,11 +32,19 @@ Motivo de la consulta:
 <label for="evaluacion"> Evaluacion</label>
 <input type="radio" id="sugerencias" name="motivo" value="2">
 <label for="sugerencias"> Sugerencias </label>
-<input type="radio" id="criticas" name="motivo" value="2">
+<input type="radio" id="criticas" name="motivo" value="3">
 <label for="criticas"> Críticas </label>
 <br>
-<input type="checkbox" id="terminos" name="terminos" value="aceptado">
+<br>
 <label for="terminos">Marque esta casilla para verificar que ha leído nuestros términos y condiciones del servicio</label>
+<input type="checkbox" id="terminos" name="terminos" value="aceptado" required>
+<br>
+<br>
+Consulta <br/>
+<textarea name="consulta" rows="6" cols="40" required></textarea>
+<br>
+<br>
+<input type="submit" value="Enviar">
 
 </form>
 </body>
