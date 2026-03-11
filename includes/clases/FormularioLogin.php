@@ -1,6 +1,6 @@
 <?php
 require_once RAIZ_APP . '/includes/clases/Formulario.php';
-require_once RAIZ_APP . '/includes/clases/Usuario.php';
+require_once RAIZ_APP . '/includes/clases/Usuarios/Usuario.php';
 
 class FormularioLogin extends Formulario
 {
