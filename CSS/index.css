@@ -1,20 +1,61 @@
-img {
-    display: block;
-    margin: 0 auto;
-}
-/* Estilo general */
+/* ===== ESTILOS GENERALES ===== */
 body {
-    font-family: Arial, sans-serif;
+    background-color: #CDCDCD; /* Fondo exterior gris */
     margin: 0;
-    background-color: #f8f5f2;
-    color: #333;
-    text-align: center;
+    font-family: Arial, sans-serif;
 }
 
-/* Barra de navegación */
+div#contenedor {
+    width: 1100px;
+    margin: 30px auto;
+    border: 1px solid black;
+    background-color: #f8f5f2; /* Tu color crema */
+    overflow: hidden; /* Importante: para contener los floats */
+}
+
+/* ===== HEADER ===== */
+header {
+    padding: 30px;
+    height: 100px;
+    background-color: #8b0000; /* Tu rojo */
+    color: white;
+    box-sizing: border-box;
+    width: 100%; /* Asegura que ocupe todo el ancho */
+}
+
+header h1 {
+    color: white;
+    margin: 0 0 10px 0;
+    font-size: 2em;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+header a, header a:visited {
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+header a:hover {
+    color: #ffd700; /* Dorado para hover */
+    text-decoration: underline;
+}
+
+div.saludo {
+    width: 100%;
+    text-align: right;
+    margin-top: 10px;
+}
+
+/* ===== NAVEGACIÓN IZQUIERDA ===== */
 nav {
-    background-color: #8b0000;
     padding: 15px;
+    float: left;
+    width: 200px;
+    min-height: 500px;  /* Altura mínima */
+    background-color: #f0e9e2; /* Un tono más oscuro que el fondo */
+    box-sizing: border-box;
+    border-right: 1px solid #d4c9c0;
 }
 
 nav ul {
@@ -24,48 +65,400 @@ nav ul {
 }
 
 nav ul li {
-    display: inline;
-    margin: 0 15px;
+    margin: 10px 0;
 }
 
-nav ul li a {
-    text-decoration: none;
-    color: white;
+nav a, nav a:visited {
+    color: #8b0000; /* Tu rojo */
     font-weight: bold;
-}
-
-nav ul li a:hover {
-    color: #ffd700;
-}
-
-/* Logo */
-img {
+    text-decoration: none;
     display: block;
-    margin: 20px auto;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: background-color 0.3s, padding-left 0.3s;
 }
 
-/* Títulos */
-h1 {
-    margin-top: 20px;
+nav a:hover {
     color: #8b0000;
+    background-color: #f8f5f2;
+    padding-left: 20px;
+    text-decoration: none;
+}
+
+/* Títulos dentro del nav */
+nav h3, nav h4 {
+    color: #333;
+    margin-top: 0;
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #8b0000;
+}
+
+nav h4 {
+    font-size: 0.95em;
+    margin-top: 20px;
+    border-bottom: 1px solid #d4c9c0;
+}
+
+/* Secciones del sidebar */
+.sidebar-usuario, .sidebar-acceso {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #d4c9c0;
+}
+
+/* ===== CONTENIDO PRINCIPAL ===== */
+main {
+    padding: 20px;
+    float: left;
+    min-height: 600px;
+    width: 830px; /* 1100 - 200 (nav) - 40 (padding) - 30 (margenes) */
+    background-color: #f8f5f2;
+    box-sizing: border-box;
+    color: #333; /* IMPORTANTE: color de texto */
+}
+
+/* Para asegurar que todo el texto se ve */
+main h1, main h2, main h3, main p, main li {
+    color: #333;
+}
+
+/* ===== FOOTER ===== */
+footer {
+    clear: both;
+    padding: 20px;
+    background-color: #8b0000; /* Tu rojo */
+    color: white;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* ===== TÍTULOS ===== */
+h1 {
+    margin-top: 0;
+    color: #8b0000;
+    text-align: center;
 }
 
 h2 {
     margin-top: 30px;
+    color: #555;
+    border-bottom: 2px solid #8b0000;
+    padding-bottom: 10px;
 }
 
-/* Párrafo */
+h3 {
+    color: #8b0000;
+}
+
+/* ===== PÁRRAFOS ===== */
 p {
-    width: 70%;
-    margin: 0 auto 40px auto;
+    line-height: 1.6;
+    margin: 0 0 20px 0;
+    color: #333;
+}
+
+/* ===== LISTAS ===== */
+ul, ol {
+    color: #333;
     line-height: 1.6;
 }
 
-.hero {
-    background-color: #fff;
-    padding: 40px;
-    margin: 30px auto;
-    width: 80%;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+/* ===== IMÁGENES ===== */
+img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* ===== FORMULARIOS ===== */
+fieldset {
+    border: 1px solid #d4c9c0;
+    border-radius: 5px;
+    margin: 20px 0;
+    padding: 20px;
+    background-color: white;
+}
+
+legend {
+    color: white;
+    background: #8b0000;
+    border: 1px solid black;
+    padding: 5px 15px;
+    border-radius: 3px;
+    font-weight: bold;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+textarea,
+select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #d4c9c0;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    font-family: Arial, sans-serif;
+    color: #333;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    border-color: #8b0000;
+    box-shadow: 0 0 5px rgba(139,0,0,0.3);
+}
+
+/* Campos de radio y checkbox */
+.opciones-radio {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin: 10px 0;
+}
+
+.opcion-radio {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.opcion-radio input[type="radio"] {
+    width: auto;
+    margin: 0;
+}
+
+.opcion-radio label {
+    display: inline;
+    font-weight: normal;
+    margin: 0;
+}
+
+/* Checkbox especial */
+.campo-checkbox {
+    background-color: #f0e9e2;
+    padding: 15px;
+    border-radius: 5px;
+    margin: 15px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.campo-checkbox input[type="checkbox"] {
+    width: auto;
+    margin: 0;
+}
+
+.campo-checkbox label {
+    display: inline;
+    font-weight: normal;
+    margin: 0;
+    color: #555;
+}
+
+/* Botones */
+button, a.boton, input[type="submit"], input[type="button"], input[type="reset"] {
+    border: 1px solid black;
+    border-radius: 4px;
+    font-size: 0.9em;
+    font-family: Arial;
+    font-weight: 400;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+input[type="submit"], button[type="submit"], .btn-primary {
+    background-color: #8b0000;
+    color: white;
+    border-color: #5c0000;
+}
+
+input[type="submit"]:hover, button[type="submit"]:hover, .btn-primary:hover {
+    background-color: #a00000;
+}
+
+input[type="reset"], .btn-secondary {
+    background-color: #f0e9e2;
+    color: #333;
+}
+
+input[type="reset"]:hover, .btn-secondary:hover {
+    background-color: #e0d9d2;
+}
+
+/* Botón con estilo de enlace */
+form button.enlace, form button.enlace:visited {
+    color: #8b0000;
+    font-weight: bold;
+    text-decoration: none;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    font-size: inherit;
+}
+
+form button.enlace:hover {
+    color: #a00000;
+    text-decoration: underline;
+    background-color: transparent;
+}
+
+/* ===== TABLAS ===== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+th {
+    background-color: #8b0000;
+    color: white;
+    padding: 10px;
+    text-align: left;
+}
+
+td {
+    padding: 8px 10px;
+    border-bottom: 1px solid #d4c9c0;
+    color: #333;
+}
+
+tr:hover {
+    background-color: #f0e9e2;
+}
+
+/* ===== ERRORES Y MENSAJES ===== */
+.errores {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    border-radius: 4px;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+.errores ul {
+    margin: 5px 0;
+    padding-left: 20px;
+}
+
+.error, .form-field-error {
+    color: #dc3545;
+    font-size: 0.85em;
+    display: block;
+    margin-top: -5px;
+    margin-bottom: 10px;
+}
+
+/* Mensajes flotantes (para paso 8) */
+.mensajes {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 300px;
+    z-index: 1000;
+}
+
+.mensaje {
+    border: 2px solid #8b0000;
+    border-radius: 5px;
+    margin: 0.2em 0;
+    background-color: #b0f5f1;
+    position: relative;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+}
+
+.mensaje input[type="checkbox"] {
+    display: none;
+}
+
+.mensaje .cabecera {
+    font-size: 1.5em;
+    line-height: 0.7em;
+    text-align: right;
+    padding: 5px 10px;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.mensaje .cabecera label {
+    cursor: pointer;
+    color: #666;
+}
+
+.mensaje .contenido {
+    padding: 15px 20px;
+    text-align: left;
+    color: #333;
+}
+
+.mensajes input:checked + .mensaje {
+    display: none;
+}
+
+/* ===== UTILIDADES ===== */
+.inline {
+    display: inline;
+}
+
+a.deshabilitado {
+    color: rgba(16, 16, 16, 0.3);
+    pointer-events: none;
+    cursor: default;
+}
+
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1150px) {
+    div#contenedor {
+        width: 95%;
+    }
+    
+    main {
+        width: calc(95% - 230px); /* Ajuste dinámico */
+    }
+}
+
+@media (max-width: 768px) {
+    nav {
+        float: none;
+        width: 100%;
+        min-height: auto;
+        border-right: none;
+        border-bottom: 1px solid #d4c9c0;
+    }
+    
+    main {
+        float: none;
+        width: 100%;
+    }
+    
+    .opciones-radio {
+        flex-direction: column;
+        gap: 10px;
+    }
 }
