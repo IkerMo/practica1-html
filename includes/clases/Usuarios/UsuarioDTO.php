@@ -1,0 +1,31 @@
+<?php
+namespace es\ucm\fdi\aw;
+
+class UsuarioDTO {
+
+    public $id;
+    public $nombreUsuario;
+    public $email;
+    public $nombre;
+    public $apellidos;
+    public $password;
+    public $rol;
+    public $avatar;
+    public $tipoAvatar;
+    public $activo;
+
+
+    public function __construct($nombreUsuario, $email, $nombre, $apellidos, $password, $avatar = 'default.png', $tipoAvatar = 'defecto', $id = null, $activo = true) {
+        $this->id = $id;
+        $this->nombreUsuario = $nombreUsuario;
+        $this->email = $email;
+        $this->nombre = $nombre;
+        $this->apellidos = $apellidos;
+        $this->password = $password;
+        $this->avatar = $avatar;
+        $this->tipoAvatar = $tipoAvatar;
+        $this->activo = $activo;
+    }
+
+
+}
