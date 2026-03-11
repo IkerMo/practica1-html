@@ -184,5 +184,15 @@ class Usuario
         $_SESSION = [];
         session_destroy();
     }
+
+    public function tienePermiso($prioridadMinima) {
+    $maxPrioridad = 0;
+    foreach ($this->roles as $rol) {
+        if ($rol['prioridad'] > $maxPrioridad) {
+            $maxPrioridad = $rol['prioridad'];
+        }
+    }
+    return $maxPrioridad >= $prioridadMinima;
+}
 }
 ?>
