@@ -1,3 +1,4 @@
+<?php
 namespace es\ucm\fdi\aw;
 
 class ProductoDTO {
@@ -15,3 +16,4 @@ class ProductoDTO {
         return $this->precioBase * (1 + ($this->iva / 100));
     }
 }
+?>
