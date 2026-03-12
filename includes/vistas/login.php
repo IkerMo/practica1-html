@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../config.php';
-require_once RAIZ_APP . '/includes/clases/FormularioLogin.php';
+require_once RAIZ_APP . '/includes/clases/Formularios/FormularioLogin.php';
 
 $form = new \es\ucm\fdi\aw\FormularioLogin();
 $htmlFormLogin = $form->gestiona();

@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../config.php';
-require_once RAIZ_APP . '/includes/clases/FormularioRegistro.php';
+require_once RAIZ_APP . '/includes/clases/Formularios/FormularioRegistro.php';
 
 $form = new \es\ucm\fdi\aw\FormularioRegistro(); 
 $htmlFormRegistro = $form->gestiona();
