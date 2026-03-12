@@ -3,7 +3,6 @@ namespace es\ucm\fdi\aw\Usuarios;
 
 require_once __DIR__ . '/UsuarioDTO.php';
 require_once __DIR__ . '/UsuarioDAO.php';
-require_once __DIR__ . '/UsuarioYaExisteException.php';
 
 class UsuarioAppService {
 
