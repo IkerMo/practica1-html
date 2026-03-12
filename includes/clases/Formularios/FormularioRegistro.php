@@ -1,5 +1,12 @@
 <?php
+<<<<<<< HEAD:includes/clases/Formularios/FormularioRegistro.php
+namespace es\ucm\fdi\aw\Formularios;
+use es\ucm\fdi\aw\Usuarios\Usuario;
+use es\ucm\fdi\aw\Aplicacion;
+
+=======
 namespace es\ucm\fdi\aw;
+>>>>>>> c57322a669621674994105561e86c9ec1d479fb7:includes/clases/FormularioRegistro.php
 
 require_once RAIZ_APP . '/includes/clases/Formulario.php';
 

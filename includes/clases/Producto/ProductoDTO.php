@@ -1,5 +1,5 @@
 <?php
-namespace es\ucm\fdi\aw;
+namespace es\ucm\fdi\aw\Producto;
 
 class ProductoDTO {
     public $id;

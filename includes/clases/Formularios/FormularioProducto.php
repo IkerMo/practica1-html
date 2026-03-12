@@ -1,5 +1,6 @@
 <?php
-namespace es\ucm\fdi\aw;
+namespace es\ucm\fdi\aw\Formularios;
+use es\ucm\fdi\aw\Categoria\CategoriaAppService;
 
 class FormularioCategoria extends Formulario {
     private $idCategoria;
