@@ -2,7 +2,7 @@
 require_once __DIR__ . '/../config.php';
 require_once RAIZ_APP . '/includes/clases/FormularioLogin.php';
 
-$form = new FormularioLogin();
+$form = new \es\ucm\fdi\aw\FormularioLogin();
 $htmlFormLogin = $form->gestiona();
 
 $tituloPagina = 'Login - Bistro FDI';
@@ -15,4 +15,3 @@ $contenidoPrincipal = <<<EOS
 EOS;
 
 require_once __DIR__ . '/comun/plantilla.php';
-?>

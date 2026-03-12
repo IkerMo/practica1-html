@@ -1,8 +1,9 @@
 <?php
-require_once RAIZ_APP . '/includes/clases/Formulario.php';
-require_once RAIZ_APP . '/includes/clases/Usuarios/Usuario.php';
+namespace es\ucm\fdi\aw;
 
-class FormularioLogin extends Formulario
+require_once RAIZ_APP . '/includes/clases/Formulario.php';
+
+class FormularioLogin extends \Formulario
 {
     public function __construct()
     {
@@ -19,7 +20,7 @@ class FormularioLogin extends Formulario
         <fieldset>
             <legend>Acceso a Bistro FDI</legend>
             <div class="campo">
-                <label for="identificador">Usuario o Email:</label>
+                <label for="identificador">Usuario:</label>
                 <input id="identificador" type="text" name="identificador" value="$identificador" />
                 {$this->getError('identificador')}
             </div>
@@ -44,22 +45,34 @@ EOS;
         $this->errores = [];
         
         $identificador = trim($datos['identificador'] ?? '');
-        if (empty($identificador)) {
-            $this->errores['identificador'] = 'Debes introducir tu usuario o email';
-        }
-        
         $password = trim($datos['password'] ?? '');
+        
+        if (empty($identificador)) {
+            $this->errores['identificador'] = 'Debes introducir tu usuario';
+        }
         if (empty($password)) {
             $this->errores['password'] = 'Debes introducir tu contraseña';
         }
         
         if (count($this->errores) === 0) {
-            $usuario = Usuario::login($identificador, $password);
+            // 1. Instanciamos el Service y el DAO
+            $service = new UsuarioAppService();
+            $dao = new UsuarioDAO();
+
+            // 2. Intentamos el login a través del Service
+            $dto = $service->login($identificador, $password);
             
-            if ($usuario) {
-                $usuario->guardaEnSesion();
-                return true;
+            if ($dto) {
+                // 3. Si es correcto, buscamos sus roles para construir el objeto de sesión
+                $roles = $dao->obtenerRoles($dto->id);
+                
+                // 4. Creamos el objeto Usuario (el de sesión) y guardamos
+                $usuarioSesion = new Usuario($dto, $roles);
+                $usuarioSesion->guardaEnSesion();
+                
+                return true; 
             } else {
+                // Error genérico para no dar pistas a hackers
                 $this->errores[] = 'El usuario o la contraseña no coinciden';
             }
         }
@@ -73,7 +86,7 @@ EOS;
     
     private function getRegistroUrl()
     {
-        return RUTA_VISTAS . '/registro.php';
+        // Asegúrate de que RUTA_VISTAS esté definida en tu config.php
+        return RUTA_APP . '/registro.php'; 
     }
 }
-?>
