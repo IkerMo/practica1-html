@@ -18,6 +18,7 @@ define('RUTA_JS', RUTA_BASE . '/js');
 define('RUTA_IMGS', RUTA_BASE . '/img');
 define('RUTA_VISTAS', RUTA_BASE . '/includes/vistas');
 define('RUTA_CLASES', RAIZ_APP . '/includes/clases');
+define('RUTA_CLASES1', RAIZ_APP . '/includes/clases');
 
 
 ini_set('default_charset', 'UTF-8');
