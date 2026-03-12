@@ -1,8 +1,9 @@
 <?php
 require_once __DIR__ . '/../config.php';
-require_once RAIZ_APP . '/includes/clases/Usuario.php';
+require_once RAIZ_APP . '/includes/clases/Usuarios/Usuario.php'; 
 
-Usuario::logout();
+
+\es\ucm\fdi\aw\Usuario::logout();
 
 $rutaRaiz = RUTA_RAIZ;
 $tituloPagina = 'Hasta pronto - Bistro FDI';
@@ -16,4 +17,3 @@ $contenidoPrincipal = <<<EOS
 EOS;
 
 require_once __DIR__ . '/comun/plantilla.php';
-?>

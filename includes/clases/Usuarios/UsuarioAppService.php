@@ -1,5 +1,9 @@
 <?php
+<<<<<<< HEAD
 namespace es\ucm\fdi\aw\Usuarios;
+=======
+namespace es\ucm\fdi\aw;
+>>>>>>> c57322a669621674994105561e86c9ec1d479fb7
 
 class UsuarioAppService {
 
@@ -9,53 +13,38 @@ class UsuarioAppService {
         $this->dao = new UsuarioDAO();
     }
 
-    public function login(string $username, string $password): ?UsuarioDTO {
-        $usuario = $this->dao->buscarPorUsername($username);
+    public function login(string $nombreUsuario, string $password): ?UsuarioDTO {
+        $usuario = $this->dao->buscarPorUsername($nombreUsuario);
         if (!$usuario) return null;
         if (!password_verify($password, $usuario->password)) return null;
         return $usuario;
     }
 
     public function registro(
-        string $username, string $email, string $nombre,
-        string $apellidos, string $password
+        string $nombreUsuario, string $email, string $nombre,
+        string $apellidos, string $password, ?array $datosAvatar = null
     ): UsuarioDTO {
+        
+        $nombreFicheroAvatar = 'default.png';
+        
+        if ($datosAvatar && $datosAvatar['error'] === UPLOAD_ERR_OK) {
+            $extension = pathinfo($datosAvatar['name'], PATHINFO_EXTENSION);
+            $nombreFicheroAvatar = "av_" . uniqid() . "." . $extension;
+            $rutaDestino = dirname(__DIR__, 2) . '/img/avatars/' . $nombreFicheroAvatar;
+            move_uploaded_file($datosAvatar['tmp_name'], $rutaDestino);
+        }
+
         $u = new UsuarioDTO(
-            username:  $username,
-            email:     $email,
-            nombre:    $nombre,
-            apellidos: $apellidos,
-            password:  password_hash($password, PASSWORD_DEFAULT),
-            rol:       'cliente'
+            nombreUsuario: $nombreUsuario,
+            email:         $email,
+            nombre:        $nombre,
+            apellidos:     $apellidos,
+            password:      password_hash($password, PASSWORD_DEFAULT),
+            rol:           'cliente',
+            avatar:        $nombreFicheroAvatar
         );
         return $this->dao->crear($u);
     }
 
-    public function actualizarPerfil(UsuarioDTO $u): void {
-        $this->dao->actualizar($u);
-    }
-
-    public function cambiarPassword(int $id, string $nuevaPassword): void {
-        $this->dao->actualizarPassword($id, password_hash($nuevaPassword, PASSWORD_DEFAULT));
-    }
-
-    public function listarTodos(): array {
-        return $this->dao->listarTodos();
-    }
-
-    public function buscarPorId(int $id): ?UsuarioDTO {
-        return $this->dao->buscarPorId($id);
-    }
-
-    public function cambiarRol(int $id, string $nuevoRol): void {
-        $u = $this->dao->buscarPorId($id);
-        if ($u) {
-            $u->rol = $nuevoRol;
-            $this->dao->actualizar($u);
-        }
-    }
-
-    public function borrar(int $id): void {
-        $this->dao->borrar($id);
-    }
+    
 }

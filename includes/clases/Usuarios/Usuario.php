@@ -1,21 +1,20 @@
 <?php
+<<<<<<< HEAD
 namespace es\ucm\fdi\aw\Usuarios;
 use es\ucm\fdi\aw\Aplicacion;
 
 class Usuario
 {
+=======
+namespace es\ucm\fdi\aw;
+
+class Usuario {
+>>>>>>> c57322a669621674994105561e86c9ec1d479fb7
     private $id;
     private $nombreUsuario;
-    private $email;
     private $nombre;
-    private $apellidos;
-    private $password;
-    private $avatar;
-    private $tipoAvatar;
-    private $fechaRegistro;
-    private $activo;
-    private $roles = [];
     private $rolActual;
+<<<<<<< HEAD
     
     private function __construct() {}
     
@@ -115,83 +114,54 @@ class Usuario
     public static function login($identificador, $password)
     {
         $usuario = self::buscaUsuario($identificador);
+=======
+    private $roles = []; // Aquí guardaremos los roles con su prioridad
+
+    public function __construct($dto, $roles) {
+        $this->id = $dto->id;
+        $this->nombreUsuario = $dto->nombreUsuario;
+        $this->nombre = $dto->nombre;
+        $this->roles = $roles; // Array de roles que vienen de la BD
+>>>>>>> c57322a669621674994105561e86c9ec1d479fb7
         
-        if ($usuario && $usuario->compruebaPassword($password) && $usuario->activo) {
-            return $usuario;
-        }
-        return false;
-    }
-    
-    public static function crea($datos)
-    {
-        try {
-            $app = Aplicacion::getInstance();
-            $conn = $app->getConexionBd();
-            
-            $passwordHash = password_hash($datos['password'], PASSWORD_DEFAULT);
-            
-            $query = sprintf(
-                "INSERT INTO Usuarios(nombreUsuario, email, nombre, apellidos, password, avatar, tipoAvatar) 
-                 VALUES('%s', '%s', '%s', '%s', '%s', '%s', '%s')",
-                $conn->real_escape_string($datos['nombreUsuario']),
-                $conn->real_escape_string($datos['email']),
-                $conn->real_escape_string($datos['nombre']),
-                $conn->real_escape_string($datos['apellidos']),
-                $conn->real_escape_string($passwordHash),
-                $conn->real_escape_string($datos['avatar'] ?? 'default.png'),
-                $conn->real_escape_string($datos['tipoAvatar'] ?? 'defecto')
-            );
-            
-            if ($conn->query($query)) {
-                $idUsuario = $conn->insert_id;
-                
-                $queryRol = sprintf(
-                    "INSERT INTO UsuarioRoles(usuario_id, rol_id) VALUES(%d, %d)",
-                    $idUsuario,
-                    ROL_CLIENTE
-                );
-                
-                if ($conn->query($queryRol)) {
-                    return self::buscaUsuario($datos['nombreUsuario']);
-                }
+        // Asignamos el rol con más prioridad como el actual
+        $maxPrio = -1;
+        foreach($roles as $rol) {
+            if ($rol['prioridad'] > $maxPrio) {
+                $maxPrio = $rol['prioridad'];
+                $this->rolActual = $rol['nombre'];
             }
+<<<<<<< HEAD
             return false;
             
         } catch (\Exception $e) {
             error_log("Error en crea usuario: " . $e->getMessage());
             return false;
+=======
+>>>>>>> c57322a669621674994105561e86c9ec1d479fb7
         }
-    }
-    
-    public function guardaEnSesion()
-    {
-        $_SESSION['login'] = true;
-        $_SESSION['idUsuario'] = $this->id;
-        $_SESSION['nombreUsuario'] = $this->nombreUsuario;
-        $_SESSION['nombre'] = $this->nombre;
-        $_SESSION['apellidos'] = $this->apellidos;
-        $_SESSION['avatar'] = $this->avatar;
-        $_SESSION['rol'] = $this->rolActual;
-        $_SESSION['esCliente'] = $this->tieneRol(ROL_CLIENTE);
-        $_SESSION['esCamarero'] = $this->tieneRol(ROL_CAMARERO);
-        $_SESSION['esCocinero'] = $this->tieneRol(ROL_COCINERO);
-        $_SESSION['esAdmin'] = $this->tieneRol(ROL_GERENTE);
-    }
-    
-    public static function logout()
-    {
-        $_SESSION = [];
-        session_destroy();
     }
 
+    public function getId() { return $this->id; }
+    public function getNombreUsuario() { return $this->nombreUsuario; }
+    public function getRolActual() { return $this->rolActual; }
+
+    // El método de permisos que ya tenías (está perfecto)
     public function tienePermiso($prioridadMinima) {
-    $maxPrioridad = 0;
-    foreach ($this->roles as $rol) {
-        if ($rol['prioridad'] > $maxPrioridad) {
-            $maxPrioridad = $rol['prioridad'];
+        foreach ($this->roles as $rol) {
+            if ($rol['prioridad'] >= $prioridadMinima) return true;
         }
+        return false;
     }
-    return $maxPrioridad >= $prioridadMinima;
+
+    public function guardaEnSesion() {
+        $_SESSION['login'] = true;
+        $_SESSION['usuario'] = $this; // Guardamos el objeto entero
+    }
+
+    public static function logout() {
+        unset($_SESSION['login']);
+        unset($_SESSION['usuario']);
+        session_destroy();
+    }
 }
-}
-?>
