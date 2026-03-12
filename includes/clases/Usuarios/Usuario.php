@@ -1,15 +1,55 @@
 <?php
 namespace es\ucm\fdi\aw\Usuarios;
+
 use es\ucm\fdi\aw\Aplicacion;
 
-class Usuario{
+class Usuario
+{
     private $id;
     private $nombreUsuario;
+    private $email;
     private $nombre;
+    private $apellidos;
+    private $password;
+    private $avatar;
+    private $tipoAvatar;
+    private $fechaRegistro;
+    private $activo;
+    private $roles = [];
     private $rolActual;
     
+    // Constructor vacío para el método buscaUsuario (creación por factory)
     private function __construct() {}
     
+    // Constructor con parámetros para cuando tenemos todos los datos
+    public static function construirDesdeDTO($dto, $roles)
+    {
+        $usuario = new self();
+        $usuario->id = $dto->id;
+        $usuario->nombreUsuario = $dto->nombreUsuario;
+        $usuario->email = $dto->email;
+        $usuario->nombre = $dto->nombre;
+        $usuario->apellidos = $dto->apellidos;
+        $usuario->password = $dto->password;
+        $usuario->avatar = $dto->avatar;
+        $usuario->tipoAvatar = $dto->tipoAvatar;
+        $usuario->fechaRegistro = $dto->fechaRegistro;
+        $usuario->activo = $dto->activo;
+        $usuario->roles = $roles;
+        
+        // Asignar rol con mayor prioridad
+        $maxPrio = -1;
+        foreach ($roles as $rol) {
+            if ($rol['prioridad'] > $maxPrio) {
+                $maxPrio = $rol['prioridad'];
+                $usuario->rolActual = $rol['nombre'];
+            }
+        }
+        
+        return $usuario;
+    }
+    
+    // Getters
     public function getId() { return $this->id; }
     public function getNombreUsuario() { return $this->nombreUsuario; }
     public function getEmail() { return $this->email; }
@@ -19,6 +59,7 @@ class Usuario{
     public function getAvatar() { return $this->avatar; }
     public function getRolActual() { return $this->rolActual; }
     
+    // Comprueba si tiene un rol específico
     public function tieneRol($rolId)
     {
         foreach ($this->roles as $rol) {
@@ -27,6 +68,16 @@ class Usuario{
         return false;
     }
     
+    // Comprueba si tiene permiso según prioridad mínima
+    public function tienePermiso($prioridadMinima)
+    {
+        foreach ($this->roles as $rol) {
+            if ($rol['prioridad'] >= $prioridadMinima) return true;
+        }
+        return false;
+    }
+    
+    // Busca un usuario por nombre de usuario o email
     public static function buscaUsuario($identificador)
     {
         try {
@@ -68,6 +119,7 @@ class Usuario{
         }
     }
     
+    // Carga los roles del usuario desde la BD
     private function cargaRoles()
     {
         try {
@@ -98,61 +150,38 @@ class Usuario{
         }
     }
     
+    // Comprueba si la contraseña es correcta
     public function compruebaPassword($password)
     {
         return password_verify($password, $this->password);
     }
     
+    // Login de usuario
     public static function login($identificador, $password)
     {
         $usuario = self::buscaUsuario($identificador);
-    }
-    private $roles = []; // Aquí guardaremos los roles con su prioridad
-
-    public function __construct($dto, $roles) {
-        $this->id = $dto->id;
-        $this->nombreUsuario = $dto->nombreUsuario;
-        $this->nombre = $dto->nombre;
-        $this->roles = $roles; // Array de roles que vienen de la BD
         
-        // Asignamos el rol con más prioridad como el actual
-        try{
-            $maxPrio = -1;
-            foreach($roles as $rol) {
-                if ($rol['prioridad'] > $maxPrio) {
-                    $maxPrio = $rol['prioridad'];
-                    $this->rolActual = $rol['nombre'];
-                }
-                return false;
-            }
-
-            
-        }catch (\Exception $e) {
-            error_log("Error en crea usuario: " . $e->getMessage());
-            return false;
+        if ($usuario && $usuario->compruebaPassword($password)) {
+            return $usuario;
         }
-    }
-
-    public function getId() { return $this->id; }
-    public function getNombreUsuario() { return $this->nombreUsuario; }
-    public function getRolActual() { return $this->rolActual; }
-
-    // El método de permisos que ya tenías (está perfecto)
-    public function tienePermiso($prioridadMinima) {
-        foreach ($this->roles as $rol) {
-            if ($rol['prioridad'] >= $prioridadMinima) return true;
-        }
+        
         return false;
     }
-
-    public function guardaEnSesion() {
+    
+    // Guarda el usuario en sesión
+    public function guardaEnSesion()
+    {
         $_SESSION['login'] = true;
         $_SESSION['usuario'] = $this; // Guardamos el objeto entero
+        $_SESSION['nombre'] = $this->nombre;
+        $_SESSION['rol'] = $this->rolActual;
     }
-
-    public static function logout() {
-        unset($_SESSION['login']);
-        unset($_SESSION['usuario']);
+    
+    // Cierra la sesión
+    public static function logout()
+    {
+        $_SESSION = [];
         session_destroy();
     }
 }
+?>

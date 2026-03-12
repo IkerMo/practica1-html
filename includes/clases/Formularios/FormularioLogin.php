@@ -6,7 +6,7 @@ use es\ucm\fdi\aw\Usuarios\UsuarioDAO;
 
 
 
-class FormularioLogin extends \Formulario
+class FormularioLogin extends Formulario
 {
     public function __construct()
     {
@@ -91,6 +91,6 @@ EOS;
     private function getRegistroUrl()
     {
         // Asegúrate de que RUTA_VISTAS esté definida en tu config.php
-        return RUTA_APP . '/registro.php'; 
+        return RUTA_VISTAS . '/registro.php'; 
     }
 }

@@ -1,8 +1,8 @@
 <?php
 require_once __DIR__ . '/../config.php';
-require_once RAIZ_APP . '/includes/clases/Formularios/FormularioRegistro.php';
+//require_once RAIZ_APP . '/includes/clases/Formularios/FormularioRegistro.php';
 
-$form = new \es\ucm\fdi\aw\FormularioRegistro(); 
+$form = new \es\ucm\fdi\aw\Formularios\FormularioRegistro();
 $htmlFormRegistro = $form->gestiona();
 
 $tituloPagina = 'Registro - Bistro FDI';

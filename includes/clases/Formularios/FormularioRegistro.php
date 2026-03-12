@@ -4,7 +4,7 @@ use es\ucm\fdi\aw\Usuarios\Usuario;
 use es\ucm\fdi\aw\Usuarios\UsuarioAppService;
 use es\ucm\fdi\aw\Usuarios\UsuarioDAO;
 
-class FormularioRegistro extends \Formulario
+class FormularioRegistro extends Formulario
 {
     public function __construct()
     {

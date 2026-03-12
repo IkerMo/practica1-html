@@ -1,8 +1,8 @@
 <?php
 require_once __DIR__ . '/../config.php';
-require_once RAIZ_APP . '/includes/clases/Formularios/FormularioLogin.php';
+//require_once RAIZ_APP . '/includes/clases/Formularios/FormularioLogin.php';
 
-$form = new \es\ucm\fdi\aw\FormularioLogin();
+$form = new \es\ucm\fdi\aw\Formularios\FormularioLogin();
 $htmlFormLogin = $form->gestiona();
 
 $tituloPagina = 'Login - Bistro FDI';
