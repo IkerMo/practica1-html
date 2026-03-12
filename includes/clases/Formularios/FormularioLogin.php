@@ -1,12 +1,10 @@
 <?php
-<<<<<<< HEAD:includes/clases/Formularios/FormularioLogin.php
 namespace es\ucm\fdi\aw\Formularios;
 use es\ucm\fdi\aw\Usuarios\Usuario;
-=======
-namespace es\ucm\fdi\aw;
->>>>>>> c57322a669621674994105561e86c9ec1d479fb7:includes/clases/FormularioLogin.php
+use es\ucm\fdi\aw\Usuarios\UsuarioAppService;
+use es\ucm\fdi\aw\Usuarios\UsuarioDAO;
 
-require_once RAIZ_APP . '/includes/clases/Formulario.php';
+
 
 class FormularioLogin extends \Formulario
 {
@@ -59,17 +57,14 @@ EOS;
             $this->errores['password'] = 'Debes introducir tu contraseña';
         }
         if (count($this->errores) === 0) {
-<<<<<<< HEAD:includes/clases/Formularios/FormularioLogin.php
             
             $usuario = Usuario::login($identificador, $password);
-=======
             // 1. Instanciamos el Service y el DAO
             $service = new UsuarioAppService();
             $dao = new UsuarioDAO();
 
             // 2. Intentamos el login a través del Service
             $dto = $service->login($identificador, $password);
->>>>>>> c57322a669621674994105561e86c9ec1d479fb7:includes/clases/FormularioLogin.php
             
             if ($dto) {
                 // 3. Si es correcto, buscamos sus roles para construir el objeto de sesión

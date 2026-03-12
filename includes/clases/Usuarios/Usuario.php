@@ -1,20 +1,12 @@
 <?php
-<<<<<<< HEAD
 namespace es\ucm\fdi\aw\Usuarios;
 use es\ucm\fdi\aw\Aplicacion;
 
-class Usuario
-{
-=======
-namespace es\ucm\fdi\aw;
-
-class Usuario {
->>>>>>> c57322a669621674994105561e86c9ec1d479fb7
+class Usuario{
     private $id;
     private $nombreUsuario;
     private $nombre;
     private $rolActual;
-<<<<<<< HEAD
     
     private function __construct() {}
     
@@ -114,7 +106,7 @@ class Usuario {
     public static function login($identificador, $password)
     {
         $usuario = self::buscaUsuario($identificador);
-=======
+    }
     private $roles = []; // Aquí guardaremos los roles con su prioridad
 
     public function __construct($dto, $roles) {
@@ -122,23 +114,22 @@ class Usuario {
         $this->nombreUsuario = $dto->nombreUsuario;
         $this->nombre = $dto->nombre;
         $this->roles = $roles; // Array de roles que vienen de la BD
->>>>>>> c57322a669621674994105561e86c9ec1d479fb7
         
         // Asignamos el rol con más prioridad como el actual
-        $maxPrio = -1;
-        foreach($roles as $rol) {
-            if ($rol['prioridad'] > $maxPrio) {
-                $maxPrio = $rol['prioridad'];
-                $this->rolActual = $rol['nombre'];
+        try{
+            $maxPrio = -1;
+            foreach($roles as $rol) {
+                if ($rol['prioridad'] > $maxPrio) {
+                    $maxPrio = $rol['prioridad'];
+                    $this->rolActual = $rol['nombre'];
+                }
+                return false;
             }
-<<<<<<< HEAD
-            return false;
+
             
-        } catch (\Exception $e) {
+        }catch (\Exception $e) {
             error_log("Error en crea usuario: " . $e->getMessage());
             return false;
-=======
->>>>>>> c57322a669621674994105561e86c9ec1d479fb7
         }
     }
 

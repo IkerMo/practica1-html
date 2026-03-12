@@ -1,19 +1,8 @@
 <?php
-<<<<<<< HEAD
-namespace es\ucm\fdi\aw\Usuarios;
+namespace es\ucm\fdi\aw\Usuarios; 
 
-use es\ucm\fdi\aw\Aplicacion; // Necesario para la BD
+use es\ucm\fdi\aw\Aplicacion;
 
-class UsuarioDAO {
-    // Aquí deben ir tus métodos: buscarPorUsername, crear, etc.
-    public function buscarPorUsername($username) {
-        $conn = Aplicacion::getInstance()->getConexionBd();
-        // ... lógica de BD
-    }
-}
-?>
-=======
-namespace es\ucm\fdi\aw; 
 
 class UsuarioDAO {
 
@@ -130,4 +119,3 @@ class UsuarioDAO {
         );
     }
 }
->>>>>>> c57322a669621674994105561e86c9ec1d479fb7
