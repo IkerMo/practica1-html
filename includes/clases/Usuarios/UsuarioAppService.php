@@ -1,9 +1,5 @@
 <?php
-<<<<<<< HEAD
 namespace es\ucm\fdi\aw\Usuarios;
-=======
-namespace es\ucm\fdi\aw;
->>>>>>> c57322a669621674994105561e86c9ec1d479fb7
 
 class UsuarioAppService {
 

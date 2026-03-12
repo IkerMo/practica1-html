@@ -13,6 +13,7 @@ define('RAIZ_APP', dirname(__DIR__));
 define('RUTA_BASE', '/Practica1');
 define('RUTA_RAIZ', RUTA_BASE . '/');
 define('RUTA_CLASES', RAIZ_APP . '/includes/clases');
+define('RUTA_CLASES1', RAIZ_APP . '/includes/clases');
 
 ini_set('default_charset', 'UTF-8');
 date_default_timezone_set('Europe/Madrid');
