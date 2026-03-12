@@ -1,5 +1,6 @@
 <?php
 namespace es\ucm\fdi\aw\Formularios;
+
 use es\ucm\fdi\aw\Usuarios\Usuario;
 use es\ucm\fdi\aw\Usuarios\UsuarioAppService;
 use es\ucm\fdi\aw\Usuarios\UsuarioDAO;
@@ -77,7 +78,6 @@ EOS;
 
         if (count($this->errores) > 0) return false;
 
-
         $service = new UsuarioAppService();
         $dao = new UsuarioDAO();
 
@@ -96,7 +96,9 @@ EOS;
 
         if ($dto) {
             $roles = $dao->obtenerRoles($dto->id);
-            $usuarioSesion = new Usuario($dto, $roles);
+            
+            $usuarioSesion = Usuario::construirDesdeDTO($dto, $roles);
+            
             $usuarioSesion->guardaEnSesion();
             return true; 
         } else {

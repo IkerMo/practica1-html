@@ -3,7 +3,6 @@ namespace es\ucm\fdi\aw\Usuarios;
 
 use es\ucm\fdi\aw\Aplicacion;
 
-
 class UsuarioDAO {
 
     public function buscarPorUsername(string $nombreUsuario): ?UsuarioDTO {
@@ -33,19 +32,26 @@ class UsuarioDAO {
 
     public function crear(UsuarioDTO $u): UsuarioDTO {
         $conn = Aplicacion::getInstance()->getConexionBd();
+        
         $stmt = $conn->prepare(
-            'INSERT INTO usuarios (nombreUsuario, email, nombre, apellidos, password, rol, avatar) 
-             VALUES (?, ?, ?, ?, ?, ?, ?)'
+            'INSERT INTO usuarios (nombreUsuario, email, nombre, apellidos, password, avatar) 
+             VALUES (?, ?, ?, ?, ?, ?)'
         );
        
-        $stmt->bind_param('sssssss',
+        $stmt->bind_param('ssssss',
             $u->nombreUsuario, $u->email, $u->nombre,
-            $u->apellidos, $u->password, $u->rol, $u->avatar
+            $u->apellidos, $u->password, $u->avatar
         );
         
         $stmt->execute();
         $u->id = $conn->insert_id;
         $stmt->close();
+
+        $idRolCliente = 1; 
+        $stmtRol = $conn->prepare('INSERT INTO UsuarioRoles (usuario_id, rol_id) VALUES (?, ?)');
+        $stmtRol->bind_param('ii', $u->id, $idRolCliente);
+        $stmtRol->execute();
+        $stmtRol->close();
         
         return $u;
     }
@@ -53,10 +59,10 @@ class UsuarioDAO {
     public function actualizar(UsuarioDTO $u): void {
         $conn = Aplicacion::getInstance()->getConexionBd();
         $stmt = $conn->prepare(
-            'UPDATE usuarios SET email=?, nombre=?, apellidos=?, rol=?, avatar=? WHERE id=?'
+            'UPDATE usuarios SET email=?, nombre=?, apellidos=?, avatar=? WHERE id=?'
         );
-        $stmt->bind_param('sssssi', 
-            $u->email, $u->nombre, $u->apellidos, $u->rol, $u->avatar, $u->id
+        $stmt->bind_param('ssssi', 
+            $u->email, $u->nombre, $u->apellidos, $u->avatar, $u->id
         );
         $stmt->execute();
         $stmt->close();
@@ -113,7 +119,7 @@ class UsuarioDAO {
             nombre:        $fila['nombre'],
             apellidos:     $fila['apellidos'],
             password:      $fila['password'],
-            rol:           $fila['rol'],
+            rol:           null, 
             avatar:        $fila['avatar'],
             id:            (int)$fila['id']
         );

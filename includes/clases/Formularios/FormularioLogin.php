@@ -1,10 +1,7 @@
 <?php
 namespace es\ucm\fdi\aw\Formularios;
+
 use es\ucm\fdi\aw\Usuarios\Usuario;
-use es\ucm\fdi\aw\Usuarios\UsuarioAppService;
-use es\ucm\fdi\aw\Usuarios\UsuarioDAO;
-
-
 
 class FormularioLogin extends Formulario
 {
@@ -14,18 +11,17 @@ class FormularioLogin extends Formulario
             'urlRedireccion' => RUTA_RAIZ . 'index.php'
         ]);
     }
-    
+
     protected function generaCamposFormulario(&$datos)
     {
-        $identificador = $datos['identificador'] ?? '';
-        
+        $nombreUsuario = $datos['nombreUsuario'] ?? '';
         $html = <<<EOS
         <fieldset>
-            <legend>Acceso a Bistro FDI</legend>
+            <legend>Acceso al Bistro FDI</legend>
             <div class="campo">
-                <label for="identificador">Usuario:</label>
-                <input id="identificador" type="text" name="identificador" value="$identificador" />
-                {$this->getError('identificador')}
+                <label for="nombreUsuario">Usuario o Email:</label>
+                <input id="nombreUsuario" type="text" name="nombreUsuario" value="$nombreUsuario" />
+                {$this->getError('nombreUsuario')}
             </div>
             <div class="campo">
                 <label for="password">Contraseña:</label>
@@ -35,62 +31,35 @@ class FormularioLogin extends Formulario
             <div class="campo">
                 <button type="submit">Entrar</button>
             </div>
-            <div class="enlaces">
-                <a href="{$this->getRegistroUrl()}">¿No tienes cuenta? Regístrate</a>
-            </div>
         </fieldset>
 EOS;
         return $html;
     }
-    
+
     protected function procesaFormulario(&$datos)
     {
         $this->errores = [];
-        
-        $identificador = trim($datos['identificador'] ?? '');
-        $password = trim($datos['password'] ?? '');
-        
-        if (empty($identificador)) {
-            $this->errores['identificador'] = 'Debes introducir tu usuario';
-        }
-        if (empty($password)) {
-            $this->errores['password'] = 'Debes introducir tu contraseña';
-        }
-        if (count($this->errores) === 0) {
-            
-            $usuario = Usuario::login($identificador, $password);
-            // 1. Instanciamos el Service y el DAO
-            $service = new UsuarioAppService();
-            $dao = new UsuarioDAO();
 
-            // 2. Intentamos el login a través del Service
-            $dto = $service->login($identificador, $password);
-            
-            if ($dto) {
-                // 3. Si es correcto, buscamos sus roles para construir el objeto de sesión
-                $roles = $dao->obtenerRoles($dto->id);
-                
-                // 4. Creamos el objeto Usuario (el de sesión) y guardamos
-                $usuarioSesion = new Usuario($dto, $roles);
-                $usuarioSesion->guardaEnSesion();
-                
-                return true; 
-            } else {
-                // Error genérico para no dar pistas a hackers
-                $this->errores[] = 'El usuario o la contraseña no coinciden';
-            }
+        $nombreUsuario = trim($datos['nombreUsuario'] ?? '');
+        $password = trim($datos['password'] ?? '');
+
+        if (empty($nombreUsuario)) $this->errores['nombreUsuario'] = 'El nombre de usuario no puede estar vacío';
+        if (empty($password)) $this->errores['password'] = 'La contraseña no puede estar vacía';
+
+        if (count($this->errores) > 0) return false;
+
+        $usuario = Usuario::login($nombreUsuario, $password);
+
+        if (!$usuario) {
+            $this->errores[] = 'El usuario o la contraseña no coinciden';
+            return false;
         }
-        return false;
+
+        $usuario->guardaEnSesion();
+        return true;
     }
-    
-    private function getError($campo)
-    {
+
+    private function getError($campo) {
         return self::createMensajeError($this->errores, $campo, 'span', ['class' => 'error']);
-    }
-    
-    private function getRegistroUrl()
-    {
-        // Asegúrate de que RUTA_VISTAS esté definida en tu config.php
-        return RUTA_VISTAS . '/registro.php'; 
     }
 }
