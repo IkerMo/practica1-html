@@ -38,7 +38,7 @@ INSERT INTO Productos (nombre, descripcion, categoria_id, precio_base, iva, disp
 ('Bocadillo jamón', 'Bocadillo de jamón serrano', 4, 3.50, 10, TRUE, TRUE),
 ('Bocadillo queso', 'Bocadillo de queso', 4, 3.00, 10, TRUE, TRUE);
 
--- Insertar algún pedido de ejemplo (para pruebas)
+-- Insertar algún pedido deejemplo (para pruebas)
 -- Primero, necesitamos saber el número de pedido del día
 INSERT INTO Pedidos (numero_pedido, cliente_id, tipo, estado, fecha_creacion, total_sin_iva, total_con_iva) 
 VALUES (1, 4, 'local', 'entregado', DATE_SUB(NOW(), INTERVAL 1 DAY), 5.70, 6.27);
