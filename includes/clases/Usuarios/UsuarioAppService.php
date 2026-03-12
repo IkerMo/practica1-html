@@ -1,9 +1,6 @@
 <?php
 namespace es\ucm\fdi\aw\Usuarios;
 
-require_once __DIR__ . '/UsuarioDTO.php';
-require_once __DIR__ . '/UsuarioDAO.php';
-
 class UsuarioAppService {
 
     private UsuarioDAO $dao;

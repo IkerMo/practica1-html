@@ -25,8 +25,20 @@ define('RUTA_CLASES', RAIZ_APP . '/includes/clases');
 ini_set('default_charset', 'UTF-8');
 date_default_timezone_set('Europe/Madrid');
 
-// Cargar clase Aplicacion
-require_once RUTA_CLASES . '/Aplicacion.php'; // Usando la nueva constante
+spl_autoload_register(function ($class) {
+    $prefix = 'es\\ucm\\fdi\\aw\\';
+    $base_dir = RUTA_CLASES . '/'; 
+
+    $len = strlen($prefix);
+    if (strncmp($prefix, $class, $len) !== 0) return;
+
+    $relative_class = substr($class, $len);
+    $file = $base_dir . str_replace('\\', '/', $relative_class) . '.php';
+
+    if (file_exists($file)) {
+        require_once $file;
+    }
+});
 
 // Datos de conexión a la BD
 $bdDatosConexion = [
@@ -36,6 +48,7 @@ $bdDatosConexion = [
     'pass' => 'bistro_password'
 ];
 
+use es\ucm\fdi\aw\Aplicacion;
 // Inicializar aplicación
 try {
     $app = Aplicacion::getInstance();

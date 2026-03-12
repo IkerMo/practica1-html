@@ -1,4 +1,6 @@
 <?php
+namespace es\ucm\fdi\aw;
+
 class Aplicacion
 {
     private static $instancia = null;
@@ -44,8 +46,9 @@ class Aplicacion
     
     public function getConexionBd()
     {
+        
         if (!$this->inicializada) {
-            throw new Exception('Aplicacion no inicializada');
+            throw new \Exception('Aplicacion no inicializada');
         }
         
         if ($this->conexionBD === null) {
@@ -54,10 +57,10 @@ class Aplicacion
             $user = $this->bdDatosConexion['user'];
             $pass = $this->bdDatosConexion['pass'];
             
-            $this->conexionBD = new mysqli($host, $user, $pass, $bd);
+            $this->conexionBD = new \mysqli($host, $user, $pass, $bd);
             
             if ($this->conexionBD->connect_error) {
-                throw new Exception('Error de conexión: ' . $this->conexionBD->connect_error);
+                throw new \Exception('Error de conexión: ' . $this->conexionBD->connect_error);
             }
             
             $this->conexionBD->set_charset('utf8mb4');

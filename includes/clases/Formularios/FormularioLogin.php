@@ -1,6 +1,6 @@
 <?php
-require_once RAIZ_APP . '/includes/clases/Formulario.php';
-require_once RAIZ_APP . '/includes/clases/Usuarios/Usuario.php';
+namespace es\ucm\fdi\aw\Formularios;
+use es\ucm\fdi\aw\Usuarios\Usuario;
 
 class FormularioLogin extends Formulario
 {
@@ -52,8 +52,8 @@ EOS;
         if (empty($password)) {
             $this->errores['password'] = 'Debes introducir tu contraseña';
         }
-        
         if (count($this->errores) === 0) {
+            
             $usuario = Usuario::login($identificador, $password);
             
             if ($usuario) {

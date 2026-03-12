@@ -1,7 +1,6 @@
 <?php
-require_once dirname(__DIR__) . '/clases/Aplicacion.php';
-require_once RAIZ_APP . '/includes/clases/Formulario.php';
-
+namespace es\ucm\fdi\aw\Usuarios;
+use es\ucm\fdi\aw\Aplicacion;
 
 class Usuario
 {
@@ -72,7 +71,7 @@ class Usuario
             }
             return false;
             
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             error_log("Error en buscaUsuario: " . $e->getMessage());
             return false;
         }
@@ -103,7 +102,7 @@ class Usuario
                 }
                 $rs->free();
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             error_log("Error en cargaRoles: " . $e->getMessage());
         }
     }
@@ -158,7 +157,7 @@ class Usuario
             }
             return false;
             
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             error_log("Error en crea usuario: " . $e->getMessage());
             return false;
         }

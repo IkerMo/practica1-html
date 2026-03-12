@@ -1,6 +1,8 @@
 <?php
-require_once RAIZ_APP . '/includes/clases/Formulario.php';
-require_once RAIZ_APP . '/includes/clases/Usuarios/Usuario.php';
+namespace es\ucm\fdi\aw\Formularios;
+use es\ucm\fdi\aw\Usuarios\Usuario;
+use es\ucm\fdi\aw\Aplicacion;
+
 
 class FormularioRegistro extends Formulario
 {
