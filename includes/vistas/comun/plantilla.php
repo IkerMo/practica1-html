@@ -17,6 +17,7 @@
         </main>
 
         <?php
+            include RAIZ_APP . '/includes/vistas/comun/navDer.php';
             include RAIZ_APP . '/includes/vistas/comun/pie.php';
         ?>
     </div> 
