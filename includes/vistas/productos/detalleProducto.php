@@ -4,60 +4,48 @@ require_once __DIR__.'/../../config.php';
 use es\ucm\fdi\aw\Producto\ProductoAppService;
 use es\ucm\fdi\aw\Categoria\CategoriaAppService;
 
-// --- REGLA DE ORO 2: SEGURIDAD ---
-if (!isset($_SESSION['login']) || !$_SESSION['login']) {
-    header('Location: ' . $app->resuelve('/login.php'));
+if (!estaLogueado()) {
+    header('Location: ' . RUTA_BASE . '/login.php');
     exit();
 }
 
-/** @var es\ucm\fdi\aw\Usuarios\Usuario $usuario */
-$usuario = $_SESSION['usuario'];
-$rol = $usuario->getRolActual();
+// 1. RECUPERAR DATOS DE SESIÓN
+$esGerente = $_SESSION['esAdmin'] ?? false;
+$esCliente = $_SESSION['esCliente'] ?? false;
 
-// --- OBTENCIÓN DE DATOS ---
-$id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
-if (!$id) {
-    header('Location: listarProductos.php');
-    exit();
-}
-
-$serviceProd = new ProductoAppService();
-$serviceCat = new CategoriaAppService();
-
-$p = $serviceProd->getProducto($id);
+// 2. RECUPERAR EL PRODUCTO
+$idProducto = $_GET['id'] ?? null;
+$service = new ProductoAppService();
+$p = $service->getProducto($idProducto); // Lo llamamos $p para que coincida con tu HTML
 
 if (!$p) {
-    header('Location: listarProductos.php');
-    exit();
+    die("Producto no encontrado.");
 }
 
-// Obtenemos el nombre de la categoría para mostrarlo
-// Nota: Tu ProductoDTO tiene el atributo 'categoria' (nombre), 
-// pero si fuera un ID, usaríamos $serviceCat->getCategoria($p->idCategoria)
-$nombreCategoria = $p->categoria; 
-
-// --- PREPARACIÓN DE LA VISTA ---
+// 3. PREPARACIÓN DE DATOS
+$nombreCategoria = $p->categoria_id; 
 $tituloPagina = $p->nombre . ' - Detalle';
 
 $precioFinal = number_format($p->getPrecioFinal(), 2);
-$precioBase = number_format($p->precioBase, 2);
+$precioBase = number_format($p->precio_base, 2); // Ojo: en tu DTO es precioBase, no precio_base
 $iva = $p->iva;
 $imagen = !empty($p->imagenes) ? $p->imagenes[0] : 'default.jpg';
+$urlImagen = RUTA_BASE . '/img/productos/' . $imagen;
 
-// Construcción del contenido
+// 4. CONSTRUCCIÓN DEL CONTENIDO
 $contenidoPrincipal = <<<HTML
-<div class="detalle-contenedor" style="display: flex; gap: 30px; margin-top: 20px;">
+<div class="detalle-contenedor" style="display: flex; gap: 30px; margin-top: 20px; padding: 20px;">
     
     <div class="detalle-imagen" style="flex: 1;">
-        <img src="{$app->resuelve('/img/productos/'.$imagen)}" 
+        <img src="{$urlImagen}" 
              style="width: 100%; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
     </div>
 
     <div class="detalle-info" style="flex: 1.5;">
-        <a href="listarProductos.php" style="text-decoration: none; color: #666;">← Volver al listado</a>
+        <a href="ListarProductos.php" style="text-decoration: none; color: #666;">← Volver al listado</a>
         <h1 style="margin: 10px 0;">{$p->nombre}</h1>
         <span class="badge-categoria" style="background: #e0e0e0; padding: 5px 10px; border-radius: 15px; font-size: 0.8em;">
-            {$nombreCategoria}
+            Categoría: {$nombreCategoria}
         </span>
         
         <p style="font-size: 1.2em; color: #444; margin: 20px 0;">{$p->descripcion}</p>
@@ -69,24 +57,23 @@ $contenidoPrincipal = <<<HTML
 HTML;
 
 // --- ACCIONES POR ROL ---
-
-if ($rol === 'Gerente') {
+if ($esGerente) {
     $contenidoPrincipal .= <<<HTML
         <div class="acciones-admin" style="margin-top: 30px; display: flex; gap: 10px;">
-            <a href="formularioProducto.php?id={$p->id}" class="btn btn-edit">Modificar Datos</a>
-            <a href="borrarProducto.php?id={$p->id}" class="btn btn-delete" 
-               onclick="return confirm('¿Seguro que quieres retirar este producto?')">Retirar de la Carta</a>
+            <a href="formularioProducto.php?id={$p->id}" class="btn" style="background:#3498db; color:white; padding:10px; border-radius:5px; text-decoration:none;">Modificar Datos</a>
+            <a href="borrarProducto.php?id={$p->id}" class="btn" style="background:#e74c3c; color:white; padding:10px; border-radius:5px; text-decoration:none;" 
+               onclick="return confirm('¿Seguro?')">Retirar de la Carta</a>
         </div>
         <div style="margin-top: 10px; font-size: 0.9em; color: #999;">
-            Precio Base: {$precioBase} € | ID: {$p->id}
+            Precio Base: {$precioBase} € | ID Producto: {$p->id}
         </div>
 HTML;
 } 
-elseif ($rol === 'Cliente') {
+elseif ($esCliente) {
     if ($p->disponible) {
         $contenidoPrincipal .= <<<HTML
             <div style="margin-top: 30px;">
-                <button class="btn-primario" style="padding: 15px 30px; font-size: 1.1em;">
+                <button class="btn-primario" style="background:#2ecc71; color:white; padding: 15px 30px; font-size: 1.1em; border:none; border-radius:5px; cursor:pointer;">
                     🛒 Añadir al Pedido
                 </button>
             </div>
@@ -96,10 +83,7 @@ HTML;
     }
 }
 
-$contenidoPrincipal .= <<<HTML
-    </div>
-</div>
-HTML;
+$contenidoPrincipal .= "</div></div>";
 
-// Cargar plantilla
-require __DIR__.'/../plantillas/layout.php';
+// Cargar plantilla (Usa el nombre que tengas: layout.php o plantilla.php)
+require RAIZ_APP . '/includes/vistas/comun/plantilla.php';

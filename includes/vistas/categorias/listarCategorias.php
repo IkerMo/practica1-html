@@ -2,29 +2,27 @@
 require_once __DIR__.'/../../config.php';
 use es\ucm\fdi\aw\Categoria\CategoriaAppService;
 
-// 1. Verificamos si existe la sesión de login Y si el objeto usuario está ahí
-if (!isset($_SESSION['login']) || !isset($_SESSION['usuario'])) {
-    // Si no hay usuario, redirigimos al login
-    header('Location: ' . $app->resuelve('/login.php'));
+// 1. SEGURIDAD: Usamos la función de config.php para evitar errores de objeto
+if (!estaLogueado()) {
+    header('Location: ' . RUTA_BASE . '/login.php');
     exit();
 }
 
-/** @var es\ucm\fdi\aw\Usuarios\Usuario $usuario */
-$usuario = $_SESSION['usuario'];
+// 2. RECUPERAR DATOS DE ROL (Variables simples de sesión)
+$esGerente = $_SESSION['esAdmin'] ?? false;
+$idRol = $_SESSION['rol'] ?? null;
 
-// 2. Ahora sí es seguro llamar al método
-$rol = $usuario->getRolActual();
 $service = new CategoriaAppService();
 $categorias = $service->getTodasCategorias();
 
 $tituloPagina = 'Categorías del Restaurante';
-
 $contenidoPrincipal = "<h1>Categorías</h1>";
 
-if ($rol === 'Gerente') {
+// Botón para Gerentes (Rol 4)
+if ($esGerente) {
     $contenidoPrincipal .= <<<HTML
         <div style="margin-bottom: 20px;">
-            <a href="formularioCategoria.php" class="btn btn-primario">+ Nueva Categoría</a>
+            <a href="formularioCategoria.php" class="btn btn-primario" style="background:#2ecc71; color:white; padding:10px; text-decoration:none; border-radius:5px;">+ Nueva Categoría</a>
         </div>
 HTML;
 }
@@ -32,21 +30,23 @@ HTML;
 $contenidoPrincipal .= '<div class="categorias-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px;">';
 
 foreach ($categorias as $cat) {
-    $img = $cat->imagen ?: 'default_cat.png';
+    // Usamos RUTA_BASE en lugar de resuelve()
+    $img = !empty($cat->imagen) ? $cat->imagen : 'default_cat.png';
+    $urlImagen = RUTA_BASE . '/img/categorias/' . $img;
     
     $contenidoPrincipal .= "
     <div class='card-categoria' style='border: 1px solid #ddd; padding: 15px; border-radius: 10px; text-align: center; background: white;'>
-        <img src='{$app->resuelve('/img/categorias/'.$img)}' style='width: 100%; height: 150px; object-fit: cover; border-radius: 5px;'>
+        <img src='{$urlImagen}' style='width: 100%; height: 150px; object-fit: cover; border-radius: 5px;'>
         <h3 style='margin: 15px 0;'>{$cat->nombre}</h3>
         <p style='color: #666; font-size: 0.9em;'>{$cat->descripcion}</p>
         
-        <a href='../productos/listarProductos.php?categoria={$cat->nombre}' class='btn' style='display:block; margin-top:10px; font-size: 0.8em;'>Ver productos</a>";
+        <a href='../productos/ListarProductos.php?categoria={$cat->id}' class='btn' style='display:block; margin-top:10px; font-size: 0.8em; background:#eee; padding:5px; text-decoration:none; color:black;'>Ver productos</a>";
 
-    if ($rol === 'Gerente') {
+    if ($esGerente) {
         $contenidoPrincipal .= "
         <div style='margin-top: 15px; padding-top: 10px; border-top: 1px solid #eee;'>
-            <a href='formularioCategoria.php?id={$cat->id}' class='btn-edit'>Editar</a>
-            <a href='borrarCategoria.php?id={$cat->id}' class='btn-delete' onclick='return confirm(\"¿Borrar categoría?\")'>Borrar</a>
+            <a href='formularioCategoria.php?id={$cat->id}' class='btn-edit' style='color:#3498db; margin-right:10px;'>Editar</a>
+            <a href='borrarCategoria.php?id={$cat->id}' class='btn-delete' style='color:#e74c3c;' onclick='return confirm(\"¿Borrar categoría?\")'>Borrar</a>
         </div>";
     }
 
@@ -55,4 +55,5 @@ foreach ($categorias as $cat) {
 
 $contenidoPrincipal .= '</div>';
 
-require __DIR__.'/../plantillas/layout.php';
+// 3. CARGAR PLANTILLA (Asegúrate de que la ruta sea correcta)
+require RAIZ_APP . '/includes/vistas/comun/plantilla.php';
