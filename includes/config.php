@@ -40,8 +40,8 @@ spl_autoload_register(function ($class) {
 $bdDatosConexion = [
     'host' => 'localhost',
     'bd'   => 'bistro_fdi',
-    'user' => 'bistro_user',
-    'pass' => 'bistro_password'
+    'user' => 'root',
+    'pass' => ''
 ];
 
 try {

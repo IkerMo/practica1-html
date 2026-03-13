@@ -170,12 +170,27 @@ class Usuario
     
     // Guarda el usuario en sesión
     public function guardaEnSesion()
-    {
-        $_SESSION['login'] = true;
-        $_SESSION['usuario'] = $this; // Guardamos el objeto entero
-        $_SESSION['nombre'] = $this->nombre;
-        $_SESSION['rol'] = $this->rolActual;
-    }
+{
+    $_SESSION['login'] = true;
+    $_SESSION['usuario'] = $this;
+    $_SESSION['nombre'] = $this->nombre;
+    $_SESSION['rol'] = $this->rolActual;
+    
+    // Añadir nombre del rol para mostrarlo
+    $rolNombres = [
+        1 => 'Cliente',
+        2 => 'Camarero',
+        3 => 'Cocinero',
+        4 => 'Gerente'
+    ];
+    $_SESSION['rolNombre'] = $rolNombres[$this->rolActual] ?? 'Usuario';
+    
+    // Flags para comprobaciones rápidas
+    $_SESSION['esCliente'] = $this->tieneRol(1);
+    $_SESSION['esCamarero'] = $this->tieneRol(2);
+    $_SESSION['esCocinero'] = $this->tieneRol(3);
+    $_SESSION['esAdmin'] = $this->tieneRol(4);
+}
     
     // Cierra la sesión
     public static function logout()

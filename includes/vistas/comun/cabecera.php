@@ -13,5 +13,6 @@ function mostrarSaludo() {
 ?>
 <header>
     <h1>Bistro FDI</h1>
+    
     <div class="saludo"><?= mostrarSaludo(); ?></div>
 </header>
