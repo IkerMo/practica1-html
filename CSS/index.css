@@ -612,3 +612,48 @@ a.deshabilitado {
     text-align: center;
 }
 
+
+div#contenedor {
+    display: grid;
+    /* Definimos 3 columnas: 200px, el resto (1fr), y 200px */
+    grid-template-columns: 200px 1fr 200px;
+    grid-template-areas: 
+        "header header header"
+        "navizq contenido navder"
+        "footer footer footer";
+    width: 1100px;
+    margin: 30px auto;
+    overflow: visible; /* Cambiamos de hidden a visible */
+}
+
+header { grid-area: header; width: 100%; }
+footer { grid-area: footer; width: 100%; clear: none; }
+
+/* Asignamos cada parte a su zona del grid */
+nav { 
+    grid-area: navizq; 
+    width: 200px !important; 
+    float: none !important; 
+}
+
+main { 
+    grid-area: contenido; 
+    width: auto !important; 
+    float: none !important; 
+    padding: 20px;
+}
+
+navder { 
+    grid-area: navder; 
+    width: 200px !important; 
+    float: none !important; 
+}
+
+/* Ajuste para tu portátil (Pantalla pequeña) */
+@media (max-width: 1150px) {
+    div#contenedor {
+        width: 98%;
+        /* En pantallas pequeñas, mantenemos las 3 columnas pero el main se encoge más */
+        grid-template-columns: 180px 1fr 180px; 
+    }
+}
