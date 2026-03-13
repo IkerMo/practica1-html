@@ -8,7 +8,7 @@ class ProductoDAO {
     public function listarTodos() {
         $conn = Aplicacion::getInstance()->getConexionBd();
         // Solo traemos los que están "ofertados" (en la carta) por defecto
-        $query = "SELECT * FROM Productos WHERE ofertado = 1 ORDER BY categoria, nombre ASC";
+        $query = "SELECT * FROM Productos WHERE ofertado = 1 ORDER BY categoria_id, nombre ASC";
         $rs = $conn->query($query);
         
         $lista = [];
@@ -35,7 +35,7 @@ class ProductoDAO {
 
     public function crear(ProductoDTO $p) {
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = "INSERT INTO Productos (nombre, descripcion, categoria, imagenes, precioBase, iva, disponible, ofertado) 
+        $query = "INSERT INTO Productos (nombre, descripcion, categoria_id, imagenes, precio_base, iva, disponible, ofertado) 
                   VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($query);
         
@@ -45,8 +45,8 @@ class ProductoDAO {
         $ofertado = $p->ofertado ? 1 : 0;
 
         $stmt->bind_param('ssssddii', 
-            $p->nombre, $p->descripcion, $p->categoria, $imgsStr, 
-            $p->precioBase, $p->iva, $disponible, $ofertado
+            $p->nombre, $p->descripcion, $p->categoria_id, $imgsStr, 
+            $p->precio_base, $p->iva, $disponible, $ofertado
         );
         
         if ($stmt->execute()) {
@@ -60,8 +60,8 @@ class ProductoDAO {
 
     public function actualizar(ProductoDTO $p) {
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = "UPDATE Productos SET nombre=?, descripcion=?, categoria=?, imagenes=?, 
-                  precioBase=?, iva=?, disponible=?, ofertado=? WHERE id=?";
+        $query = "UPDATE Productos SET nombre=?, descripcion=?, categoria_id=?, imagenes=?, 
+                  precio_base=?, iva=?, disponible=?, ofertado=? WHERE id=?";
         $stmt = $conn->prepare($query);
         
         $imgsStr = implode(',', $p->imagenes);
@@ -69,8 +69,8 @@ class ProductoDAO {
         $ofertado = $p->ofertado ? 1 : 0;
 
         $stmt->bind_param('ssssddiii', 
-            $p->nombre, $p->descripcion, $p->categoria, $imgsStr, 
-            $p->precioBase, $p->iva, $disponible, $ofertado, $p->id
+            $p->nombre, $p->descripcion, $p->categoria_id, $imgsStr, 
+            $p->precio_base, $p->iva, $disponible, $ofertado, $p->id
         );
         
         $result = $stmt->execute();
@@ -83,10 +83,10 @@ class ProductoDAO {
         $p->id = (int)$fila['id'];
         $p->nombre = $fila['nombre'];
         $p->descripcion = $fila['descripcion'];
-        $p->categoria = $fila['categoria'];
+        $p->categoria_id = $fila['categoria_id'];
         // Reconvertimos el string de la BD a un array de imágenes
         $p->imagenes = !empty($fila['imagenes']) ? explode(',', $fila['imagenes']) : [];
-        $p->precioBase = (float)$fila['precioBase'];
+        $p->precio_base = (float)$fila['precio_base'];
         $p->iva = (float)$fila['iva'];
         $p->disponible = (bool)$fila['disponible'];
         $p->ofertado = (bool)$fila['ofertado'];

@@ -2,12 +2,17 @@
 require_once __DIR__.'/../../config.php';
 use es\ucm\fdi\aw\Categoria\CategoriaAppService;
 
-if (!isset($_SESSION['login'])) {
+// 1. Verificamos si existe la sesión de login Y si el objeto usuario está ahí
+if (!isset($_SESSION['login']) || !isset($_SESSION['usuario'])) {
+    // Si no hay usuario, redirigimos al login
     header('Location: ' . $app->resuelve('/login.php'));
     exit();
 }
 
+/** @var es\ucm\fdi\aw\Usuarios\Usuario $usuario */
 $usuario = $_SESSION['usuario'];
+
+// 2. Ahora sí es seguro llamar al método
 $rol = $usuario->getRolActual();
 $service = new CategoriaAppService();
 $categorias = $service->getTodasCategorias();

@@ -52,7 +52,7 @@ function getMenuPorRol() {
     // Menú para administradores/gerentes
     if ($esAdmin) {
         $menu['titulo'] = 'Menú Gerente';
-        $menu['items'][] = ['url' => RUTA_VISTAS . '/gerente/productos.php', 'texto' => 'Gestionar productos'];
+        $menu['items'][] = ['url' => RUTA_VISTAS . '/productos/ListarProductos.php', 'texto' => 'Gestionar productos'];
         $menu['items'][] = ['url' => RUTA_VISTAS . '/gerente/categorias.php', 'texto' => 'Gestionar categorías'];
         $menu['items'][] = ['url' => RUTA_VISTAS . '/gerente/usuarios.php', 'texto' => 'Gestionar usuarios'];
         $menu['items'][] = ['url' => RUTA_VISTAS . '/gerente/ofertas.php', 'texto' => 'Gestionar ofertas'];

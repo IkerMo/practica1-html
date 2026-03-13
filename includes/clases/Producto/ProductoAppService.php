@@ -26,9 +26,9 @@ class ProductoAppService {
         $p = new ProductoDTO();
         $p->nombre = $datos['nombre'];
         $p->descripcion = $datos['descripcion'];
-        $p->categoria = $datos['categoria'];
+        $p->categoria_id = $datos['categoria_id'];
         $p->imagenes = $datos['imagenes'] ?? []; // Array de nombres de archivo
-        $p->precioBase = (float)$datos['precioBase'];
+        $p->precio_base = (float)$datos['precio_base'];
         $p->iva = (float)($datos['iva'] ?? 21);
         $p->disponible = isset($datos['disponible']);
         $p->ofertado = true; // Por defecto se añade a la carta
@@ -53,12 +53,12 @@ class ProductoAppService {
         if ($p) {
             $p->nombre = $datos['nombre'];
             $p->descripcion = $datos['descripcion'];
-            $p->categoria = $datos['categoria'];
+            $p->categoria_id = $datos['categoria_id'];
             // Solo actualizamos imágenes si se han subido nuevas
             if (!empty($datos['imagenes'])) {
                 $p->imagenes = $datos['imagenes'];
             }
-            $p->precioBase = (float)$datos['precioBase'];
+            $p->precio_base = (float)$datos['precio_base'];
             $p->iva = (float)$datos['iva'];
             $p->disponible = $datos['disponible'];
             
