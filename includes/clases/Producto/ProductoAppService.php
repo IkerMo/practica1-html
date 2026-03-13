@@ -8,9 +8,7 @@ class ProductoAppService {
         $this->dao = new ProductoDAO();
     }
 
-    /**
-     * Devuelve los productos visibles para los clientes
-     */
+    /** Devuelve los productos visibles para los clientes */
     public function getCarta() {
         return $this->dao->listarTodos();
     }
@@ -19,18 +17,14 @@ class ProductoAppService {
         return $this->dao->buscarPorId($id);
     }
 
-    /**
-     * Crea un producto desde los datos del formulario
-     */
+    /** Crea un producto desde los datos del formulario */
     public function registrarProducto($datos) {
         $p = new ProductoDTO();
         $p->nombre = $datos['nombre'];
         $p->descripcion = $datos['descripcion'];
         $p->categoria_id = $datos['categoria_id'];
-        
-        // IMPORTANTE: Usamos 'imagen_principal' que es lo que manda el formulario ahora
-        $p->imagen_principal = $datos['imagen_principal'] ?? ['default.jpg']; 
-        
+        $p->imagen_principal = $datos['imagen_principal'] ?? 'default.jpg';
+        $p->imagenes = $datos['imagenes_adicionales'] ?? [];
         $p->precio_base = (float)$datos['precio_base'];
         $p->iva = (float)($datos['iva'] ?? 21);
         $p->disponible = isset($datos['disponible']) && $datos['disponible'];
@@ -39,9 +33,7 @@ class ProductoAppService {
         return $this->dao->crear($p);
     }
 
-    /**
-     * Cambia si un producto tiene stock o no sin borrarlo
-     */
+    /** Cambia si un producto tiene stock o no sin borrarlo */
     public function alternarDisponibilidad($id) {
         $p = $this->dao->buscarPorId($id);
         if ($p) {
@@ -57,10 +49,17 @@ class ProductoAppService {
             $p->nombre = $datos['nombre'];
             $p->descripcion = $datos['descripcion'];
             $p->categoria_id = $datos['categoria_id'];
-            // Solo actualizamos imágenes si se han subido nuevas
+            
+            // Solo actualizamos imagen principal si se ha subido una nueva
             if (!empty($datos['imagen_principal'])) {
                 $p->imagen_principal = $datos['imagen_principal'];
             }
+            
+            // Imágenes adicionales
+            if (!empty($datos['imagenes_adicionales'])) {
+                $this->dao->guardarImagenes($p->id, $datos['imagenes_adicionales']);
+            }
+            
             $p->precio_base = (float)$datos['precio_base'];
             $p->iva = (float)$datos['iva'];
             $p->disponible = $datos['disponible'];
@@ -70,9 +69,7 @@ class ProductoAppService {
         return false;
     }
 
-    /**
-     * Retira un producto de la carta (ofertado = false)
-     */
+    /** Retira un producto de la carta (ofertado = false) */
     public function retirarDeLaCarta($id) {
         $p = $this->dao->buscarPorId($id);
         if ($p) {

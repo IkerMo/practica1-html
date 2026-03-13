@@ -10,7 +10,7 @@ class FormularioProducto extends Formulario {
     public function __construct($idProducto = null) {
         $this->idProducto = $idProducto;
         parent::__construct('formProd', [
-            'urlRedireccion' => 'listarProductos.php', // 👈 Corregido (minúsculas)
+            'urlRedireccion' => 'ListarProductos.php',
             'enctype' => 'multipart/form-data' 
         ]);
     }
@@ -42,7 +42,7 @@ class FormularioProducto extends Formulario {
                 if (!empty($todasImgs)) {
                     $imagenesActuales = '<div style="margin:10px 0;"><strong>Imágenes actuales:</strong><div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:5px;">';
                     foreach ($todasImgs as $img) {
-                        $url = RUTA_BASE . '/img/productos/' . $img; // 👈 Corregido (img en minúsculas)
+                        $url = RUTA_BASE . '/IMG/productos/' . $img;
                         $imagenesActuales .= "<img src='$url' style='width:80px;height:80px;object-fit:cover;border-radius:5px;border:1px solid #ddd;'>";
                     }
                     $imagenesActuales .= '</div></div>';
@@ -57,7 +57,6 @@ class FormularioProducto extends Formulario {
             $opciones .= "<option value='{$cat->id}' $sel>{$cat->nombre}</option>";
         }
 
-        // Helper para selected de IVA
         $selIva4 = ($iva == 4) ? 'selected' : '';
         $selIva10 = ($iva == 10) ? 'selected' : '';
         $selIva21 = ($iva == 21) ? 'selected' : '';
@@ -77,7 +76,7 @@ class FormularioProducto extends Formulario {
                     $opciones
                 </select>
             </div>
-
+ 
             <div>
                 <label>Precio Base (€):</label>
                 <input type="number" step="0.01" name="precio_base" id="precio_base" value="$precioBase" oninput="recalc()" required>
@@ -124,7 +123,7 @@ EOS;
         $service = new ProductoAppService();
         $id = $datos['idProducto'] ?? null;
         
-        $rutaCarpeta = RAIZ_APP . '/img/productos/'; // 👈 Corregido (img en minúsculas)
+        $rutaCarpeta = RAIZ_APP . '/IMG/productos/';
         if (!file_exists($rutaCarpeta)) {
             mkdir($rutaCarpeta, 0777, true);
         }
@@ -155,15 +154,6 @@ EOS;
             }
         }
 
-        // Si no se subieron imágenes nuevas pero estamos editando, mantener las existentes
-        if ($id && $imagenPrincipal === null) {
-            $productoExistente = $service->getProducto($id);
-            if ($productoExistente) {
-                $imagenPrincipal = $productoExistente->imagen_principal;
-                // Las adicionales se mantienen en BD, no necesitamos pasarlas
-            }
-        }
-
         $info = [
             'nombre' => $datos['nombre'],
             'descripcion' => $datos['descripcion'],
@@ -176,24 +166,14 @@ EOS;
             'imagenes_adicionales' => $imagenesAdicionales
         ];
 
-        try {
-            if ($id) {
-                $res = $service->actualizarProducto($id, $info);
-            } else {
-                $res = $service->registrarProducto($info);
-            }
+        if ($id) {
+            $res = $service->actualizarProducto($id, $info);
+        } else {
+            $res = $res = $service->registrarProducto($info);
+        }
 
-            if (!$res) {
-                $this->errores[] = "Error al procesar el producto.";
-                return false;
-            }
-            return true;
-            
-        } catch (\Exception $e) {
-            error_log("Error en FormularioProducto: " . $e->getMessage());
-            $this->errores[] = "Error al procesar el producto: " . $e->getMessage();
-            return false;
+        if (!$res) {
+            $this->errores[] = "Error al procesar el producto.";
         }
     }
 }
-?>
