@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="CSS/default.css" type="text/css">
+ <title>Contacto</title>
+ 
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="contacto.html">Contacto</a></li>
+            <li><a href="detalles.html">Detalles</a></li>
+            <li><a href="bocetos.html">Bocetos</a></li>
+            <li><a href="miembros.html">Miembros</a></li>
+            <li><a href="planificacion.html">Planificacion</a></li>
+        </ul>
+    </nav>
+<h1><strong>Contacto </strong></h1>
+<h2> Estamos aquí para ayudarte. Completa el formulario y nos pondremos en contacto contigo.</h2>
+<form action="mailto:aafernan@ucm.es" method="post" enctype="text/plain"> 
+Nombre:    
+<input type="text" name="nombre" value="" required/>
+<br>
+<br>
+Correo:
+<input type="email" name="correo" value="" required/>
+<br>
+<br>
+Motivo de la consulta:
+<input type="radio" id="evaluacion" name="motivo" value="1">
+<label for="evaluacion"> Evaluacion</label>
+<input type="radio" id="sugerencias" name="motivo" value="2">
+<label for="sugerencias"> Sugerencias </label>
+<input type="radio" id="criticas" name="motivo" value="3">
+<label for="criticas"> Críticas </label>
+<br>
+<br>
+<label for="terminos">Marque esta casilla para verificar que ha leído nuestros términos y condiciones del servicio</label>
+<input type="checkbox" id="terminos" name="terminos" value="aceptado" required>
+<br>
+<br>
+Consulta <br/>
+<textarea name="consulta" rows="6" cols="40" required></textarea>
+<br>
+<br>
+<input type="submit" value="Enviar">
+
+</form>
+</body>
+</html>

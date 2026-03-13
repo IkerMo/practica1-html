@@ -1,0 +1,97 @@
+<?php
+require_once __DIR__ . '/../config.php';
+
+$tituloPagina = 'Planificación - Bistro FDI';
+
+$contenidoPrincipal = <<<EOS
+    <section class="planificacion">
+        <h1>Planificación de Proyectos</h1>
+        
+        <p>
+            Esta página describe cómo vamos a organizar el desarrollo del proyecto,
+            qué tareas realizaremos, cómo se repartirán y cuáles serán los hitos principales.
+        </p>
+
+        <section>
+            <h2>Reparto del trabajo</h2>
+            <p>
+                El desarrollo se ha dividido por páginas para poder trabajar en paralelo
+                y evitar conflictos constantes en el repositorio.
+            </p>
+
+            <ul>
+                <li><strong>Iker</strong>: desarrollo completo de la página miembros.html y texto de la página bocetos.html</li>
+                <li><strong>Carlos</strong>: implementación de la página contacto.html y del formulario con mailto.</li>
+                <li><strong>Aaron</strong>: desarrollo de index.html, detalles.html y estructura común de navegación (navbar).</li>
+                <li><strong>Xiangzhenhua</strong>: planificación, revisión final, validación HTML y preparación del archivo comprimido para la entrega.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Tareas a realizar</h2>
+            <ol>
+                <li>Definir el contenido textual del proyecto.</li>
+                <li>Crear la estructura base HTML5 válida para todas las páginas.</li>
+                <li>Implementar la barra de navegación común.</li>
+                <li>Desarrollar las páginas asignadas a cada miembro.</li>
+                <li>Comprobar que todos los enlaces funcionan correctamente.</li>
+                <li>Validar cada documento HTML en el validador oficial.</li>
+                <li>Realizar revisión final y preparar la entrega en formato .zip.</li>
+            </ol>
+        </section>
+
+        <section>
+            <h2>Metodología de trabajo</h2>
+            <p>
+                Se utilizará un repositorio compartido en GitHub para coordinar el desarrollo.
+                Cada miembro subirá sus cambios mediante commits periódicos. Antes de la entrega,
+                se realizará una revisión conjunta para asegurar coherencia en la navegación,
+                limpieza del código e inexistencia de errores de validación.
+            </p>
+        </section>
+
+        <section>
+            <h2>Tabla de hitos y fechas</h2>
+
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>Hito</th>
+                        <th>Responsable</th>
+                        <th>Fecha prevista</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Estructura base y navbar</td>
+                        <td>Aaron</td>
+                        <td>10/02/2026</td>
+                    </tr>
+                    <tr>
+                        <td>Página miembros finalizada</td>
+                        <td>Iker</td>
+                        <td>11/02/2026</td>
+                    </tr>
+                    <tr>
+                        <td>Página contacto finalizada</td>
+                        <td>Carlos</td>
+                        <td>11/02/2026</td>
+                    </tr>
+                    <tr>
+                        <td>Revisión y validación final</td>
+                        <td>Xiangzhenhua</td>
+                        <td>12/02/2026</td>
+                    </tr>
+                    <tr>
+                        <td>Entrega oficial</td>
+                        <td>Equipo</td>
+                        <td>18/02/2026</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </section>
+EOS;
+
+require_once __DIR__ . '/comun/plantilla.php';
+?>

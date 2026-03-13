@@ -1,0 +1,930 @@
+/* ===== ESTILOS GENERALES ===== */
+body {
+    background-color: #CDCDCD; /* Fondo exterior gris */
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+div#contenedor {
+    width: 1100px;
+    margin: 30px auto;
+    border: 1px solid black;
+    background-color: #f8f5f2; /* Tu color crema */
+    overflow: hidden; /* Importante: para contener los floats */
+}
+
+/* ===== HEADER ===== */
+header {
+    padding: 30px;
+    height: 100px;
+    background-color: #8b0000; /* Tu rojo */
+    color: white;
+    box-sizing: border-box;
+    width: 100%; /* Asegura que ocupe todo el ancho */
+}
+
+header h1 {
+    color: white;
+    margin: 0 0 10px 0;
+    font-size: 2em;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+header a, header a:visited {
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+header a:hover {
+    color: #ffd700; /* Dorado para hover */
+    text-decoration: underline;
+}
+
+div.saludo {
+    width: 100%;
+    text-align: right;
+    margin-top: 10px;
+}
+
+/* ===== NAVEGACIÓN IZQUIERDA ===== */
+nav {
+    padding: 15px;
+    float: left;
+    width: 200px;
+    min-height: 500px;  /* Altura mínima */
+    background-color: #f0e9e2; /* Un tono más oscuro que el fondo */
+    box-sizing: border-box;
+    border-right: 1px solid #d4c9c0;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+nav ul li {
+    margin: 10px 0;
+}
+
+nav a, nav a:visited {
+    color: #8b0000; /* Tu rojo */
+    font-weight: bold;
+    text-decoration: none;
+    display: block;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: background-color 0.3s, padding-left 0.3s;
+}
+
+nav a:hover {
+    color: #8b0000;
+    background-color: #f8f5f2;
+    padding-left: 20px;
+    text-decoration: none;
+}
+
+/* Títulos dentro del nav */
+nav h3, nav h4 {
+    color: #333;
+    margin-top: 0;
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #8b0000;
+}
+
+nav h4 {
+    font-size: 0.95em;
+    margin-top: 20px;
+    border-bottom: 1px solid #d4c9c0;
+}
+
+/* ===== NAVEGACIÓN Derecha ===== */
+navder {
+    padding: 15px;
+    float: right;
+    width: 200px;
+    min-height: 500px;  /* Altura mínima */
+    background-color: #f0e9e2; /* Un tono más oscuro que el fondo */
+    box-sizing: border-box;
+    border-right: 1px solid #d4c9c0;
+}
+
+navder ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+navder ul li {
+    margin: 10px 0;
+}
+
+navder a, navder a:visited {
+    color: #8b0000; /* Tu rojo */
+    font-weight: bold;
+    text-decoration: none;
+    display: block;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: background-color 0.3s, padding-left 0.3s;
+}
+
+navder a:hover {
+    color: #8b0000;
+    background-color: #f8f5f2;
+    padding-left: 20px;
+    text-decoration: none;
+}
+
+/* Títulos dentro del nav */
+navder h3, navder h4 {
+    color: #333;
+    margin-top: 0;
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #8b0000;
+}
+
+navder h4 {
+    font-size: 0.95em;
+    margin-top: 20px;
+    border-bottom: 1px solid #d4c9c0;
+}
+
+
+/* Secciones del sidebar */
+.sidebar-usuario, .sidebar-acceso {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #d4c9c0;
+}
+
+/* ===== CONTENIDO PRINCIPAL ===== */
+main {
+    padding: 20px;
+    float: left;
+    min-height: 600px;
+    width: 560px; /* 1100 - 200 (nav) - 40 (padding) - 30 (margenes) */
+    background-color: #f8f5f2;
+    box-sizing: border-box;
+    color: #333; /* IMPORTANTE: color de texto */
+}
+
+/* Para asegurar que todo el texto se ve */
+main h1, main h2, main h3, main p, main li {
+    color: #333;
+}
+
+/* ===== FOOTER ===== */
+footer {
+    clear: both;
+    padding: 20px;
+    background-color: #8b0000; /* Tu rojo */
+    color: white;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* ===== TÍTULOS ===== */
+h1 {
+    margin-top: 0;
+    color: #8b0000;
+    text-align: center;
+}
+
+h2 {
+    margin-top: 30px;
+    color: #555;
+    border-bottom: 2px solid #8b0000;
+    padding-bottom: 10px;
+}
+
+h3 {
+    color: #8b0000;
+}
+
+/* ===== PÁRRAFOS ===== */
+p {
+    line-height: 1.6;
+    margin: 0 0 20px 0;
+    color: #333;
+}
+
+/* ===== LISTAS ===== */
+ul, ol {
+    color: #333;
+    line-height: 1.6;
+}
+
+/* ===== IMÁGENES ===== */
+img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* ===== FORMULARIOS ===== */
+fieldset {
+    border: 1px solid #d4c9c0;
+    border-radius: 5px;
+    margin: 20px 0;
+    padding: 20px;
+    background-color: white;
+}
+
+legend {
+    color: white;
+    background: #8b0000;
+    border: 1px solid black;
+    padding: 5px 15px;
+    border-radius: 3px;
+    font-weight: bold;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+textarea,
+select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #d4c9c0;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    font-family: Arial, sans-serif;
+    color: #333;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    border-color: #8b0000;
+    box-shadow: 0 0 5px rgba(139,0,0,0.3);
+}
+
+/* Campos de radio y checkbox */
+.opciones-radio {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin: 10px 0;
+}
+
+.opcion-radio {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.opcion-radio input[type="radio"] {
+    width: auto;
+    margin: 0;
+}
+
+.opcion-radio label {
+    display: inline;
+    font-weight: normal;
+    margin: 0;
+}
+
+/* Checkbox especial */
+.campo-checkbox {
+    background-color: #f0e9e2;
+    padding: 15px;
+    border-radius: 5px;
+    margin: 15px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.campo-checkbox input[type="checkbox"] {
+    width: auto;
+    margin: 0;
+}
+
+.campo-checkbox label {
+    display: inline;
+    font-weight: normal;
+    margin: 0;
+    color: #555;
+}
+
+/* Botones */
+button, a.boton, input[type="submit"], input[type="button"], input[type="reset"] {
+    border: 1px solid black;
+    border-radius: 4px;
+    font-size: 0.9em;
+    font-family: Arial;
+    font-weight: 400;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+input[type="submit"], button[type="submit"], .btn-primary {
+    background-color: #8b0000;
+    color: white;
+    border-color: #5c0000;
+}
+
+input[type="submit"]:hover, button[type="submit"]:hover, .btn-primary:hover {
+    background-color: #a00000;
+}
+
+input[type="reset"], .btn-secondary {
+    background-color: #f0e9e2;
+    color: #333;
+}
+
+input[type="reset"]:hover, .btn-secondary:hover {
+    background-color: #e0d9d2;
+}
+
+/* Botón con estilo de enlace */
+form button.enlace, form button.enlace:visited {
+    color: #8b0000;
+    font-weight: bold;
+    text-decoration: none;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    font-size: inherit;
+}
+
+form button.enlace:hover {
+    color: #a00000;
+    text-decoration: underline;
+    background-color: transparent;
+}
+
+/* ===== TABLAS ===== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+th {
+    background-color: #8b0000;
+    color: white;
+    padding: 10px;
+    text-align: left;
+}
+
+td {
+    padding: 8px 10px;
+    border-bottom: 1px solid #d4c9c0;
+    color: #333;
+}
+
+tr:hover {
+    background-color: #f0e9e2;
+}
+
+/* ===== ERRORES Y MENSAJES ===== */
+.errores {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    border-radius: 4px;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+.errores ul {
+    margin: 5px 0;
+    padding-left: 20px;
+}
+
+.error, .form-field-error {
+    color: #dc3545;
+    font-size: 0.85em;
+    display: block;
+    margin-top: -5px;
+    margin-bottom: 10px;
+}
+
+/* Mensajes flotantes (para paso 8) */
+.mensajes {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 300px;
+    z-index: 1000;
+}
+
+.mensaje {
+    border: 2px solid #8b0000;
+    border-radius: 5px;
+    margin: 0.2em 0;
+    background-color: #b0f5f1;
+    position: relative;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+}
+
+.mensaje input[type="checkbox"] {
+    display: none;
+}
+
+.mensaje .cabecera {
+    font-size: 1.5em;
+    line-height: 0.7em;
+    text-align: right;
+    padding: 5px 10px;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.mensaje .cabecera label {
+    cursor: pointer;
+    color: #666;
+}
+
+.mensaje .contenido {
+    padding: 15px 20px;
+    text-align: left;
+    color: #333;
+}
+
+.mensajes input:checked + .mensaje {
+    display: none;
+}
+
+/* ===== UTILIDADES ===== */
+.inline {
+    display: inline;
+}
+
+a.deshabilitado {
+    color: rgba(16, 16, 16, 0.3);
+    pointer-events: none;
+    cursor: default;
+}
+
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1150px) {
+    div#contenedor {
+        width: 95%;
+    }
+    
+    main {
+        width: calc(95% - 230px); /* Ajuste dinámico */
+    }
+}
+
+@media (max-width: 768px) {
+    nav {
+        float: none;
+        width: 100%;
+        min-height: auto;
+        border-right: none;
+        border-bottom: 1px solid #d4c9c0;
+    }
+    
+    main {
+        float: none;
+        width: 100%;
+    }
+    
+    .opciones-radio {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+    /* =========================================
+   NUEVO DISEÑO DE TARJETAS PARA EL INICIO
+   
+   ========================================= */
+
+/* Contenedor principal del contenido */
+.main-content {
+    text-align: center; /* Centra el título y subtítulo */
+    padding: 20px;
+}
+
+.main-content h1 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.subtitulo {
+    color: #666;
+    margin-bottom: 40px;
+    font-size: 1.1em;
+}
+
+/* Contenedor de la cuadrícula de tarjetas */
+.panel-tarjetas {
+    display: flex;
+    flex-wrap: wrap; /* Permite que bajen de línea si no caben */
+    gap: 25px;       /* Espacio entre tarjetas */
+    justify-content: center; /* Centra las tarjetas en la página */
+    padding: 20px 0;
+}
+
+/* Estilo base de cada tarjeta (que es un enlace) */
+.tarjeta {
+    background-color: #ffffff;
+    border: 1px solid #d4c9c0;
+    border-radius: 15px;
+    width: 250px; /* Ancho de cada tarjeta */
+    padding: 30px 20px;
+    text-decoration: none; /* Quita el subrayado del enlace */
+    color: #333;
+    display: flex;
+    flex-direction: column; /* Elementos en vertical */
+    align-items: center;    /* Centra elementos horizontalmente */
+    transition: all 0.3s ease; /* Animación suave para el hover */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05); /* Sombra muy suave */
+}
+
+/* EFECTO HOVER: Al pasar el ratón */
+.tarjeta:hover {
+    transform: translateY(-8px); /* Levanta la tarjeta */
+    box-shadow: 0 12px 20px rgba(139, 0, 0, 0.15); /* Sombra más pronunciada y rojiza */
+    border-color: #8b0000; /* Borde rojo Bistro */
+}
+
+/* Contenedor del icono */
+.icono-contenedor {
+    background-color: #fdfaf7; /* Fondo muy suave para el icono */
+    width: 80px;
+    height: 80px;
+    border-radius: 50%; /* Círculo */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    border: 1px solid #eee;
+}
+
+/* Estilo del icono (si es emoji/texto) */
+.icono {
+    font-size: 40px;
+}
+
+/* Estilo del icono (si es imagen <img>) */
+.icono-img {
+    max-width: 50px;
+    max-height: 50px;
+}
+
+/* Título de la tarjeta */
+.tarjeta h3 {
+    margin: 0 0 10px 0;
+    color: #8b0000; /* Rojo Bistro */
+    font-size: 1.4em;
+    border: none; /* Quita cualquier borde heredado */
+}
+
+/* Descripción de la tarjeta */
+.tarjeta p {
+    margin: 0;
+    font-size: 0.95em;
+    color: #666;
+    line-height: 1.4;
+    text-align: center;
+}
+
+
+div#contenedor {
+    display: grid;
+    /* Definimos 3 columnas: 200px, el resto (1fr), y 200px */
+    grid-template-columns: 200px 1fr 200px;
+    grid-template-areas: 
+        "header header header"
+        "navizq contenido navder"
+        "footer footer footer";
+    width: 1100px;
+    margin: 30px auto;
+    overflow: visible; /* Cambiamos de hidden a visible */
+}
+
+header { grid-area: header; width: 100%; }
+footer { grid-area: footer; width: 100%; clear: none; }
+
+/* Asignamos cada parte a su zona del grid */
+nav { 
+    grid-area: navizq; 
+    width: 200px !important; 
+    float: none !important; 
+}
+
+main { 
+    grid-area: contenido; 
+    width: auto !important; 
+    float: none !important; 
+    padding: 20px;
+}
+
+navder { 
+    grid-area: navder; 
+    width: 200px !important; 
+    float: none !important; 
+}
+
+/* Ajuste para tu portátil (Pantalla pequeña) */
+@media (max-width: 1150px) {
+    div#contenedor {
+        width: 98%;
+        /* En pantallas pequeñas, mantenemos las 3 columnas pero el main se encoge más */
+        grid-template-columns: 180px 1fr 180px; 
+    }
+}
+
+
+/* ===== AVATARES Y PREVISUALIZACIÓN ===== */
+.campo-avatar {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.avatar-preview {
+    margin: 15px 0;
+}
+
+.avatar-vista-previa {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 3px solid #8b0000;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    object-fit: cover;
+}
+
+.opciones-avatar {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin: 15px 0;
+    padding: 15px;
+    background-color: #f0e9e2;
+    border-radius: 8px;
+}
+
+.radio-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.radio-option input[type="radio"] {
+    width: auto;
+    margin: 0;
+}
+
+.mini-previews {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 15px 0;
+    padding: 15px;
+    background-color: #f8f5f2;
+    border-radius: 8px;
+    justify-content: center;
+}
+
+.avatar-miniatura {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: transform 0.3s, border-color 0.3s;
+    object-fit: cover;
+}
+
+.avatar-miniatura:hover {
+    transform: scale(1.1);
+    border-color: #8b0000;
+}
+
+.miniatura-seleccionada {
+    border-color: #8b0000;
+    box-shadow: 0 0 0 2px #ffd700;
+}
+
+.avatar-upload {
+    margin: 20px 0;
+    padding: 20px;
+    background-color: #f0e9e2;
+    border-radius: 8px;
+}
+
+#upload-preview {
+    margin-top: 15px;
+    text-align: center;
+}
+
+#upload-preview img {
+    max-width: 200px;
+    max-height: 200px;
+    border-radius: 8px;
+    border: 2px solid #8b0000;
+}
+
+/* ===== ESTILOS PARA ADMINISTRACIÓN ===== */
+.acciones-globales {
+    margin: 20px 0;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.tabla-usuarios {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.tabla-usuarios th {
+    background-color: #8b0000;
+    color: white;
+    padding: 12px;
+    text-align: left;
+}
+
+.tabla-usuarios td {
+    padding: 10px;
+    border-bottom: 1px solid #d4c9c0;
+}
+
+.tabla-usuarios tr:hover {
+    background-color: #f0e9e2;
+}
+
+.acciones {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+
+.btn-ver, .btn-editar, .btn-rol, .btn-borrar {
+    padding: 5px 10px;
+    border-radius: 3px;
+    text-decoration: none;
+    font-size: 0.9em;
+    color: white;
+}
+
+.btn-ver { background-color: #2196F3; }
+.btn-editar { background-color: #FF9800; }
+.btn-rol { background-color: #9C27B0; }
+.btn-borrar { background-color: #f44336; }
+
+.rol-1 { color: #4CAF50; font-weight: bold; } /* Cliente */
+.rol-2 { color: #2196F3; font-weight: bold; } /* Camarero */
+.rol-3 { color: #FF9800; font-weight: bold; } /* Cocinero */
+.rol-4 { color: #9C27B0; font-weight: bold; } /* Gerente */
+
+.usuario-detalle {
+    display: flex;
+    gap: 30px;
+    margin: 30px 0;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.detalle-avatar {
+    flex: 0 0 200px;
+}
+
+.avatar-grande {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    border: 3px solid #8b0000;
+    object-fit: cover;
+}
+
+.detalle-info {
+    flex: 1;
+    line-height: 2;
+}
+
+.detalle-acciones {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.confirmar-borrado {
+    max-width: 500px;
+    margin: 30px auto;
+    padding: 30px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.texto-info {
+    font-weight: bold;
+    color: #8b0000;
+}
+
+/* Mensajes de éxito y error */
+.mensaje-exito {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    border-radius: 4px;
+    padding: 12px;
+    margin: 20px 0;
+}
+
+.mensaje-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    border-radius: 4px;
+    padding: 12px;
+    margin: 20px 0;
+}
+
+/* Usuarios inactivos */
+.usuario-inactivo {
+    background-color: #f5f5f5;
+    opacity: 0.8;
+}
+
+.usuario-inactivo td {
+    color: #666;
+}
+
+.inactivo {
+    color: #f44336;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.85em;
+}
+
+.btn-desactivado {
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: #e0e0e0;
+    color: #9e9e9e;
+    border-radius: 3px;
+    font-size: 0.85em;
+    font-weight: bold;
+    cursor: not-allowed;
+    border: 1px solid #bdbdbd;
+}
+
+/* Mejora para los botones de acción */
+.acciones {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.btn-ver, .btn-editar, .btn-rol, .btn-borrar {
+    padding: 5px 10px;
+    border-radius: 3px;
+    text-decoration: none;
+    font-size: 0.85em;
+    color: white;
+    transition: opacity 0.3s;
+}
+
+.btn-ver { background-color: #2196F3; }
+.btn-editar { background-color: #FF9800; }
+.btn-rol { background-color: #9C27B0; }
+.btn-borrar { background-color: #f44336; }
+
+.btn-ver:hover, .btn-editar:hover, .btn-rol:hover, .btn-borrar:hover {
+    opacity: 0.8;
+}
