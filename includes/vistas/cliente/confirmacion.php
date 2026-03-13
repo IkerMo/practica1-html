@@ -32,6 +32,8 @@ $estadoActual = $estadoLabels[$pedido->estado] ?? $pedido->estado;
 $tipoLabel = $pedido->tipo === 'local' ? '🍽️ Para Local' : '🥡 Para Llevar';
 $total = number_format($pedido->total_con_iva, 2);
 
+$rutaRaiz = RUTA_RAIZ;
+
 // Líneas del pedido
 $lineasHtml = '';
 foreach ($pedido->lineas as $l) {
@@ -73,7 +75,7 @@ $contenidoPrincipal = <<<HTML
         </table>
     </div>
     
-    <a href="<?= RUTA_RAIZ ?>inicio.php" style="background:#8b0000;color:white;padding:12px 30px;border-radius:5px;text-decoration:none;font-size:1.1em;display:inline-block;margin-top:15px;">
+    <a href="{$rutaRaiz}inicio.php" style="background:#8b0000;color:white;padding:12px 30px;border-radius:5px;text-decoration:none;font-size:1.1em;display:inline-block;margin-top:15px;">
         Volver al Inicio
     </a>
     
