@@ -20,7 +20,7 @@ $contenidoTarjetas = '<div class="panel-tarjetas">';
 // --- BLOQUE GERENTE / ADMIN (Ahora con 5 tarjetas) ---
 if ($esAdmin) {
     $contenidoTarjetas .= <<<EOS
-        <a href="{$rutaVistas}/gerente/usuarios.php" class="tarjeta">
+        <a href="{$rutaVistas}/usuarios/admin/listar.php" class="tarjeta">
             <div class="icono-contenedor"><span class="icono">👥</span></div>
             <h3>Usuarios</h3>
             <p>Gestionar personal y roles</p>
@@ -51,7 +51,7 @@ EOS;
 // --- BLOQUE CAMARERO ---
 if ($esCamarero) {
     $contenidoTarjetas .= <<<EOS
-        <a href="vistas/camarero/pedidos-pendientes.php" class="tarjeta">
+        <a href="{$rutaVistas}/camarero/pedidos-pendientes.php" class="tarjeta">
             <div class="icono-contenedor"><span class="icono">🍽️</span></div>
             <h3>Servir</h3>
             <p>Pedidos listos para mesa</p>
@@ -62,7 +62,7 @@ EOS;
 // --- BLOQUE COCINERO ---
 if ($esCocinero) {
     $contenidoTarjetas .= <<<EOS
-        <a href="vistas/cocinero/pedidos.php" class="tarjeta">
+        <a href="{$rutaVistas}/cocinero/pedidos.php" class="tarjeta">
             <div class="icono-contenedor"><span class="icono">🍳</span></div>
             <h3>Comandas</h3>
             <p>Platos por cocinar</p>
@@ -78,7 +78,7 @@ if ($esCliente) {
             <h3>Ver Carta</h3>
             <p>Explora nuestros platos</p>
         </a>
-        <a href="vistas/cliente/mis-pedidos.php" class="tarjeta">
+        <a href="{$rutaVistas}/cliente/mis-pedidos.php" class="tarjeta">
             <div class="icono-contenedor"><span class="icono">📦</span></div>
             <h3>Mis Pedidos</h3>
             <p>Estado de tu compra</p>
