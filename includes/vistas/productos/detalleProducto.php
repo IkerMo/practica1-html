@@ -16,7 +16,7 @@ $esCliente = $_SESSION['esCliente'] ?? false;
 // 2. RECUPERAR EL PRODUCTO
 $idProducto = $_GET['id'] ?? null;
 $service = new ProductoAppService();
-$p = $service->getProducto($idProducto); // Lo llamamos $p para que coincida con tu HTML
+$p = $service->getProducto($idProducto); 
 
 if (!$p) {
     die("Producto no encontrado.");
@@ -27,10 +27,16 @@ $nombreCategoria = $p->categoria_id;
 $tituloPagina = $p->nombre . ' - Detalle';
 
 $precioFinal = number_format($p->getPrecioFinal(), 2);
-$precioBase = number_format($p->precio_base, 2); // Ojo: en tu DTO es precioBase, no precio_base
+$precioBase = number_format($p->precio_base, 2); 
 $iva = $p->iva;
-$imagen = !empty($p->imagenes) ? $p->imagenes[0] : 'default.jpg';
-$urlImagen = RUTA_BASE . '/img/productos/' . $imagen;
+
+// CORRECCIÓN: Usamos imagen_principal (que es un array en tu DTO)
+$nombreImagen = (!empty($p->imagen_principal) && isset($p->imagen_principal[0])) 
+                ? $p->imagen_principal[0] 
+                : 'default.jpg';
+
+// Usamos IMG en mayúsculas como en el listado
+$urlImagen = RUTA_BASE . '/IMG/productos/' . $nombreImagen;
 
 // 4. CONSTRUCCIÓN DEL CONTENIDO
 $contenidoPrincipal = <<<HTML
@@ -58,11 +64,12 @@ HTML;
 
 // --- ACCIONES POR ROL ---
 if ($esGerente) {
+    // CORRECCIÓN: El enlace ahora apunta a borrarProductos.php (plural) para que haga el borrado lógico
     $contenidoPrincipal .= <<<HTML
         <div class="acciones-admin" style="margin-top: 30px; display: flex; gap: 10px;">
             <a href="formularioProducto.php?id={$p->id}" class="btn" style="background:#3498db; color:white; padding:10px; border-radius:5px; text-decoration:none;">Modificar Datos</a>
-            <a href="borrarProducto.php?id={$p->id}" class="btn" style="background:#e74c3c; color:white; padding:10px; border-radius:5px; text-decoration:none;" 
-               onclick="return confirm('¿Seguro?')">Retirar de la Carta</a>
+            <a href="borrarProductos.php?id={$p->id}" class="btn" style="background:#e74c3c; color:white; padding:10px; border-radius:5px; text-decoration:none;" 
+               onclick="return confirm('¿Seguro que quieres retirar este producto de la carta?')">Retirar de la Carta</a>
         </div>
         <div style="margin-top: 10px; font-size: 0.9em; color: #999;">
             Precio Base: {$precioBase} € | ID Producto: {$p->id}
@@ -85,5 +92,4 @@ HTML;
 
 $contenidoPrincipal .= "</div></div>";
 
-// Cargar plantilla (Usa el nombre que tengas: layout.php o plantilla.php)
 require RAIZ_APP . '/includes/vistas/comun/plantilla.php';

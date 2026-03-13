@@ -27,11 +27,14 @@ class ProductoAppService {
         $p->nombre = $datos['nombre'];
         $p->descripcion = $datos['descripcion'];
         $p->categoria_id = $datos['categoria_id'];
-        $p->imagenes = $datos['imagenes'] ?? []; // Array de nombres de archivo
+        
+        // IMPORTANTE: Usamos 'imagen_principal' que es lo que manda el formulario ahora
+        $p->imagen_principal = $datos['imagen_principal'] ?? ['default.jpg']; 
+        
         $p->precio_base = (float)$datos['precio_base'];
         $p->iva = (float)($datos['iva'] ?? 21);
-        $p->disponible = isset($datos['disponible']);
-        $p->ofertado = true; // Por defecto se añade a la carta
+        $p->disponible = isset($datos['disponible']) && $datos['disponible'];
+        $p->ofertado = true;
 
         return $this->dao->crear($p);
     }
@@ -55,8 +58,8 @@ class ProductoAppService {
             $p->descripcion = $datos['descripcion'];
             $p->categoria_id = $datos['categoria_id'];
             // Solo actualizamos imágenes si se han subido nuevas
-            if (!empty($datos['imagenes'])) {
-                $p->imagenes = $datos['imagenes'];
+            if (!empty($datos['imagen_principal'])) {
+                $p->imagen_principal = $datos['imagen_principal'];
             }
             $p->precio_base = (float)$datos['precio_base'];
             $p->iva = (float)$datos['iva'];

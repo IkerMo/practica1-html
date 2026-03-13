@@ -35,12 +35,12 @@ class ProductoDAO {
 
     public function crear(ProductoDTO $p) {
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = "INSERT INTO Productos (nombre, descripcion, categoria_id, imagenes, precio_base, iva, disponible, ofertado) 
+        $query = "INSERT INTO Productos (nombre, descripcion, categoria_id, imagen_principal, precio_base, iva, disponible, ofertado) 
                   VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($query);
         
         // Convertimos el array de imágenes a un string (ej: imagen1.jpg,imagen2.jpg)
-        $imgsStr = implode(',', $p->imagenes);
+        $imgsStr = implode(',', $p->imagen_principal);
         $disponible = $p->disponible ? 1 : 0;
         $ofertado = $p->ofertado ? 1 : 0;
 
@@ -60,11 +60,11 @@ class ProductoDAO {
 
     public function actualizar(ProductoDTO $p) {
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = "UPDATE Productos SET nombre=?, descripcion=?, categoria_id=?, imagenes=?, 
+        $query = "UPDATE Productos SET nombre=?, descripcion=?, categoria_id=?, imagen_principal=?, 
                   precio_base=?, iva=?, disponible=?, ofertado=? WHERE id=?";
         $stmt = $conn->prepare($query);
         
-        $imgsStr = implode(',', $p->imagenes);
+        $imgsStr = implode(',', $p->imagen_principal);
         $disponible = $p->disponible ? 1 : 0;
         $ofertado = $p->ofertado ? 1 : 0;
 
@@ -85,7 +85,7 @@ class ProductoDAO {
         $p->descripcion = $fila['descripcion'];
         $p->categoria_id = $fila['categoria_id'];
         // Reconvertimos el string de la BD a un array de imágenes
-        $p->imagenes = !empty($fila['imagenes']) ? explode(',', $fila['imagenes']) : [];
+        $p->imagen_principal = !empty($fila['imagen_principal']) ? explode(',', $fila['imagen_principal']) : [];
         $p->precio_base = (float)$fila['precio_base'];
         $p->iva = (float)$fila['iva'];
         $p->disponible = (bool)$fila['disponible'];

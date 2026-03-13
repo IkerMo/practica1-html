@@ -6,7 +6,7 @@ class ProductoDTO {
     public $nombre;
     public $descripcion;
     public $categoria_id;
-    public $imagenes = []; // Array para cumplir con "Una o más imágenes"
+    public $imagen_principal;
     public $precio_base;    // Sin IVA
     public $iva;           
     public $disponible;    // true/false (stock)

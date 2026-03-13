@@ -3,45 +3,43 @@ require_once __DIR__ . '/../../config.php';
 
 use es\ucm\fdi\aw\Producto\ProductoAppService;
 
-// --- REGLA DE ORO 2: SEGURIDAD ---
-if (!isset($_SESSION['login']) || !$_SESSION['login']) {
-    header('Location: ' . $app->resuelve('/login.php'));
+// 1. SEGURIDAD: Comprobar si está logueado
+if (!estaLogueado()) {
+    header('Location: ' . RUTA_BASE . '/login.php');
     exit();
 }
 
-/** @var es\ucm\fdi\aw\Usuarios\Usuario $usuario */
-$usuario = $_SESSION['usuario'];
+// 2. SEGURIDAD: Comprobar si es Gerente (usando tu lógica de $_SESSION['esAdmin'])
+$esGerente = $_SESSION['esAdmin'] ?? false;
 
-// Solo el Gerente puede retirar productos de la carta
-if ($usuario->getRolActual() !== 'Gerente') {
+if (!$esGerente) {
     $tituloPagina = 'Acceso Denegado';
     $contenidoPrincipal = "<h1>Error 403</h1><p>No tienes permiso para borrar productos.</p>";
-    require __DIR__.'/../plantillas/layout.php';
+    require RAIZ_APP . '/includes/vistas/comun/plantilla.php';
     exit();
 }
 
-// --- LÓGICA DE BORRADO LÓGICO ---
+// --- LÓGICA DE BORRADO ---
 $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 $resultado = false;
 
 if ($id) {
     $service = new ProductoAppService();
-    // Usamos tu método que pone ofertado = false
+    // Este método pone ofertado = 0 en la BD
     $resultado = $service->retirarDeLaCarta($id);
 }
 
 if ($resultado) {
     // Si todo ha ido bien, volvemos al listado
-    header('Location: ' . $app->resuelve('/vistas/productos/listarProductos.php'));
+    header('Location: ListarProductos.php');
     exit();
 } else {
-    // Si hay error (ej: el ID no existe), mostramos el error con tu Sidebar
     $tituloPagina = 'Error al borrar';
     $contenidoPrincipal = <<<HTML
         <h1>Hubo un problema</h1>
         <p>No se pudo retirar el producto de la carta. Es posible que el producto no exista.</p>
-        <a href="listarProductos.php" class="btn">Volver al listado</a>
+        <a href="ListarProductos.php" style="color: blue; text-decoration: underline;">Volver al listado</a>
     HTML;
     
-    require __DIR__.'/../plantillas/layout.php';
+    require RAIZ_APP . '/includes/vistas/comun/plantilla.php';
 }

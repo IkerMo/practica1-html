@@ -10,7 +10,7 @@ class FormularioProducto extends Formulario {
     public function __construct($idProducto = null) {
         $this->idProducto = $idProducto;
         parent::__construct('formProd', [
-            'urlRedireccion' => 'listarProductos.php',
+            'urlRedireccion' => 'ListarProductos.php',
             'enctype' => 'multipart/form-data' 
         ]);
     }
@@ -19,34 +19,31 @@ class FormularioProducto extends Formulario {
         $serviceProd = new ProductoAppService();
         $serviceCat = new CategoriaAppService();
         
-        // Valores por defecto
         $nombre = $datos['nombre'] ?? '';
         $desc = $datos['descripcion'] ?? '';
-        $catActual = $datos['categoria'] ?? '';
-        $precioBase = $datos['precioBase'] ?? '';
+        $catActual = $datos['categoria_id'] ?? '';
+        $precioBase = $datos['precio_base'] ?? '';
         $iva = $datos['iva'] ?? 10;
         $disponible = isset($datos['disponible']) ? 'checked' : '';
 
-        // Si editamos, cargamos del DTO usando tu método getProducto($id)
         if ($this->idProducto && empty($datos)) {
             $p = $serviceProd->getProducto($this->idProducto);
             if ($p) {
                 $nombre = $p->nombre;
                 $desc = $p->descripcion;
-                $catActual = $p->categoria;
-                $precioBase = $p->precioBase;
+                $catActual = $p->categoria_id;
+                $precioBase = $p->precio_base;
                 $iva = $p->iva;
                 $disponible = $p->disponible ? 'checked' : '';
             }
         }
 
-        // Cargamos categorías usando tu método getTodasCategorias()
         $listaCategorias = $serviceCat->getTodasCategorias(); 
         $opciones = "";
         foreach ($listaCategorias as $cat) {
-            // Asumo que tu CategoriaDTO tiene el atributo ->nombre
-            $sel = ($cat->nombre == $catActual) ? 'selected' : '';
-            $opciones .= "<option value='{$cat->nombre}' $sel>{$cat->nombre}</option>";
+            // Usamos $cat->id como valor para que la base de datos no reciba NULL
+            $sel = ($cat->id == $catActual) ? 'selected' : '';
+            $opciones .= "<option value='{$cat->id}' $sel>{$cat->nombre}</option>";
         }
 
         return <<<EOS
@@ -55,11 +52,11 @@ class FormularioProducto extends Formulario {
             <input type="hidden" name="idProducto" value="{$this->idProducto}">
             
             <div><label>Nombre:</label><input type="text" name="nombre" value="$nombre" required></div>
-            <div><label>Descripción:</label><textarea name="description">$desc</textarea></div>
+            <div><label>Descripción:</label><textarea name="descripcion">$desc</textarea></div>
             
             <div>
                 <label>Categoría:</label>
-                <select name="categoria" required>
+                <select name="categoria_id" required>
                     <option value="">Selecciona...</option>
                     $opciones
                 </select>
@@ -67,15 +64,15 @@ class FormularioProducto extends Formulario {
 
             <div>
                 <label>Precio Base (€):</label>
-                <input type="number" step="0.01" name="precioBase" id="precioBase" value="$precioBase" oninput="recalc()" required>
+                <input type="number" step="0.01" name="precio_base" id="precio_base" value="$precioBase" oninput="recalc()" required>
             </div>
 
             <div>
                 <label>IVA (%):</label>
                 <select name="iva" id="iva" onchange="recalc()">
-                    <option value="4"    ($iva == 4 ? 'selected' : '')>4%</option>
-                    <option value="10"   ($iva == 10 ? 'selected' : '')>10%</option>
-                    <option value="21"   ($iva == 21 ? 'selected' : '')>21%</option>
+                    <option value="4"  ($iva == 4 ? 'selected' : '')>4%</option>
+                    <option value="10" ($iva == 10 ? 'selected' : '')>10%</option>
+                    <option value="21" ($iva == 21 ? 'selected' : '')>21%</option>
                 </select>
             </div>
 
@@ -91,7 +88,7 @@ class FormularioProducto extends Formulario {
 
         <script>
             function recalc() {
-                const b = parseFloat(document.getElementById('precioBase').value) || 0;
+                const b = parseFloat(document.getElementById('precio_base').value) || 0;
                 const i = parseFloat(document.getElementById('iva').value) || 0;
                 document.getElementById('pFinal').innerText = (b * (1 + (i/100))).toFixed(2);
             }
@@ -102,28 +99,44 @@ EOS;
 
     protected function procesaFormulario(&$datos) {
         $service = new ProductoAppService();
-        
         $id = $datos['idProducto'] ?? null;
+        
+        // 1. Manejo de la subida
+        $nombreImagen = 'default.jpg'; 
+        if (isset($_FILES['imagenes']) && $_FILES['imagenes']['error'][0] === UPLOAD_ERR_OK) {
+            $nombreReal = $_FILES['imagenes']['name'][0];
+            $rutaCarpeta = RAIZ_APP . '/IMG/productos/';
+            
+            // Creamos la carpeta si no existe para evitar errores
+            if (!file_exists($rutaCarpeta)) {
+                mkdir($rutaCarpeta, 0777, true);
+            }
+
+            $rutaDestino = $rutaCarpeta . $nombreReal;
+            
+            if (move_uploaded_file($_FILES['imagenes']['tmp_name'][0], $rutaDestino)) {
+                $nombreImagen = $nombreReal;
+            }
+        }
+
+        // 2. Mapeo: Aseguramos que la llave es 'imagen_principal'
         $info = [
             'nombre' => $datos['nombre'],
-            'descripcion' => $datos['description'],
-            'categoria' => $datos['categoria'],
-            'precioBase' => $datos['precioBase'],
+            'descripcion' => $datos['descripcion'],
+            'categoria_id' => $datos['categoria_id'],
+            'precio_base' => $datos['precio_base'],
             'iva' => $datos['iva'],
             'disponible' => isset($datos['disponible']),
-            'imagenes' => $_FILES['imagenes']['name'] ?? [] // Simplificado
+            'ofertado' => true,
+            'imagen_principal' => [$nombreImagen] // Mandamos array porque tu DAO hace implode()
         ];
 
         if ($id) {
-            // Usamos el nuevo método que añadimos arriba
             $res = $service->actualizarProducto($id, $info);
         } else {
-            // Usamos tu método original
             $res = $service->registrarProducto($info);
         }
 
-        if (!$res) {
-            $this->errores[] = "Error al procesar el producto.";
-        }
+        return $res ? true : "Error al procesar el producto.";
     }
 }

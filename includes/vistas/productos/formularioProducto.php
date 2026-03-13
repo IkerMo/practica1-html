@@ -3,24 +3,25 @@
 
 require_once __DIR__.'/../../config.php';
 
-// Importamos la clase del formulario que definimos antes
+// Importamos la clase del formulario
 use es\ucm\fdi\aw\Formularios\FormularioProducto;
 
-// --- REGLA DE ORO 2: SEGURIDAD DE ACCESO A LA PÁGINA ---
-// 1. Comprobar si está logueado
-if (!isset($_SESSION['login']) || !$_SESSION['login']) {
-    header('Location: ' . $app->resuelve('/login.php'));
+// --- SEGURIDAD DE ACCESO ---
+// 1. Comprobar si está logueado (usando la función de tu config.php)
+if (!estaLogueado()) {
+    header('Location: ' . RUTA_BASE . '/login.php');
     exit();
 }
 
-// 2. Comprobar si es GERENTE (Solo ellos pueden ver esta página)
-/** @var es\ucm\fdi\aw\Usuarios\Usuario $usuario */
-$usuario = $_SESSION['usuario'];
-if ($usuario->getRolActual() !== 'Gerente') {
-    // Si no es gerente, le denegamos el acceso (puedes redirigir o mostrar error)
+// 2. Comprobar si es GERENTE
+// Usamos la misma lógica que en ListarProductos: $_SESSION['esAdmin']
+$esGerente = $_SESSION['esAdmin'] ?? false;
+
+if (!$esGerente) {
+    // Si no es gerente, le denegamos el acceso
     $tituloPagina = 'Acceso Denegado';
     $contenidoPrincipal = "<h1>Error 403</h1><p>No tienes permisos para gestionar productos.</p>";
-    require __DIR__.'/../plantillas/layout.php';
+    require RAIZ_APP . '/includes/vistas/comun/plantilla.php';
     exit();
 }
 
@@ -32,24 +33,33 @@ $idProducto = $_GET['id'] ?? null;
 // Instanciamos nuestra clase Formulario
 $form = new FormularioProducto($idProducto);
 
-// El método gestiona() hace toda la magia: 
-// - Si es GET: genera el HTML del formulario.
-// - Si es POST: procesa los datos y redirige si todo está OK.
+// El método gestiona() genera el HTML o procesa el POST
 $htmlFormulario = $form->gestiona();
 
-// --- PREPARAR LA SALIDA PARA LA PLANTILLA ---
+// --- PREPARAR LA SALIDA ---
 
 $tituloPagina = $idProducto ? 'Editar Producto' : 'Nuevo Producto';
 
 $contenidoPrincipal = <<<HTML
-    <nav class="breadcrumb">
-        <a href="listarProductos.php">← Volver al listado</a>
-    </nav>
-    <h1>{$tituloPagina}</h1>
-    <div class="contenedor-formulario">
+    <div style="margin-bottom: 20px;">
+        <a href="ListarProductos.php" style="
+            text-decoration: none; 
+            color: #666; 
+            font-size: 0.9em; 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 5px;
+            border: none;
+            background: none;
+            padding: 0;">
+            <span style="font-size: 1.2em;">←</span> Volver al listado de productos
+        </a>
+    </div>
+    <h1 style="margin-top: 0;">{$tituloPagina}</h1>
+    <div class="contenedor-formulario" style="background: white; padding: 20px; border-radius: 8px; border: 1px solid #eee;">
         $htmlFormulario
     </div>
 HTML;
 
-// Inyectamos todo en el layout común que tiene el sidebar dinámico
-require __DIR__.'/../plantillas/layout.php';
+// Usamos la ruta de plantilla que usas en el resto de archivos
+require RAIZ_APP . '/includes/vistas/comun/plantilla.php';
