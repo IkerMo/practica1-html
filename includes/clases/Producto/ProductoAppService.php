@@ -48,6 +48,25 @@ class ProductoAppService {
         return false;
     }
 
+    public function actualizarProducto($id, $datos) {
+        $p = $this->dao->buscarPorId($id);
+        if ($p) {
+            $p->nombre = $datos['nombre'];
+            $p->descripcion = $datos['descripcion'];
+            $p->categoria = $datos['categoria'];
+            // Solo actualizamos imágenes si se han subido nuevas
+            if (!empty($datos['imagenes'])) {
+                $p->imagenes = $datos['imagenes'];
+            }
+            $p->precioBase = (float)$datos['precioBase'];
+            $p->iva = (float)$datos['iva'];
+            $p->disponible = $datos['disponible'];
+            
+            return $this->dao->actualizar($p);
+        }
+        return false;
+    }
+
     /**
      * Retira un producto de la carta (ofertado = false)
      */
