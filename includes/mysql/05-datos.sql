@@ -21,22 +21,22 @@ INSERT INTO UsuarioRoles (usuario_id, rol_id) VALUES
 (5, 1); -- cliente2 es cliente
 
 -- Insertar categorías de productos
-INSERT INTO Categorias (nombre, descripcion) VALUES
-('Bebidas', 'Refrescos, zumos y aguas'),
-('Cafés', 'Café, té e infusiones'),
-('Desayunos', 'Tostadas, cereales y bollería'),
-('Almuerzos', 'Sándwiches, bocadillos y platos combinados');
+INSERT INTO Categorias (nombre, descripcion,imagen) VALUES
+('Bebidas', 'Refrescos, zumos y aguas','bebida.jpg'),
+('Cafés', 'Café, té e infusiones','cafe.jpg'),
+('Desayunos', 'Tostadas, cereales y bollería','desayuno.jpg'),
+('Almuerzos', 'Sándwiches, bocadillos y platos combinados','almuerzo.jpg');
 
 -- Insertar productos
-INSERT INTO Productos (nombre, descripcion, categoria_id, precio_base, iva, disponible, ofertado) VALUES
-('Coca-Cola', 'Refresco de cola 33cl', 1, 1.50, 21, TRUE, TRUE),
-('Agua mineral', 'Agua mineral 50cl', 1, 1.00, 10, TRUE, TRUE),
-('Café solo', 'Café solo tradicional', 2, 1.20, 10, TRUE, TRUE),
-('Café con leche', 'Café con leche', 2, 1.50, 10, TRUE, TRUE),
-('Tostada aceite', 'Tostada con aceite de oliva', 3, 1.80, 10, TRUE, TRUE),
-('Tostada tomate', 'Tostada con tomate triturado', 3, 2.00, 10, TRUE, TRUE),
-('Bocadillo jamón', 'Bocadillo de jamón serrano', 4, 3.50, 10, TRUE, TRUE),
-('Bocadillo queso', 'Bocadillo de queso', 4, 3.00, 10, TRUE, TRUE);
+INSERT INTO Productos (nombre, descripcion, categoria_id, precio_base, iva, disponible, ofertado, imagen_principal) VALUES
+('Coca-Cola', 'Refresco de cola 33cl', 1, 1.50, 21, TRUE, TRUE, 'Coca-Cola.jpg'),
+('Agua mineral', 'Agua mineral 50cl', 1, 1.00, 10, TRUE, TRUE, 'Agua-mineral.jpg'),
+('Café solo', 'Café solo tradicional', 2, 1.20, 10, TRUE, TRUE, 'CafeSolo.jpg'),
+('Café con leche', 'Café con leche', 2, 1.50, 10, TRUE, TRUE, 'CafeConLeche.jpg'),
+('Tostada aceite', 'Tostada con aceite de oliva', 3, 1.80, 10, TRUE, TRUE, 'TostadaAceite.jpg'),
+('Tostada tomate', 'Tostada con tomate triturado', 3, 2.00, 10, TRUE, TRUE, 'TostadaTomate.jpg'),
+('Bocadillo jamón', 'Bocadillo de jamón serrano', 4, 3.50, 10, TRUE, TRUE, 'BocadilloJamon.jpg'),
+('Bocadillo queso', 'Bocadillo de queso', 4, 3.00, 10, TRUE, TRUE, 'bocata-queso.jpg');
 
 -- Insertar algún pedido deejemplo (para pruebas)
 -- Primero, necesitamos saber el número de pedido del día
