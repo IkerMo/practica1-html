@@ -17,6 +17,9 @@ $tituloPagina = 'Cambiar Contraseña - Bistro FDI';
 $contenidoPrincipal = <<<EOS
     <h1>Cambiar Contraseña</h1>
     $htmlForm
+    <div class="enlace-volver">
+        <a href="perfil.php">← Volver al perfil</a>
+    </div>
 EOS;
 
 require_once __DIR__ . '/../comun/plantilla.php';

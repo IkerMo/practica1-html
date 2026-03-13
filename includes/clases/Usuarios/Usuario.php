@@ -244,17 +244,19 @@ public static function buscaUsuarioPorId($id)
         $app = Aplicacion::getInstance();
         $conn = $app->getConexionBd();
         
-        error_log("Buscando usuario por ID: " . $id); // Para depurar
+        error_log("buscaUsuarioPorId - ID recibido: " . $id);
         
         $query = sprintf("SELECT nombreUsuario FROM Usuarios WHERE id = %d", $id);
-        error_log("Query: " . $query); // Para depurar
+        error_log("Query: " . $query);
         
         $rs = $conn->query($query);
         
         if ($rs && $rs->num_rows > 0) {
             $fila = $rs->fetch_assoc();
-            error_log("Usuario encontrado: " . $fila['nombreUsuario']); // Para depurar
-            return self::buscaUsuario($fila['nombreUsuario']);
+            error_log("Usuario encontrado en BD: " . $fila['nombreUsuario']);
+            $usuario = self::buscaUsuario($fila['nombreUsuario']);
+            error_log("Resultado buscaUsuario: " . ($usuario ? 'OK' : 'NULL'));
+            return $usuario;
         } else {
             error_log("No se encontró usuario con ID: " . $id);
             if ($conn->error) {

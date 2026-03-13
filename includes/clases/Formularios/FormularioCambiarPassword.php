@@ -2,13 +2,14 @@
 namespace es\ucm\fdi\aw\Formularios;
 
 use es\ucm\fdi\aw\Formularios\Formulario;
+use es\ucm\fdi\aw\Usuarios\Usuario;
 
 class FormularioCambiarPassword extends Formulario
 {
     public function __construct()
     {
         parent::__construct('cambiarPassword', [
-            'urlRedireccion' => RUTA_VISTAS . '/perfil.php'
+            'urlRedireccion' => RUTA_VISTAS . '/usuarios/perfil.php' // 👈 Ajusta la ruta
         ]);
     }
     
@@ -39,6 +40,7 @@ class FormularioCambiarPassword extends Formulario
             
             <div class="campo">
                 <button type="submit">Cambiar contraseña</button>
+                <a href="perfil.php" class="btn-secondary">Cancelar</a>
             </div>
         </fieldset>
 EOS;
@@ -48,10 +50,20 @@ EOS;
     protected function procesaFormulario(&$datos)
     {
         $this->errores = [];
-        $usuario = $_SESSION['usuario'] ?? null;
+        
+        // 👇 CORREGIDO: Usar idUsuario de sesión
+        $idUsuario = $_SESSION['idUsuario'] ?? 0;
+        
+        if ($idUsuario === 0) {
+            $this->errores[] = 'No hay usuario en sesión';
+            return false;
+        }
+        
+        // Buscar usuario por ID
+        $usuario = Usuario::buscaUsuarioPorId($idUsuario);
         
         if (!$usuario) {
-            $this->errores[] = 'No hay usuario en sesión';
+            $this->errores[] = 'Usuario no encontrado';
             return false;
         }
         
@@ -78,7 +90,7 @@ EOS;
         if (count($this->errores) === 0) {
             $datosActualizar = ['password' => $passwordNueva];
             if ($usuario->actualiza($datosActualizar)) {
-                return true;
+                return true; // Redirige a perfil.php
             } else {
                 $this->errores[] = 'Error al cambiar la contraseña';
             }
