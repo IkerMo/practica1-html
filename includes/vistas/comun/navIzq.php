@@ -22,7 +22,7 @@ function getMenuPorRol() {
     $esAdmin = $_SESSION['esAdmin'] ?? false;
     
     // Menú común para todos los usuarios logueados
-    $menu['items'][] = ['url' => RUTA_VISTAS . '/perfil.php', 'texto' => 'Mi perfil'];
+    $menu['items'][] = ['url' => RUTA_VISTAS . '/usuarios/perfil.php', 'texto' => 'Mi perfil'];
     
     // Menú para clientes
     if ($esCliente) {

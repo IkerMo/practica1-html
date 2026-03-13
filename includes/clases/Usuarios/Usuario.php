@@ -172,24 +172,20 @@ class Usuario
     public function guardaEnSesion()
 {
     $_SESSION['login'] = true;
-    $_SESSION['usuario'] = $this;
+    $_SESSION['idUsuario'] = $this->id;  
     $_SESSION['nombre'] = $this->nombre;
+    $_SESSION['nombreUsuario'] = $this->nombreUsuario;
     $_SESSION['rol'] = $this->rolActual;
     
-    // Añadir nombre del rol para mostrarlo
-    $rolNombres = [
-        1 => 'Cliente',
-        2 => 'Camarero',
-        3 => 'Cocinero',
-        4 => 'Gerente'
-    ];
+    $rolNombres = [1 => 'Cliente', 2 => 'Camarero', 3 => 'Cocinero', 4 => 'Gerente'];
     $_SESSION['rolNombre'] = $rolNombres[$this->rolActual] ?? 'Usuario';
     
-    // Flags para comprobaciones rápidas
     $_SESSION['esCliente'] = $this->tieneRol(1);
     $_SESSION['esCamarero'] = $this->tieneRol(2);
     $_SESSION['esCocinero'] = $this->tieneRol(3);
     $_SESSION['esAdmin'] = $this->tieneRol(4);
+
+    error_log("Sesión guardada. ID Usuario: " . $this->id);
 }
     
     // Cierra la sesión
@@ -198,5 +194,80 @@ class Usuario
         $_SESSION = [];
         session_destroy();
     }
+
+    public function actualiza($datos)
+{
+    try {
+        $app = Aplicacion::getInstance();
+        $conn = $app->getConexionBd();
+        
+        $actualizaciones = [];
+        
+        if (isset($datos['nombre'])) {
+            $actualizaciones[] = "nombre = '" . $conn->real_escape_string($datos['nombre']) . "'";
+            $this->nombre = $datos['nombre'];
+        }
+        if (isset($datos['apellidos'])) {
+            $actualizaciones[] = "apellidos = '" . $conn->real_escape_string($datos['apellidos']) . "'";
+            $this->apellidos = $datos['apellidos'];
+        }
+        if (isset($datos['email'])) {
+            $actualizaciones[] = "email = '" . $conn->real_escape_string($datos['email']) . "'";
+            $this->email = $datos['email'];
+        }
+        if (isset($datos['avatar'])) {
+            $actualizaciones[] = "avatar = '" . $conn->real_escape_string($datos['avatar']) . "'";
+            $this->avatar = $datos['avatar'];
+        }
+        if (isset($datos['password'])) {
+            $passwordHash = password_hash($datos['password'], PASSWORD_DEFAULT);
+            $actualizaciones[] = "password = '" . $conn->real_escape_string($passwordHash) . "'";
+            $this->password = $passwordHash;
+        }
+        
+        if (empty($actualizaciones)) {
+            return true;
+        }
+        
+        $query = "UPDATE Usuarios SET " . implode(', ', $actualizaciones) . " WHERE id = " . $this->id;
+        
+        return $conn->query($query);
+        
+    } catch (\Exception $e) {
+        error_log("Error en actualiza usuario: " . $e->getMessage());
+        return false;
+    }
+}
+public static function buscaUsuarioPorId($id)
+{
+    try {
+        $app = Aplicacion::getInstance();
+        $conn = $app->getConexionBd();
+        
+        error_log("Buscando usuario por ID: " . $id); // Para depurar
+        
+        $query = sprintf("SELECT nombreUsuario FROM Usuarios WHERE id = %d", $id);
+        error_log("Query: " . $query); // Para depurar
+        
+        $rs = $conn->query($query);
+        
+        if ($rs && $rs->num_rows > 0) {
+            $fila = $rs->fetch_assoc();
+            error_log("Usuario encontrado: " . $fila['nombreUsuario']); // Para depurar
+            return self::buscaUsuario($fila['nombreUsuario']);
+        } else {
+            error_log("No se encontró usuario con ID: " . $id);
+            if ($conn->error) {
+                error_log("Error BD: " . $conn->error);
+            }
+        }
+        
+        return false;
+        
+    } catch (\Exception $e) {
+        error_log("Error en buscaUsuarioPorId: " . $e->getMessage());
+        return false;
+    }
+}
 }
 ?>
