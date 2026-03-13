@@ -11,27 +11,26 @@ if (!isset($_SESSION['login']) || !$_SESSION['login']) {
 
 /** @var es\ucm\fdi\aw\Usuarios\Usuario $usuario */
 $usuario = $_SESSION['usuario'];
-$rol = $usuario->getRolActual(); // 'Gerente', 'Cliente', 'Cocinero', 'Camarero'...
+$rol = $usuario->getRolActual();
 
 // --- LÓGICA DE DATOS ---
 $service = new ProductoAppService();
-$productos = $service->getCarta(); // Devuelve todos los ofertados
+$productos = $service->getCarta();
 
-// Filtro de categoría por URL (Usabilidad requerida)
+// Filtro de categoría
 $catSeleccionada = $_GET['categoria'] ?? 'todas';
 if ($catSeleccionada !== 'todas') {
     $productos = array_filter($productos, fn($p) => $p->categoria == $catSeleccionada);
 }
 
-// Obtener categorías únicas para el selector
 $todasCategorias = array_unique(array_map(fn($p) => $p->categoria, $service->getCarta()));
 
 // --- CONSTRUCCIÓN DE LA VISTA ---
-$tituloPagina = 'Gestión de Productos - Bistro';
+$tituloPagina = 'Carta de Productos - Bistro';
 
 $contenidoPrincipal = "<h1>Menú y Gestión de Productos</h1>";
 
-// 1. Selector de Categorías (Botones de filtro)
+// 1. Selector de Categorías
 $contenidoPrincipal .= '<div class="filtros-categorias" style="margin-bottom: 20px;">';
 $contenidoPrincipal .= '<a href="listarProductos.php?categoria=todas" class="btn">Todas</a> ';
 foreach ($todasCategorias as $cat) {
@@ -44,7 +43,6 @@ $contenidoPrincipal .= '</div>';
 if ($rol === 'Gerente') {
     $contenidoPrincipal .= <<<HTML
         <div class="zona-admin" style="background: #f4f4f4; padding: 15px; margin-bottom: 20px; border-radius: 8px;">
-            <p><strong>Panel de Control:</strong></p>
             <a href="formularioProducto.php" class="btn btn-primario"> + Registrar Nuevo Producto</a>
         </div>
     HTML;
@@ -59,38 +57,39 @@ if (empty($productos)) {
 
 foreach ($productos as $p) {
     $precioFinal = number_format($p->getPrecioFinal(), 2);
-    $precioBase = number_format($p->precioBase, 2);
-    $iva = $p->iva;
     $imagen = !empty($p->imagenes) ? $p->imagenes[0] : 'default.jpg';
-    $badgeStock = $p->disponible 
-        ? '<span style="color: green;">✔ Disponible</span>' 
-        : '<span style="color: red;">✘ Sin existencias</span>';
+    $urlDetalle = "detalleProducto.php?id={$p->id}"; // URL hacia el nuevo script de detalles
 
     $contenidoPrincipal .= "
-    <div class='card-producto' style='border: 1px solid #ddd; border-radius: 10px; padding: 15px; background: white;'>
-        <img src='{$app->resuelve('/img/productos/'.$imagen)}' style='width: 100%; height: 180px; object-fit: cover; border-radius: 5px;'>
-        <h3 style='margin: 10px 0;'>{$p->nombre}</h3>
-        <p style='font-size: 0.9em; color: #666;'>{$p->descripcion}</p>
+    <div class='card-producto' style='border: 1px solid #ddd; border-radius: 10px; padding: 15px; background: white; display: flex; flex-direction: column;'>
         
-        <div class='info-precios' style='background: #f9f9f9; padding: 8px; border-radius: 5px;'>
-            <strong>Precio Final: $precioFinal €</strong> <br>";
-            
-            // Usabilidad Gerente: Ver desglose de IVA
-            if ($rol === 'Gerente') {
-                $contenidoPrincipal .= "<small>Base: $precioBase € | IVA: $iva%</small><br>";
-            }
-            
-    $contenidoPrincipal .= "</div>
-        <p>$badgeStock</p>
-        <hr>";
+        <a href='$urlDetalle'>
+            <img src='{$app->resuelve('/img/productos/'.$imagen)}' style='width: 100%; height: 180px; object-fit: cover; border-radius: 5px;'>
+        </a>
 
-    // --- ACCIONES CONDICIONALES SEGÚN ROL ---
+        <h3 style='margin: 10px 0;'>
+            <a href='$urlDetalle' style='text-decoration: none; color: black;'>{$p->nombre}</a>
+        </h3>
+        
+        <p style='font-size: 0.9em; color: #666; flex-grow: 1;'>{$p->descripcion}</p>
+        
+        <div class='info-precios' style='background: #f9f9f9; padding: 8px; border-radius: 5px; margin-bottom: 10px;'>
+            <strong>Precio Final: $precioFinal €</strong>
+        </div>
+
+        <div style='margin-bottom: 10px;'>
+            <a href='$urlDetalle' style='font-size: 0.85em; color: #007bff; text-decoration: none;'>🔍 Ver más detalles</a>
+        </div>
+
+        <hr style='border: 0; border-top: 1px solid #eee; margin: 10px 0;'>";
+
+    // --- ACCIONES ESPECÍFICAS POR ROL ---
     
     if ($rol === 'Gerente') {
         $contenidoPrincipal .= "
-            <div class='acciones'>
-                <a href='formularioProducto.php?id={$p->id}' class='btn-edit'>Modificar</a>
-                <a href='borrarProducto.php?id={$p->id}' class='btn-delete' onclick='return confirm(\"¿Retirar de la carta?\")'>Retirar</a>
+            <div class='acciones' style='display: flex; gap: 5px;'>
+                <a href='formularioProducto.php?id={$p->id}' class='btn-edit' style='flex: 1; text-align: center; font-size: 0.8em;'>Editar</a>
+                <a href='borrarProducto.php?id={$p->id}' class='btn-delete' style='flex: 1; text-align: center; font-size: 0.8em;' onclick='return confirm(\"¿Retirar?\")'>Retirar</a>
             </div>";
     } 
     elseif ($rol === 'Cliente') {
@@ -101,15 +100,12 @@ foreach ($productos as $p) {
         }
     } 
     elseif ($rol === 'Cocinero') {
-        // El cocinero simplemente los muestra con sus cantidades (si el DTO tuviera stock_num)
-        $contenidoPrincipal .= "<p><em>Vista de preparación</em></p>";
+        $contenidoPrincipal .= "<p style='margin:0; font-size:0.8em;'><em>Estado: Preparación</em></p>";
     }
-    // Si es Camarero, no se añade ningún botón según tu instrucción
 
     $contenidoPrincipal .= "</div>";
 }
 
 $contenidoPrincipal .= '</div>';
 
-// Cargar plantilla pasándole las variables
 require __DIR__.'/../plantillas/layout.php';
