@@ -281,5 +281,37 @@ public static function buscaUsuarioPorId($id)
         return false;
     }
 }
+
+public function cambiaRol($nuevoRolId)
+{
+    try {
+        $app = Aplicacion::getInstance();
+        $conn = $app->getConexionBd();
+        
+        // Eliminar roles actuales
+        $queryDelete = sprintf("DELETE FROM UsuarioRoles WHERE usuario_id = %d", $this->id);
+        $conn->query($queryDelete);
+        
+        // Insertar nuevo rol
+        $queryInsert = sprintf(
+            "INSERT INTO UsuarioRoles(usuario_id, rol_id) VALUES(%d, %d)",
+            $this->id,
+            $nuevoRolId
+        );
+        
+        if ($conn->query($queryInsert)) {
+            // Recargar roles del usuario
+            $this->cargaRoles();
+            return true;
+        }
+        
+        return false;
+        
+    } catch (\Exception $e) {
+        error_log("Error en cambiaRol: " . $e->getMessage());
+        return false;
+    }
+}
+
 }
 ?>
