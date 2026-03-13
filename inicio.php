@@ -35,7 +35,7 @@ if ($esAdmin) {
             <h3>Categorías</h3>
             <p>Organizar platos y bebidas</p>
         </a>
-        <a href="{$rutaVistas}/gerente/ofertas.php" class="tarjeta">
+        <!-- <a href="{$rutaVistas}/gerente/ofertas.php" class="tarjeta">
             <div class="icono-contenedor"><span class="icono">🏷️</span></div>
             <h3>Ofertas</h3>
             <p>Gestionar promociones</p>
@@ -44,7 +44,7 @@ if ($esAdmin) {
             <div class="icono-contenedor"><span class="icono">📈</span></div>
             <h3>Estadísticas</h3>
             <p>Ver balance de ventas</p>
-        </a>
+        </a>-->
 EOS;
 }
 

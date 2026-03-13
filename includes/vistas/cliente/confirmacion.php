@@ -73,7 +73,7 @@ $contenidoPrincipal = <<<HTML
         </table>
     </div>
     
-    <a href="../../inicio.php" style="background:#8b0000;color:white;padding:12px 30px;border-radius:5px;text-decoration:none;font-size:1.1em;display:inline-block;margin-top:15px;">
+    <a href="<?= RUTA_RAIZ ?>inicio.php" style="background:#8b0000;color:white;padding:12px 30px;border-radius:5px;text-decoration:none;font-size:1.1em;display:inline-block;margin-top:15px;">
         Volver al Inicio
     </a>
     

@@ -39,16 +39,16 @@ function getMenuPorRol() {
     if ($esCamarero) {
         $menu['titulo'] = 'Menú Camarero';
         $menu['items'][] = ['url' => RUTA_VISTAS . '/camarero/pedidos-pendientes.php', 'texto' => 'Pedidos pendientes'];
-        $menu['items'][] = ['url' => RUTA_VISTAS . '/camarero/cobrar.php', 'texto' => 'Cobrar pedidos'];
-        $menu['items'][] = ['url' => RUTA_VISTAS . '/camarero/entregar.php', 'texto' => 'Entregar pedidos'];
+        //$menu['items'][] = ['url' => RUTA_VISTAS . '/camarero/cobrar.php', 'texto' => 'Cobrar pedidos'];
+        //$menu['items'][] = ['url' => RUTA_VISTAS . '/camarero/entregar.php', 'texto' => 'Entregar pedidos'];
     }
     
     // Menú para cocineros
     if ($esCocinero) {
         $menu['titulo'] = 'Menú Cocinero';
         $menu['items'][] = ['url' => RUTA_VISTAS . '/cocinero/pedidos.php', 'texto' => 'Pedidos en cola'];
-        $menu['items'][] = ['url' => RUTA_VISTAS . '/cocinero/en-preparacion.php', 'texto' => 'En preparación'];
-        $menu['items'][] = ['url' => RUTA_VISTAS . '/cocinero/historial.php', 'texto' => 'Historial'];
+       // $menu['items'][] = ['url' => RUTA_VISTAS . '/cocinero/en-preparacion.php', 'texto' => 'En preparación'];
+        //$menu['items'][] = ['url' => RUTA_VISTAS . '/cocinero/historial.php', 'texto' => 'Historial'];
     }
     
     // Menú para administradores/gerentes
@@ -57,9 +57,9 @@ function getMenuPorRol() {
         $menu['items'][] = ['url' => RUTA_VISTAS . '/productos/ListarProductos.php', 'texto' => 'Gestionar productos'];
         $menu['items'][] = ['url' => RUTA_VISTAS . '/categorias/listarCategorias.php', 'texto' => 'Gestionar categorías'];
         $menu['items'][] = ['url' => RUTA_VISTAS . '/usuarios/admin/listar.php', 'texto' => 'Gestionar usuarios'];
-        $menu['items'][] = ['url' => RUTA_VISTAS . '/gerente/ofertas.php', 'texto' => 'Gestionar ofertas'];
-        $menu['items'][] = ['url' => RUTA_VISTAS . '/gerente/estadisticas.php', 'texto' => 'Estadísticas'];
-        $menu['items'][] = ['url' => RUTA_VISTAS . '/gerente/pedidos-cliente.php', 'texto' => 'Pedidos por cliente'];
+        //$menu['items'][] = ['url' => RUTA_VISTAS . '/gerente/ofertas.php', 'texto' => 'Gestionar ofertas'];
+        //$menu['items'][] = ['url' => RUTA_VISTAS . '/gerente/estadisticas.php', 'texto' => 'Estadísticas'];
+        $menu['items'][] = ['url' => RUTA_VISTAS . '/camarero/pedidos-pendientes.php', 'texto' => 'Pedidos pendientes'];
     }
     
     return $menu;
