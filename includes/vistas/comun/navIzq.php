@@ -30,7 +30,7 @@ function getMenuPorRol() {
     // Menú para clientes
     if ($esCliente) {
         $menu['titulo'] = 'Menú Cliente';
-        $menu['items'][] = ['url' => RUTA_VISTAS . '/cliente/carta.php', 'texto' => 'Ver carta'];
+        $menu['items'][] = ['url' => RUTA_VISTAS . '/productos/ListarProductos.php', 'texto' => 'Ver carta'];
         $menu['items'][] = ['url' => RUTA_VISTAS . '/cliente/nuevo-pedido.php', 'texto' => 'Nuevo pedido'];
         $menu['items'][] = ['url' => RUTA_VISTAS . '/cliente/mis-pedidos.php', 'texto' => 'Mis pedidos'];
         $menu['items'][] = ['url' => RUTA_VISTAS . '/cliente/ofertas.php', 'texto' => 'Ofertas'];
