@@ -224,6 +224,16 @@ class Usuario
             $actualizaciones[] = "password = '" . $conn->real_escape_string($passwordHash) . "'";
             $this->password = $passwordHash;
         }
+
+        if (isset($datos['nombreUsuario'])) {
+            $actualizaciones[] = "nombreUsuario = '" . $conn->real_escape_string($datos['nombreUsuario']) . "'";
+            $this->nombreUsuario = $datos['nombreUsuario'];
+        }
+
+        if (isset($datos['activo'])) {
+            $actualizaciones[] = "activo = " . (int)$datos['activo'];
+            $this->activo = (bool)$datos['activo'];
+        }
         
         if (empty($actualizaciones)) {
             return true;

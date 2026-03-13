@@ -749,3 +749,108 @@ navder {
     border-radius: 8px;
     border: 2px solid #8b0000;
 }
+
+/* ===== ESTILOS PARA ADMINISTRACIÓN ===== */
+.acciones-globales {
+    margin: 20px 0;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.tabla-usuarios {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.tabla-usuarios th {
+    background-color: #8b0000;
+    color: white;
+    padding: 12px;
+    text-align: left;
+}
+
+.tabla-usuarios td {
+    padding: 10px;
+    border-bottom: 1px solid #d4c9c0;
+}
+
+.tabla-usuarios tr:hover {
+    background-color: #f0e9e2;
+}
+
+.acciones {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+
+.btn-ver, .btn-editar, .btn-rol, .btn-borrar {
+    padding: 5px 10px;
+    border-radius: 3px;
+    text-decoration: none;
+    font-size: 0.9em;
+    color: white;
+}
+
+.btn-ver { background-color: #2196F3; }
+.btn-editar { background-color: #FF9800; }
+.btn-rol { background-color: #9C27B0; }
+.btn-borrar { background-color: #f44336; }
+
+.rol-1 { color: #4CAF50; font-weight: bold; } /* Cliente */
+.rol-2 { color: #2196F3; font-weight: bold; } /* Camarero */
+.rol-3 { color: #FF9800; font-weight: bold; } /* Cocinero */
+.rol-4 { color: #9C27B0; font-weight: bold; } /* Gerente */
+
+.usuario-detalle {
+    display: flex;
+    gap: 30px;
+    margin: 30px 0;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.detalle-avatar {
+    flex: 0 0 200px;
+}
+
+.avatar-grande {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    border: 3px solid #8b0000;
+    object-fit: cover;
+}
+
+.detalle-info {
+    flex: 1;
+    line-height: 2;
+}
+
+.detalle-acciones {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.confirmar-borrado {
+    max-width: 500px;
+    margin: 30px auto;
+    padding: 30px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.texto-info {
+    font-weight: bold;
+    color: #8b0000;
+}
