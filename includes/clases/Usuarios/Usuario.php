@@ -313,5 +313,69 @@ public function cambiaRol($nuevoRolId)
     }
 }
 
+public static function crea($datos)
+{
+    try {
+        $app = Aplicacion::getInstance();
+        $conn = $app->getConexionBd();
+        
+        // Validar datos obligatorios
+        $camposObligatorios = ['nombreUsuario', 'email', 'nombre', 'apellidos', 'password'];
+        foreach ($camposObligatorios as $campo) {
+            if (empty($datos[$campo])) {
+                error_log("Error en crea usuario: campo obligatorio '$campo' vacío");
+                return false;
+            }
+        }
+        
+        // Hashear contraseña
+        $passwordHash = password_hash($datos['password'], PASSWORD_DEFAULT);
+        
+        // Avatar por defecto
+        $avatar = $datos['avatar'] ?? 'default.png';
+        $tipoAvatar = $datos['tipoAvatar'] ?? 'defecto';
+        
+        // Insertar usuario
+        $query = sprintf(
+            "INSERT INTO usuarios (nombreUsuario, email, nombre, apellidos, password, avatar, tipoAvatar, activo) 
+             VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', 1)",
+            $conn->real_escape_string($datos['nombreUsuario']),
+            $conn->real_escape_string($datos['email']),
+            $conn->real_escape_string($datos['nombre']),
+            $conn->real_escape_string($datos['apellidos']),
+            $conn->real_escape_string($passwordHash),
+            $conn->real_escape_string($avatar),
+            $conn->real_escape_string($tipoAvatar)
+        );
+        
+        error_log("Query crear usuario: " . $query); // Para depurar
+        
+        if ($conn->query($query)) {
+            $idUsuario = $conn->insert_id;
+            
+            // Asignar rol cliente por defecto
+            $queryRol = sprintf(
+                "INSERT INTO UsuarioRoles (usuario_id, rol_id) VALUES (%d, %d)",
+                $idUsuario,
+                1 // ROL_CLIENTE
+            );
+            
+            if ($conn->query($queryRol)) {
+                return self::buscaUsuario($datos['nombreUsuario']);
+            } else {
+                error_log("Error al asignar rol: " . $conn->error);
+                return false;
+            }
+        } else {
+            error_log("Error al crear usuario: " . $conn->error);
+            return false;
+        }
+        
+    } catch (\Exception $e) {
+        error_log("Error en crea usuario: " . $e->getMessage());
+        return false;
+    }
+}
+
 }
 ?>
