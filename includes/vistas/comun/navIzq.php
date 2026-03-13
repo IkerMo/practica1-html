@@ -9,20 +9,23 @@ function getMenuPorRol() {
     // Si no está logueado, menú básico
     if (!isset($_SESSION['login']) || $_SESSION['login'] !== true) {
         $menu['items'] = [
+            ['url' => RUTA_RAIZ . 'index.php', 'texto' => 'Portada'], // Añadimos portada para todos
             ['url' => RUTA_VISTAS . '/login.php', 'texto' => 'Iniciar sesión'],
             ['url' => RUTA_VISTAS . '/registro.php', 'texto' => 'Registrarse']
         ];
         return $menu;
     }
     
-    // Usuario logueado - obtenemos información de sesión
+    // Usuario logueado - INICIO COMÚN (Plan de Aaron)
+    // Usamos RUTA_RAIZ porque inicio.php está en la carpeta principal
+    $menu['items'][] = ['url' => RUTA_RAIZ . 'inicio.php', 'texto' => 'Inicio'];
+    $menu['items'][] = ['url' => RUTA_VISTAS . '/usuarios/perfil.php', 'texto' => 'Mi perfil'];
+    
+    // Obtenemos información de sesión
     $esCliente = $_SESSION['esCliente'] ?? false;
     $esCamarero = $_SESSION['esCamarero'] ?? false;
     $esCocinero = $_SESSION['esCocinero'] ?? false;
     $esAdmin = $_SESSION['esAdmin'] ?? false;
-    
-    // Menú común para todos los usuarios logueados
-    $menu['items'][] = ['url' => RUTA_VISTAS . '/usuarios/perfil.php', 'texto' => 'Mi perfil'];
     
     // Menú para clientes
     if ($esCliente) {

@@ -1,65 +1,46 @@
 <?php
 namespace es\ucm\fdi\aw\Formularios;
-
 use es\ucm\fdi\aw\Usuarios\Usuario;
 
-class FormularioLogin extends Formulario
-{
-    public function __construct()
-    {
-        parent::__construct('login', [
-            'urlRedireccion' => RUTA_RAIZ . 'index.php'
-        ]);
+class FormularioLogin extends Formulario {
+    public function __construct() {
+        parent::__construct('login', ['urlRedireccion' => RUTA_RAIZ . 'inicio.php']);
     }
 
-    protected function generaCamposFormulario(&$datos)
-    {
+    protected function generaCamposFormulario(&$datos) {
         $nombreUsuario = $datos['nombreUsuario'] ?? '';
-        $html = <<<EOS
-        <fieldset>
-            <legend>Acceso al Bistro FDI</legend>
-            <div class="campo">
-                <label for="nombreUsuario">Usuario o Email:</label>
-                <input id="nombreUsuario" type="text" name="nombreUsuario" value="$nombreUsuario" />
-                {$this->getError('nombreUsuario')}
-            </div>
-            <div class="campo">
-                <label for="password">Contraseña:</label>
-                <input id="password" type="password" name="password" />
-                {$this->getError('password')}
-            </div>
-            <div class="campo">
-                <button type="submit">Entrar</button>
-            </div>
-        </fieldset>
+        return <<<EOS
+        <div class="contenedor-formulario-fdi">
+            <fieldset class="form-ajustado">
+                <legend>Acceso al Bistro FDI</legend>
+                <div class="bloque-entrada">
+                    <label>Usuario o Email</label>
+                    <input type="text" name="nombreUsuario" value="$nombreUsuario" />
+                    {$this->getError('nombreUsuario')}
+                </div>
+                <div class="bloque-entrada">
+                    <label>Contraseña</label>
+                    <input type="password" name="password" />
+                    {$this->getError('password')}
+                </div>
+                <button type="submit" class="boton-rojo">Entrar</button>
+            </fieldset>
+        </div>
 EOS;
-        return $html;
     }
 
-    protected function procesaFormulario(&$datos)
-    {
+    protected function procesaFormulario(&$datos) {
         $this->errores = [];
-
         $nombreUsuario = trim($datos['nombreUsuario'] ?? '');
         $password = trim($datos['password'] ?? '');
-
-        if (empty($nombreUsuario)) $this->errores['nombreUsuario'] = 'El nombre de usuario no puede estar vacío';
-        if (empty($password)) $this->errores['password'] = 'La contraseña no puede estar vacía';
-
+        if (empty($nombreUsuario)) $this->errores['nombreUsuario'] = 'Obligatorio';
+        if (empty($password)) $this->errores['password'] = 'Obligatorio';
         if (count($this->errores) > 0) return false;
-
         $usuario = Usuario::login($nombreUsuario, $password);
-
-        if (!$usuario) {
-            $this->errores[] = 'El usuario o la contraseña no coinciden';
-            return false;
-        }
-
+        if (!$usuario) { $this->errores[] = 'Credenciales incorrectas'; return false; }
         $usuario->guardaEnSesion();
         return true;
     }
 
-    private function getError($campo) {
-        return self::createMensajeError($this->errores, $campo, 'span', ['class' => 'error']);
-    }
+    private function getError($campo) { return self::createMensajeError($this->errores, $campo, 'span', ['class' => 'error']); }
 }

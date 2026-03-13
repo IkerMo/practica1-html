@@ -462,3 +462,99 @@ a.deshabilitado {
         gap: 10px;
     }
 }
+
+    /* =========================================
+   NUEVO DISEÑO DE TARJETAS PARA EL INICIO
+   
+   ========================================= */
+
+/* Contenedor principal del contenido */
+.main-content {
+    text-align: center; /* Centra el título y subtítulo */
+    padding: 20px;
+}
+
+.main-content h1 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.subtitulo {
+    color: #666;
+    margin-bottom: 40px;
+    font-size: 1.1em;
+}
+
+/* Contenedor de la cuadrícula de tarjetas */
+.panel-tarjetas {
+    display: flex;
+    flex-wrap: wrap; /* Permite que bajen de línea si no caben */
+    gap: 25px;       /* Espacio entre tarjetas */
+    justify-content: center; /* Centra las tarjetas en la página */
+    padding: 20px 0;
+}
+
+/* Estilo base de cada tarjeta (que es un enlace) */
+.tarjeta {
+    background-color: #ffffff;
+    border: 1px solid #d4c9c0;
+    border-radius: 15px;
+    width: 250px; /* Ancho de cada tarjeta */
+    padding: 30px 20px;
+    text-decoration: none; /* Quita el subrayado del enlace */
+    color: #333;
+    display: flex;
+    flex-direction: column; /* Elementos en vertical */
+    align-items: center;    /* Centra elementos horizontalmente */
+    transition: all 0.3s ease; /* Animación suave para el hover */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05); /* Sombra muy suave */
+}
+
+/* EFECTO HOVER: Al pasar el ratón */
+.tarjeta:hover {
+    transform: translateY(-8px); /* Levanta la tarjeta */
+    box-shadow: 0 12px 20px rgba(139, 0, 0, 0.15); /* Sombra más pronunciada y rojiza */
+    border-color: #8b0000; /* Borde rojo Bistro */
+}
+
+/* Contenedor del icono */
+.icono-contenedor {
+    background-color: #fdfaf7; /* Fondo muy suave para el icono */
+    width: 80px;
+    height: 80px;
+    border-radius: 50%; /* Círculo */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    border: 1px solid #eee;
+}
+
+/* Estilo del icono (si es emoji/texto) */
+.icono {
+    font-size: 40px;
+}
+
+/* Estilo del icono (si es imagen <img>) */
+.icono-img {
+    max-width: 50px;
+    max-height: 50px;
+}
+
+/* Título de la tarjeta */
+.tarjeta h3 {
+    margin: 0 0 10px 0;
+    color: #8b0000; /* Rojo Bistro */
+    font-size: 1.4em;
+    border: none; /* Quita cualquier borde heredado */
+}
+
+/* Descripción de la tarjeta */
+.tarjeta p {
+    margin: 0;
+    font-size: 0.95em;
+    color: #666;
+    line-height: 1.4;
+    text-align: center;
+}
+
