@@ -52,6 +52,7 @@ if (empty($productos)) {
     $contenidoPrincipal .= "<p>No hay productos disponibles en esta categoría.</p>";
 } else {
     foreach ($productos as $p) {
+<<<<<<< HEAD
         // --- CORRECCIÓN DE IMAGEN ---
         // Como imagen_principal es un array, cogemos el primer elemento [0]
         $nombreImagen = (!empty($p->imagen_principal) && isset($p->imagen_principal[0])) 
@@ -61,6 +62,10 @@ if (empty($productos)) {
         // Usamos IMG en mayúsculas como me indicaste
         $urlImg = RUTA_BASE . "/IMG/productos/" . $nombreImagen;
 
+=======
+        $nombreImagen = !empty($p->imagen_principal) ? $p->imagen_principal : 'default.jpg';
+        $urlImg = RUTA_BASE . "/IMG/productos/" . $nombreImagen;
+>>>>>>> e64342e (version definitiva de la funcionalidad 2 y correción de algunas funciones 0 y 1. Todo implementado, falta ponerlo bonito y cierdas redirecciones a web que estan mal)
         $nombreCat = $mapaCategorias[$p->categoria_id] ?? "Sin categoría";
 
         $contenidoPrincipal .= "

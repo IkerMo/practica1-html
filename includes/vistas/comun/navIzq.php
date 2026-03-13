@@ -33,23 +33,34 @@ function getMenuPorRol() {
         $menu['items'][] = ['url' => RUTA_VISTAS . '/productos/ListarProductos.php', 'texto' => 'Ver carta'];
         $menu['items'][] = ['url' => RUTA_VISTAS . '/cliente/nuevo-pedido.php', 'texto' => 'Nuevo pedido'];
         $menu['items'][] = ['url' => RUTA_VISTAS . '/cliente/mis-pedidos.php', 'texto' => 'Mis pedidos'];
+<<<<<<< HEAD
         $menu['items'][] = ['url' => RUTA_VISTAS . '/cliente/ofertas.php', 'texto' => 'Ofertas'];
+=======
+>>>>>>> e64342e (version definitiva de la funcionalidad 2 y correción de algunas funciones 0 y 1. Todo implementado, falta ponerlo bonito y cierdas redirecciones a web que estan mal)
     }
     
     // Menú para camareros
     if ($esCamarero) {
         $menu['titulo'] = 'Menú Camarero';
+<<<<<<< HEAD
         $menu['items'][] = ['url' => RUTA_VISTAS . '/camarero/pedidos-pendientes.php', 'texto' => 'Pedidos pendientes'];
         $menu['items'][] = ['url' => RUTA_VISTAS . '/camarero/cobrar.php', 'texto' => 'Cobrar pedidos'];
         $menu['items'][] = ['url' => RUTA_VISTAS . '/camarero/entregar.php', 'texto' => 'Entregar pedidos'];
+=======
+        $menu['items'][] = ['url' => RUTA_VISTAS . '/camarero/pedidos-pendientes.php', 'texto' => 'Gestionar Pedidos'];
+>>>>>>> e64342e (version definitiva de la funcionalidad 2 y correción de algunas funciones 0 y 1. Todo implementado, falta ponerlo bonito y cierdas redirecciones a web que estan mal)
     }
     
     // Menú para cocineros
     if ($esCocinero) {
         $menu['titulo'] = 'Menú Cocinero';
+<<<<<<< HEAD
         $menu['items'][] = ['url' => RUTA_VISTAS . '/cocinero/pedidos.php', 'texto' => 'Pedidos en cola'];
         $menu['items'][] = ['url' => RUTA_VISTAS . '/cocinero/en-preparacion.php', 'texto' => 'En preparación'];
         $menu['items'][] = ['url' => RUTA_VISTAS . '/cocinero/historial.php', 'texto' => 'Historial'];
+=======
+        $menu['items'][] = ['url' => RUTA_VISTAS . '/cocinero/pedidos.php', 'texto' => 'Pedidos en Cocina'];
+>>>>>>> e64342e (version definitiva de la funcionalidad 2 y correción de algunas funciones 0 y 1. Todo implementado, falta ponerlo bonito y cierdas redirecciones a web que estan mal)
     }
     
     // Menú para administradores/gerentes
@@ -58,8 +69,12 @@ function getMenuPorRol() {
         $menu['items'][] = ['url' => RUTA_VISTAS . '/productos/ListarProductos.php', 'texto' => 'Gestionar productos'];
         $menu['items'][] = ['url' => RUTA_VISTAS . '/categorias/listarCategorias.php', 'texto' => 'Gestionar categorías'];
         $menu['items'][] = ['url' => RUTA_VISTAS . '/usuarios/admin/listar.php', 'texto' => 'Gestionar usuarios'];
+<<<<<<< HEAD
         $menu['items'][] = ['url' => RUTA_VISTAS . '/gerente/ofertas.php', 'texto' => 'Gestionar ofertas'];
         $menu['items'][] = ['url' => RUTA_VISTAS . '/gerente/estadisticas.php', 'texto' => 'Estadísticas'];
+=======
+        $menu['items'][] = ['url' => RUTA_VISTAS . '/gerente/pedidos-cliente.php', 'texto' => 'Pedidos por cliente'];
+>>>>>>> e64342e (version definitiva de la funcionalidad 2 y correción de algunas funciones 0 y 1. Todo implementado, falta ponerlo bonito y cierdas redirecciones a web que estan mal)
     }
     
     return $menu;
