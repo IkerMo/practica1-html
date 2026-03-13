@@ -6,6 +6,8 @@ if (!isset($_SESSION['login'])) {
     exit();
 }
 
+$rutaVistas = RUTA_VISTAS;
+
 $tituloPagina = 'Panel de Control';
 $nombre = $_SESSION['nombre'];
 $esAdmin = $_SESSION['esAdmin'] ?? false;
@@ -18,27 +20,27 @@ $contenidoTarjetas = '<div class="panel-tarjetas">';
 // --- BLOQUE GERENTE / ADMIN (Ahora con 5 tarjetas) ---
 if ($esAdmin) {
     $contenidoTarjetas .= <<<EOS
-        <a href="vistas/gerente/usuarios.php" class="tarjeta">
+        <a href="{$rutaVistas}/gerente/usuarios.php" class="tarjeta">
             <div class="icono-contenedor"><span class="icono">👥</span></div>
             <h3>Usuarios</h3>
             <p>Gestionar personal y roles</p>
         </a>
-        <a href="vistas/productos/ListarProductos.php" class="tarjeta">
+        <a href="{$rutaVistas}/productos/ListarProductos.php" class="tarjeta">
             <div class="icono-contenedor"><span class="icono">🍔</span></div>
             <h3>Productos</h3>
             <p>Administrar el menú</p>
         </a>
-        <a href="vistas/gerente/categorias.php" class="tarjeta">
+        <a href="{$rutaVistas}/categorias/listarCategorias.php" class="tarjeta">
             <div class="icono-contenedor"><span class="icono">📂</span></div>
             <h3>Categorías</h3>
             <p>Organizar platos y bebidas</p>
         </a>
-        <a href="vistas/gerente/ofertas.php" class="tarjeta">
+        <a href="{$rutaVistas}/gerente/ofertas.php" class="tarjeta">
             <div class="icono-contenedor"><span class="icono">🏷️</span></div>
             <h3>Ofertas</h3>
             <p>Gestionar promociones</p>
         </a>
-        <a href="vistas/gerente/estadisticas.php" class="tarjeta">
+        <a href="{$rutaVistas}/gerente/estadisticas.php" class="tarjeta">
             <div class="icono-contenedor"><span class="icono">📈</span></div>
             <h3>Estadísticas</h3>
             <p>Ver balance de ventas</p>
@@ -71,7 +73,7 @@ EOS;
 // --- BLOQUE CLIENTE ---
 if ($esCliente) {
     $contenidoTarjetas .= <<<EOS
-        <a href="vistas/cliente/carta.php" class="tarjeta">
+        <a href="{$rutaVistas}/productos/ListarProductos.php" class="tarjeta">
             <div class="icono-contenedor"><span class="icono">📜</span></div>
             <h3>Ver Carta</h3>
             <p>Explora nuestros platos</p>
