@@ -10,53 +10,160 @@ class PedidoAppService {
         $this->dao = new PedidoDAO();
     }
 
-    /** Crea un pedido completo desde el carrito de la sesión */
-    public function crearPedidoDesdeCarrito($clienteId, $tipo, $items, $observaciones = '') {
+    /** Crea un pedido completo desde el carrito de la sesión y aplica ofertas opcionales */
+    public function crearPedidoDesdeCarrito($clienteId, $tipo, $items, $ofertaIds = [], $observaciones = '') {
         $productoDAO = new ProductoDAO();
-        
-        // Construir líneas y calcular totales
+        $ofertaService = new \es\ucm\fdi\aw\Oferta\OfertaAppService();
+
+        // Cantidades iniciales por producto (cart)
+        $cantidadesDisponibles = [];
+        foreach ($items as $item) {
+            $pid = (int)$item['producto_id'];
+            $cantidad = max(0, (int)$item['cantidad']);
+            if ($cantidad <= 0) continue;
+            $cantidadesDisponibles[$pid] = ($cantidadesDisponibles[$pid] ?? 0) + $cantidad;
+        }
+
         $lineas = [];
         $totalSinIva = 0;
         $totalConIva = 0;
-        
+        $totalSinDesc = 0;
+        $totalDescuento = 0;
+
+        // Aplicamos ofertas seleccionadas (una por producto como restriccion de uso)
+        foreach ($ofertaIds as $ofertaId) {
+            $oferta = $ofertaService->getOferta((int)$ofertaId);
+            if (!$oferta || !$oferta->estaActiva()) {
+                continue;
+            }
+
+            // determinar maxVeces aplicable con cantidades disponibles
+            $maxVeces = PHP_INT_MAX;
+            foreach ($oferta->productos as $pid => $cantRequerida) {
+                $dispo = $cantidadesDisponibles[$pid] ?? 0;
+                if ($cantRequerida <= 0 || $dispo <= 0) {
+                    $maxVeces = 0;
+                    break;
+                }
+                $maxVeces = min($maxVeces, (int)floor($dispo / $cantRequerida));
+            }
+            if ($maxVeces <= 0) continue;
+
+            $impacto = $ofertaService->calcularImpactoOferta($oferta);
+            $packTotal = $impacto['total_sin_descuento'];
+            $packDescuento = $impacto['descuento'];
+            $packTotalConDesc = $impacto['total_con_descuento'];
+
+            for ($veces = 0; $veces < $maxVeces; $veces++) {
+                $lineasPaquete = [];
+                $packSubtotalConIva = 0;
+                $packDescSubtotal = 0;
+
+                foreach ($oferta->productos as $pid => $cantRequerida) {
+                    $producto = $productoDAO->buscarPorId($pid);
+                    if (!$producto || !$producto->disponible) {
+                        // deveria haber sido uncentin 
+                        continue;
+                    }
+
+                    $cantidad = $cantRequerida;
+                    $linea = new LineaPedidoDTO();
+                    $linea->producto_id = $producto->id;
+                    $linea->cantidad = $cantidad;
+                    $linea->precio_unitario_sin_iva = $producto->precio_base;
+                    $linea->iva = $producto->iva;
+                    $linea->subtotal_sin_iva = $producto->precio_base * $cantidad;
+                    $linea->subtotal_con_iva = round($linea->subtotal_sin_iva * (1 + ($producto->iva / 100)), 2);
+                    $linea->oferta_id = $oferta->id;
+                    $linea->subtotal_descuento = 0; // se asignara despues
+                    $linea->observaciones = 'Oferta ' . $oferta->nombre;
+
+                    $lineasPaquete[] = $linea;
+                    $packSubtotalConIva += $linea->subtotal_con_iva;
+
+                    // restar cantidad disponible
+                    $cantidadesDisponibles[$pid] -= $cantidad;
+                }
+
+                // Asignar descuentos proporcionales en el paquete
+                $descuentoMaximo = round($packSubtotalConIva - ($packTotalConDesc), 2);
+                if ($descuentoMaximo < 0) {
+                    $descuentoMaximo = 0;
+                }
+
+                $restoAsignado = 0;
+                foreach ($lineasPaquete as $i => $linea) {
+                    if ($packSubtotalConIva > 0) {
+                        $lineasPaquete[$i]->subtotal_descuento = round(($linea->subtotal_con_iva / $packSubtotalConIva) * $descuentoMaximo, 2);
+                    } else {
+                        $lineasPaquete[$i]->subtotal_descuento = 0;
+                    }
+                    $restoAsignado += $lineasPaquete[$i]->subtotal_descuento;
+                }
+                // Ajustar por redondeo en última línea
+                if (!empty($lineasPaquete)) {
+                    $diff = round($descuentoMaximo - $restoAsignado, 2);
+                    $lineasPaquete[count($lineasPaquete)-1]->subtotal_descuento += $diff;
+                }
+
+                foreach ($lineasPaquete as $linea) {
+                    $lineas[] = $linea;
+                    $totalSinIva += $linea->subtotal_sin_iva;
+                    $totalConIva += $linea->subtotal_con_iva;
+                    $totalSinDesc += $linea->subtotal_con_iva;
+                    $totalDescuento += $linea->subtotal_descuento;
+                }
+            }
+        }
+
+        // Lineas restantes (no aplicadas a ofertas)
         foreach ($items as $item) {
             $producto = $productoDAO->buscarPorId($item['producto_id']);
             if (!$producto || !$producto->disponible) continue;
-            
-            $l = new LineaPedidoDTO();
-            $l->producto_id = $producto->id;
-            $l->cantidad = (int)$item['cantidad'];
-            $l->precio_unitario_sin_iva = $producto->precio_base;
-            $l->iva = $producto->iva;
-            $l->subtotal_sin_iva = $producto->precio_base * $l->cantidad;
-            $l->subtotal_con_iva = $l->subtotal_sin_iva * (1 + ($producto->iva / 100));
-            $l->observaciones = $item['observaciones'] ?? null;
-            
-            $totalSinIva += $l->subtotal_sin_iva;
-            $totalConIva += $l->subtotal_con_iva;
-            
-            $lineas[] = $l;
+            $pid = (int)$item['producto_id'];
+            $cantidad = max(0, (int)$item['cantidad']);
+            $restante = $cantidadesDisponibles[$pid] ?? 0;
+            if ($restante <= 0) continue;
+
+            $linea = new LineaPedidoDTO();
+            $linea->producto_id = $producto->id;
+            $linea->cantidad = $restante;
+            $linea->precio_unitario_sin_iva = $producto->precio_base;
+            $linea->iva = $producto->iva;
+            $linea->subtotal_sin_iva = $producto->precio_base * $restante;
+            $linea->subtotal_con_iva = round($linea->subtotal_sin_iva * (1 + ($producto->iva / 100)), 2);
+            $linea->oferta_id = null;
+            $linea->subtotal_descuento = 0;
+            $linea->observaciones = $item['observaciones'] ?? null;
+
+            $lineas[] = $linea;
+            $totalSinIva += $linea->subtotal_sin_iva;
+            $totalConIva += $linea->subtotal_con_iva;
+            $totalSinDesc += $linea->subtotal_con_iva;
         }
-        
-        if (empty($lineas)) return false;
-        
-        // Crear pedido
+
+        if (empty($lineas)) {
+            return false;
+        }
+
         $pedido = new PedidoDTO();
         $pedido->numero_pedido = $this->dao->obtenerSiguienteNumero();
         $pedido->cliente_id = $clienteId;
         $pedido->tipo = $tipo;
         $pedido->estado = 'recibido';
         $pedido->total_sin_iva = round($totalSinIva, 2);
-        $pedido->total_con_iva = round($totalConIva, 2);
+        $pedido->total_con_iva = round(max(0, $totalConIva - $totalDescuento), 2);
+        $pedido->total_sin_descuento = round($totalSinDesc, 2);
+        $pedido->total_descuento = round($totalDescuento, 2);
         $pedido->observaciones = $observaciones;
-        
+
         $pedido = $this->dao->crear($pedido);
-        
         if ($pedido) {
             $this->dao->guardarLineas($pedido->id, $lineas);
             $pedido->lineas = $lineas;
             return $pedido;
         }
+
         return false;
     }
 

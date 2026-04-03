@@ -15,6 +15,8 @@ class PedidoDTO {
     public $camarero_id;
     public $total_sin_iva;
     public $total_con_iva;
+    public $total_sin_descuento;
+    public $total_descuento;
     public $observaciones;
     public $lineas = [];       // Array de LineaPedidoDTO
     public $nombre_cliente;    // Para display

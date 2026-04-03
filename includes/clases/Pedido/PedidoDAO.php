@@ -19,12 +19,12 @@ class PedidoDAO {
     public function crear(PedidoDTO $p) {
         $conn = Aplicacion::getInstance()->getConexionBd();
         $stmt = $conn->prepare(
-            "INSERT INTO Pedidos (numero_pedido, cliente_id, tipo, estado, fecha_creacion, total_sin_iva, total_con_iva, observaciones) 
-             VALUES (?, ?, ?, ?, NOW(), ?, ?, ?)"
+            "INSERT INTO Pedidos (numero_pedido, cliente_id, tipo, estado, fecha_creacion, total_sin_iva, total_con_iva, total_sin_descuento, total_descuento, observaciones) 
+             VALUES (?, ?, ?, ?, NOW(), ?, ?, ?, ?, ?)"
         );
-        $stmt->bind_param('iissdds',
+        $stmt->bind_param('iissdddds',
             $p->numero_pedido, $p->cliente_id, $p->tipo, $p->estado,
-            $p->total_sin_iva, $p->total_con_iva, $p->observaciones
+            $p->total_sin_iva, $p->total_con_iva, $p->total_sin_descuento, $p->total_descuento, $p->observaciones
         );
         
         if ($stmt->execute()) {
@@ -39,15 +39,18 @@ class PedidoDAO {
     public function guardarLineas($pedidoId, array $lineas) {
         $conn = Aplicacion::getInstance()->getConexionBd();
         $stmt = $conn->prepare(
-            "INSERT INTO LineasPedido (pedido_id, producto_id, cantidad, precio_unitario_sin_iva, iva, subtotal_sin_iva, subtotal_con_iva, observaciones) 
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+            "INSERT INTO LineasPedido (pedido_id, producto_id, cantidad, precio_unitario_sin_iva, iva, subtotal_sin_iva, subtotal_con_iva, oferta_id, subtotal_descuento, observaciones) 
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
         );
         
         foreach ($lineas as $l) {
-            $stmt->bind_param('iiididds',
+            $stmt->bind_param('iiididdids',
                 $pedidoId, $l->producto_id, $l->cantidad,
                 $l->precio_unitario_sin_iva, $l->iva,
-                $l->subtotal_sin_iva, $l->subtotal_con_iva, $l->observaciones
+                $l->subtotal_sin_iva, $l->subtotal_con_iva,
+                $l->oferta_id,
+                $l->subtotal_descuento,
+                $l->observaciones
             );
             $stmt->execute();
         }
@@ -77,6 +80,8 @@ class PedidoDAO {
             $l->iva = (int)$fila['iva'];
             $l->subtotal_sin_iva = (float)$fila['subtotal_sin_iva'];
             $l->subtotal_con_iva = (float)$fila['subtotal_con_iva'];
+            $l->oferta_id = isset($fila['oferta_id']) ? (int)$fila['oferta_id'] : null;
+            $l->subtotal_descuento = isset($fila['subtotal_descuento']) ? (float)$fila['subtotal_descuento'] : 0.0;
             $l->observaciones = $fila['observaciones'];
             $l->nombre_producto = $fila['nombre_producto'];
             $lineas[] = $l;
@@ -213,6 +218,8 @@ class PedidoDAO {
         $p->camarero_id = $fila['camarero_id'] ? (int)$fila['camarero_id'] : null;
         $p->total_sin_iva = (float)$fila['total_sin_iva'];
         $p->total_con_iva = (float)$fila['total_con_iva'];
+        $p->total_sin_descuento = isset($fila['total_sin_descuento']) ? (float)$fila['total_sin_descuento'] : (float)$fila['total_con_iva'];
+        $p->total_descuento = isset($fila['total_descuento']) ? (float)$fila['total_descuento'] : 0.0;
         $p->observaciones = $fila['observaciones'];
         $p->nombre_cliente = $fila['nombre_cliente'] ?? '';
         return $p;

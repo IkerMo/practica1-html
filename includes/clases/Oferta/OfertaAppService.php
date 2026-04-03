@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 namespace es\ucm\fdi\aw\Oferta;
 
 use es\ucm\fdi\aw\Producto\ProductoAppService;

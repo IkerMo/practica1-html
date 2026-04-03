@@ -91,4 +91,3 @@ EOS;
         }
     }
 }
-'@; $content | Out-File -Encoding UTF8 includes\clases\Formularios\FormularioOferta.php

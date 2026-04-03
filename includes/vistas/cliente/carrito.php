@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../../config.php';
 
 use es\ucm\fdi\aw\Pedido\Carrito;
+use es\ucm\fdi\aw\Oferta\OfertaAppService;
 
 if (!estaLogueado()) {
     header('Location: ' . RUTA_BASE . '/login.php');
@@ -30,6 +31,10 @@ $items = Carrito::getItems();
 $total = Carrito::getTotal();
 $tipo = Carrito::getTipo();
 $tipoLabel = $tipo === 'local' ? '🍽️ Para Local' : '🥡 Para Llevar';
+
+$ofertaService = new OfertaAppService();
+$ofertasActivas = $ofertaService->getOfertasActivas();
+
 
 $tituloPagina = 'Mi Carrito';
 

@@ -10,6 +10,8 @@ class LineaPedidoDTO {
     public $iva;
     public $subtotal_sin_iva;
     public $subtotal_con_iva;
+    public $oferta_id;
+    public $subtotal_descuento;
     public $observaciones;
     public $nombre_producto;   // Para display
 }
