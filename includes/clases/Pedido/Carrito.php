@@ -134,4 +134,41 @@ class Carrito {
         self::init();
         return empty($_SESSION['carrito']);
     }
+
+    /** Agrega una oferta al carrito */
+    public static function agregarOferta($ofertaId) {
+        self::init();
+        if (!isset($_SESSION['carrito_ofertas'])) {
+            $_SESSION['carrito_ofertas'] = [];
+        }
+        $ofertaId = (int)$ofertaId;
+        if (!in_array($ofertaId, $_SESSION['carrito_ofertas'])) {
+            $_SESSION['carrito_ofertas'][] = $ofertaId;
+        }
+    }
+
+    /** Obtiene las ofertas seleccionadas */
+    public static function getOfertas() {
+        self::init();
+        if (!isset($_SESSION['carrito_ofertas'])) {
+            $_SESSION['carrito_ofertas'] = [];
+        }
+        return $_SESSION['carrito_ofertas'];
+    }
+
+    /** Elimina una oferta del carrito */
+    public static function eliminarOferta($ofertaId) {
+        self::init();
+        if (isset($_SESSION['carrito_ofertas'])) {
+            $_SESSION['carrito_ofertas'] = array_filter(
+                $_SESSION['carrito_ofertas'],
+                fn($id) => $id != (int)$ofertaId
+            );
+        }
+    }
+
+    /** Limpia todas las ofertas */
+    public static function limpiarOfertas() {
+        $_SESSION['carrito_ofertas'] = [];
+    }
 }

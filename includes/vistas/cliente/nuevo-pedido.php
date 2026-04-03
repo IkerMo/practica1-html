@@ -4,6 +4,7 @@ require_once __DIR__ . '/../../config.php';
 use es\ucm\fdi\aw\Pedido\Carrito;
 use es\ucm\fdi\aw\Producto\ProductoAppService;
 use es\ucm\fdi\aw\Categoria\CategoriaAppService;
+use es\ucm\fdi\aw\Oferta\OfertaAppService;
 
 if (!estaLogueado()) {
     header('Location: ' . RUTA_BASE . '/login.php');
@@ -49,8 +50,10 @@ HTML;
 // Mostrar carta para añadir productos
 $service = new ProductoAppService();
 $serviceCat = new CategoriaAppService();
+$serviceOferta = new OfertaAppService();
 $productos = $service->getCarta();
 $categorias = $serviceCat->getTodasCategorias();
+$ofertas = $serviceOferta->getOfertasActivas();
 
 $catSeleccionada = $_GET['categoria'] ?? 'todas';
 if ($catSeleccionada !== 'todas') {
@@ -105,6 +108,39 @@ HTML;
     $productosHtml .= '</div>';
 }
 
+// Ofertas disponibles
+$ofertasHtml = '';
+if (!empty($ofertas)) {
+    $ofertasHtml .= '<h2 style="margin:30px 0 15px 0;font-size:1.3em;">📦 Ofertas Especiales</h2>';
+    $ofertasHtml .= '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:15px;">';
+    foreach ($ofertas as $oferta) {
+        $descuentoTexto = number_format($oferta->porcentaje_descuento, 1);
+        $productosTexto = '';
+        foreach ($oferta->productos as $pidOferta => $cantOferta) {
+            $prodOferta = $service->getProducto($pidOferta);
+            if ($prodOferta) {
+                $productosTexto .= "{$prodOferta->nombre} (x{$cantOferta}), ";
+            }
+        }
+        $productosTexto = rtrim($productosTexto, ', ');
+        
+        $ofertasHtml .= <<<HTML
+        <div style="border:1px solid #ddd;padding:12px;border-radius:10px;background:white;">
+            <div style="background:#28a745;color:white;padding:4px 8px;border-radius:5px;margin-bottom:8px;text-align:center;font-weight:bold;font-size:0.85em;">-{$descuentoTexto}% DESCUENTO</div>
+            <h3 style="margin:5px 0;font-size:1em;">{$oferta->nombre}</h3>
+            <small style="color:#888;">{$oferta->descripcion}</small>
+            <p style="margin:8px 0 0;font-size:0.85em;color:#666;">{$productosTexto}</p>
+            <form method="POST" action="ajax-carrito.php" style="margin-top:8px;">
+                <input type="hidden" name="accion" value="agregar_oferta">
+                <input type="hidden" name="oferta_id" value="{$oferta->id}">
+                <button type="submit" style="background:#2ecc71;color:white;border:none;padding:8px 12px;border-radius:5px;cursor:pointer;width:100%;font-size:0.9em;">✓ Aplicar</button>
+            </form>
+        </div>
+HTML;
+    }
+    $ofertasHtml .= '</div>';
+}
+
 $contenidoPrincipal = <<<HTML
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
     <h1 style="margin:0;">Nuevo Pedido</h1>
@@ -121,6 +157,8 @@ $contenidoPrincipal = <<<HTML
 </div>
 
 {$productosHtml}
+
+{$ofertasHtml}
 HTML;
 
 require RAIZ_APP . '/includes/vistas/comun/plantilla.php';

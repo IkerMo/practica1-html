@@ -31,6 +31,8 @@ $estadoLabels = [
 $estadoActual = $estadoLabels[$pedido->estado] ?? $pedido->estado;
 $tipoLabel = $pedido->tipo === 'local' ? '🍽️ Para Local' : '🥡 Para Llevar';
 $total = number_format($pedido->total_con_iva, 2);
+$total_sin_descuento = number_format($pedido->total_sin_descuento, 2);
+$descuento = number_format($pedido->total_descuento, 2);
 
 $rutaRaiz = RUTA_RAIZ;
 
@@ -39,6 +41,30 @@ $lineasHtml = '';
 foreach ($pedido->lineas as $l) {
     $subtotal = number_format($l->subtotal_con_iva, 2);
     $lineasHtml .= "<tr><td>{$l->nombre_producto}</td><td style='text-align:center;'>{$l->cantidad}</td><td style='text-align:right;'>{$subtotal} €</td></tr>";
+}
+
+if ($pedido->total_descuento > 0) {
+    $tfootHtml = <<<HTML
+                <tr>
+                    <td colspan="2" style="padding:5px;">Subtotal</td>
+                    <td style="padding:5px;text-align:right;">{$total_sin_descuento} €</td>
+                </tr>
+                <tr style="color:#8b0000;">
+                    <td colspan="2" style="padding:5px;">Descuento</td>
+                    <td style="padding:5px;text-align:right;">-{$descuento} €</td>
+                </tr>
+                <tr style="font-weight:bold;border-top:2px solid #333;">
+                    <td colspan="2" style="padding:10px;">TOTAL</td>
+                    <td style="padding:10px;text-align:right;">{$total} €</td>
+                </tr>
+HTML;
+} else {
+    $tfootHtml = <<<HTML
+                <tr style="font-weight:bold;border-top:2px solid #333;">
+                    <td colspan="2" style="padding:10px;">TOTAL</td>
+                    <td style="padding:10px;text-align:right;">{$total} €</td>
+                </tr>
+HTML;
 }
 
 $contenidoPrincipal = <<<HTML
@@ -67,10 +93,7 @@ $contenidoPrincipal = <<<HTML
                 {$lineasHtml}
             </tbody>
             <tfoot>
-                <tr style="font-weight:bold;border-top:2px solid #333;">
-                    <td colspan="2" style="padding:10px;">TOTAL</td>
-                    <td style="padding:10px;text-align:right;">{$total} €</td>
-                </tr>
+{$tfootHtml}
             </tfoot>
         </table>
     </div>

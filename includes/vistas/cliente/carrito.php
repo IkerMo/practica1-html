@@ -19,8 +19,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         Carrito::modificarCantidad($productoId, $cantidad);
     } elseif ($accion === 'eliminar' && $productoId) {
         Carrito::eliminar($productoId);
+    } elseif ($accion === 'eliminar_oferta') {
+        $ofertaId = (int)($_POST['oferta_id'] ?? 0);
+        Carrito::eliminarOferta($ofertaId);
     } elseif ($accion === 'vaciar') {
         Carrito::vaciar();
+        Carrito::limpiarOfertas();
     }
     
     header('Location: carrito.php');
@@ -34,6 +38,25 @@ $tipoLabel = $tipo === 'local' ? '🍽️ Para Local' : '🥡 Para Llevar';
 
 $ofertaService = new OfertaAppService();
 $ofertasActivas = $ofertaService->getOfertasActivas();
+$ofertasAplicadas = Carrito::getOfertas();
+
+// Calcular descuentos de las ofertas aplicadas
+$descuentoTotal = 0;
+$ofertasAplicadasInfo = [];
+foreach ($ofertasAplicadas as $ofertaId) {
+    $oferta = $ofertaService->getOferta($ofertaId);
+    if ($oferta && $oferta->estaActiva()) {
+        $impacto = $ofertaService->calcularImpactoOferta($oferta);
+        $descuentoTotal += $impacto['descuento'] ?? 0;
+        $ofertasAplicadasInfo[] = [
+            'id' => $oferta->id,
+            'nombre' => $oferta->nombre,
+            'descuento' => $impacto['descuento'] ?? 0
+        ];
+    }
+}
+
+$totalConDescuento = $total - $descuentoTotal;
 
 
 $tituloPagina = 'Mi Carrito';
@@ -80,6 +103,31 @@ HTML;
     }
 
     $totalFormateado = number_format($total, 2);
+    $totalDescuentoFormateado = number_format($descuentoTotal, 2);
+    $totalConDescuentoFormateado = number_format($totalConDescuento, 2);
+    
+    // HTML de ofertas aplicadas
+    $ofertasAplicadasHtml = '';
+    if (!empty($ofertasAplicadasInfo)) {
+        $ofertasAplicadasHtml = '<hr style="margin:20px 0;"><h2 style="font-size:1.2em;margin:15px 0;">🎉 Descuentos Aplicados</h2><div style="background:#f0f8f5;padding:15px;border-left:4px solid #28a745;border-radius:5px;margin-bottom:20px;">';
+        foreach ($ofertasAplicadasInfo as $of) {
+            $descuentoFormato = number_format($of['descuento'], 2);
+            $ofertasAplicadasHtml .= <<<HTML
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;padding:10px;background:white;border-radius:5px;">
+                <div>
+                    <strong style="color:#28a745;">{$of['nombre']}</strong><br>
+                    <small style="color:#666;">Descuento: -{$descuentoFormato} €</small>
+                </div>
+                <form method="POST" style="display:inline;">
+                    <input type="hidden" name="accion" value="eliminar_oferta">
+                    <input type="hidden" name="oferta_id" value="{$of['id']}">
+                    <button type="submit" style="background:#e74c3c;color:white;border:none;padding:5px 10px;border-radius:3px;cursor:pointer;font-size:0.9em;">Quitar</button>
+                </form>
+            </div>
+HTML;
+        }
+        $ofertasAplicadasHtml .= '</div>';
+    }
     
     $contenidoPrincipal = <<<HTML
     <div style="display:flex;justify-content:space-between;align-items:center;">
@@ -107,8 +155,26 @@ HTML;
                 <td style="padding:15px;text-align:right;">{$totalFormateado} €</td>
                 <td colspan="2"></td>
             </tr>
+HTML;
+    if ($descuentoTotal > 0) {
+        $contenidoPrincipal .= <<<HTML
+            <tr style="color:#28a745;font-weight:bold;">
+                <td colspan="3" style="padding:15px;text-align:right;">Descuento Aplicado:</td>
+                <td style="padding:15px;text-align:right;">-{$totalDescuentoFormateado} €</td>
+                <td colspan="2"></td>
+            </tr>
+            <tr style="font-weight:bold;font-size:1.2em;background:#f0f8f5;">
+                <td colspan="3" style="padding:15px;text-align:right;">TOTAL A PAGAR:</td>
+                <td style="padding:15px;text-align:right;color:#28a745;">{$totalConDescuentoFormateado} €</td>
+                <td colspan="2"></td>
+            </tr>
+HTML;
+    }
+    $contenidoPrincipal .= <<<HTML
         </tfoot>
     </table>
+
+    {$ofertasAplicadasHtml}
     
     <div style="display:flex;gap:10px;justify-content:space-between;align-items:center;margin-top:20px;">
         <div>

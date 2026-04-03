@@ -28,15 +28,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         case 'vaciar':
             Carrito::vaciar();
             break;
+        case 'agregar_oferta':
+            $ofertaId = (int)($_POST['oferta_id'] ?? 0);
+            Carrito::agregarOferta($ofertaId);
+            break;
+        case 'eliminar_oferta':
+            $ofertaId = (int)($_POST['oferta_id'] ?? 0);
+            Carrito::eliminarOferta($ofertaId);
+            break;
     }
     
     // Si viene de la carta, volver ahí
-    $referer = $_POST['referer'] ?? '';
-    if ($referer) {
-        header('Location: ' . $referer);
-    } else {
-        header('Location: carrito.php');
-    }
+    $referer = $_POST['referer'] ?? 'nuevo-pedido.php';
+    header('Location: ' . $referer);
     exit();
 }
 

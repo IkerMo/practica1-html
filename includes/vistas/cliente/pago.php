@@ -3,6 +3,7 @@ require_once __DIR__ . '/../../config.php';
 
 use es\ucm\fdi\aw\Pedido\Carrito;
 use es\ucm\fdi\aw\Pedido\PedidoAppService;
+use es\ucm\fdi\aw\Oferta\OfertaAppService;
 
 if (!estaLogueado()) {
     header('Location: ' . RUTA_BASE . '/login.php');
@@ -16,7 +17,25 @@ if (Carrito::estaVacio()) {
 
 $tituloPagina = 'Pago';
 $items = Carrito::getItems();
-$total = number_format(Carrito::getTotal(), 2);
+$total = Carrito::getTotal();
+$totalFormateado = number_format($total, 2);
+
+// Obtener descuentos de ofertas
+$ofertaService = new OfertaAppService();
+$ofertasAplicadas = Carrito::getOfertas();
+$descuentoTotal = 0;
+
+foreach ($ofertasAplicadas as $ofertaId) {
+    $oferta = $ofertaService->getOferta($ofertaId);
+    if ($oferta && $oferta->estaActiva()) {
+        $impacto = $ofertaService->calcularImpactoOferta($oferta);
+        $descuentoTotal += $impacto['descuento'] ?? 0;
+    }
+}
+
+$totalConDescuento = $total - $descuentoTotal;
+$totalDescuentoFormateado = number_format($descuentoTotal, 2);
+$totalConDescuentoFormateado = number_format($totalConDescuento, 2);
 
 // Procesar pago
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -45,8 +64,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $service = new PedidoAppService();
         $clienteId = $_SESSION['idUsuario'];
         $tipo = Carrito::getTipo() ?: 'local';
+        $ofertas = Carrito::getOfertas();
         
-        $pedido = $service->crearPedidoDesdeCarrito($clienteId, $tipo, Carrito::getItemsRaw());
+        $pedido = $service->crearPedidoDesdeCarrito($clienteId, $tipo, Carrito::getItemsRaw(), $ofertas);
         
         if ($pedido) {
             // Si paga con tarjeta, marcar como pagado directamente
@@ -56,6 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Si paga al camarero, queda en estado 'recibido'
             
             Carrito::vaciar();
+            Carrito::limpiarOfertas();
             header('Location: confirmacion.php?id=' . $pedido->id);
             exit();
         } else {
@@ -73,6 +94,19 @@ if (!empty($errores)) {
     $erroresHtml .= '</ul></div>';
 }
 
+// HTML del resumen con descuentos
+$resumenDescuentoHtml = '';
+if ($descuentoTotal > 0) {
+    $resumenDescuentoHtml = <<<HTML
+    <p style="color:#28a745;"><strong>Descuento aplicado: -{$totalDescuentoFormateado} €</strong></p>
+    <p style="font-size:1.2em;color:#28a745;margin-top:10px;"><strong>Total a pagar: {$totalConDescuentoFormateado} €</strong></p>
+HTML;
+} else {
+    $resumenDescuentoHtml = <<<HTML
+    <p style="font-size:1.2em;"><strong>Total a pagar: {$totalFormateado} €</strong></p>
+HTML;
+}
+
 $contenidoPrincipal = <<<HTML
 <h1>Pago del Pedido</h1>
 
@@ -80,7 +114,8 @@ $contenidoPrincipal = <<<HTML
 
 <div style="background:white;padding:20px;border-radius:8px;border:1px solid #ddd;margin-bottom:20px;">
     <h3>Resumen del pedido</h3>
-    <p><strong>Total a pagar: {$total} €</strong></p>
+    <p><strong>Subtotal: {$totalFormateado} €</strong></p>
+    {$resumenDescuentoHtml}
 </div>
 
 <form method="POST">
