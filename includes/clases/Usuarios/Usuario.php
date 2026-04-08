@@ -42,7 +42,7 @@ class Usuario
         foreach ($roles as $rol) {
             if ($rol['prioridad'] > $maxPrio) {
                 $maxPrio = $rol['prioridad'];
-                $usuario->rolActual = $rol['nombre'];
+                $usuario->rolActual = $rol['id'];
             }
         }
         
@@ -59,14 +59,20 @@ class Usuario
     public function getAvatar() { return $this->avatar; }
     public function getRolActual() { return $this->rolActual; }
     
-    // Comprueba si tiene un rol específico
-    public function tieneRol($rolId)
-    {
-        foreach ($this->roles as $rol) {
-            if ($rol['id'] == $rolId) return true;
-        }
+public function tieneRol($rolId)
+{
+    if (empty($this->roles)) {
         return false;
     }
+    
+    foreach ($this->roles as $rol) {
+        $id = $rol['id'] ?? null;
+        if ($id && $id == $rolId) {
+            return true;
+        }
+    }
+    return false;
+}
     
     // Comprueba si tiene permiso según prioridad mínima
     public function tienePermiso($prioridadMinima)
@@ -133,17 +139,24 @@ class Usuario
                 $this->id
             );
             
+            error_log("cargaRoles query para usuario {$this->id}: " . $query);
+            
             $rs = $conn->query($query);
             
             if ($rs) {
                 $this->roles = [];
+                $count = 0;
                 while ($fila = $rs->fetch_assoc()) {
                     $this->roles[] = $fila;
+                    $count++;
                     if ($this->rolActual === null) {
                         $this->rolActual = $fila['id'];
                     }
                 }
                 $rs->free();
+                error_log("cargaRoles: cargados {$count} roles para usuario {$this->id}");
+            } else {
+                error_log("cargaRoles: error en query - " . $conn->error);
             }
         } catch (\Exception $e) {
             error_log("Error en cargaRoles: " . $e->getMessage());
