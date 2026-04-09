@@ -24,10 +24,11 @@ date_default_timezone_set('Europe/Madrid');
 
 spl_autoload_register(function ($class) {
     $prefix = 'es\\ucm\\fdi\\aw\\';
-    $base_dir = RUTA_CLASES . '/'; 
+    $base_dir = RUTA_CLASES . '/';
 
     $len = strlen($prefix);
-    if (strncmp($prefix, $class, $len) !== 0) return;
+    if (strncmp($prefix, $class, $len) !== 0)
+        return;
 
     $relative_class = substr($class, $len);
     $file = $base_dir . str_replace('\\', '/', $relative_class) . '.php';
@@ -38,19 +39,22 @@ spl_autoload_register(function ($class) {
 });
 
 $bdDatosConexion = [
-    /*
+
     //LOCALHOST
     'host' => 'localhost',
-    'bd'   => 'bistro_fdi',
+    'bd' => 'bistro_fdi',
     'user' => 'root',
     'pass' => ''
-    */
 
-    //VPS
-    'host' => 'vm020.db.swarm.test',
-    'bd'   => 'bistro_fdi',
-    'user' => 'root',
-    'pass' => '_OMmSLCCsgzr_TUVC4Ip'
+
+    
+/*
+     //VPS
+     'host' => 'vm020.db.swarm.test',
+     'bd'   => 'bistro_fdi',
+     'user' => 'root',
+     'pass' => '_OMmSLCCsgzr_TUVC4Ip'
+     */
 
 ];
 
@@ -58,7 +62,8 @@ try {
     $app = \es\ucm\fdi\aw\Aplicacion::getInstance();
     $app->init($bdDatosConexion);
     register_shutdown_function([$app, 'shutdown']);
-} catch (Exception $e) {
+}
+catch (Exception $e) {
     error_log("Error al inicializar la aplicación: " . $e->getMessage());
     die("Error crítico: No se pudo conectar con la base de datos.");
 }
@@ -68,14 +73,17 @@ define('ROL_CAMARERO', 2);
 define('ROL_COCINERO', 3);
 define('ROL_GERENTE', 4);
 
-function estaLogueado() {
+function estaLogueado()
+{
     return isset($_SESSION['login']) && $_SESSION['login'] === true;
 }
 
-function esAdmin() {
+function esAdmin()
+{
     return estaLogueado() && isset($_SESSION['rol']) && $_SESSION['rol'] == ROL_GERENTE;
 }
 
-function nombreUsuarioLogueado() {
+function nombreUsuarioLogueado()
+{
     return $_SESSION['nombre'] ?? 'Invitado';
 }

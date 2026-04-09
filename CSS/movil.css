@@ -1,0 +1,56 @@
+/* ===== ESTILOS RESPONSIVE (MÓVILES) ===== */
+/* Archivo importado mediante media query para resolución < 768px */
+
+.content {
+    grid-template-columns: 1fr;
+    grid-template-areas: "nav" "main" "aside";
+}
+nav, main, aside, navder {
+    width: 100%;
+    min-height: auto;
+}
+header {
+    min-height: 80px; padding: 15px;
+}
+.lista-pedidos {
+    flex-direction: column; gap: 10px;
+}
+.pedido-card {
+    flex: 0 1 100%; min-width: 100%;
+}
+.pedidos-dashboard-header {
+    flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 10px;
+}
+.usuario-info-badge {
+    width: 100%; justify-content: flex-start;
+}
+.panel-tarjetas {
+    flex-direction: column; gap: 15px; justify-content: flex-start;
+}
+.tarjeta {
+    flex: 0 1 100%; min-width: 100%;
+}
+.formFieldWrapper input, .formFieldWrapper textarea, .formFieldWrapper select {
+    font-size: 16px; padding: 10px;
+}
+.formButtons {
+    justify-content: center; gap: 8px;
+}
+.formButtons button, .formButtons input[type="submit"], .formButtons input[type="reset"] {
+    flex: 1; min-height: 44px;
+}
+nav a, navder a {
+    padding: 10px; font-size: 0.95em;
+}
+main {
+    min-height: auto; overflow-y: auto;
+}
+main p {
+    font-size: 0.95em;
+}
+h2 {
+    font-size: 1.3em;
+}
+img {
+    max-width: 100%;
+}

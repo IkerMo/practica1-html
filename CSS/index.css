@@ -5,22 +5,17 @@ body {
     font-family: Arial, sans-serif;
 }
 
-div#contenedor {
-    width: 1100px;
-    margin: 30px auto;
-    border: 1px solid black;
-    background-color: #f8f5f2; /* Tu color crema */
-    overflow: hidden; /* Importante: para contener los floats */
-}
+.container { display: grid; grid-template-rows: auto 1fr auto; min-height: 100vh; }
+.content { display: grid; grid-template-columns: 200px 1fr 200px; }
 
 /* ===== HEADER ===== */
 header {
     padding: 30px;
-    height: 100px;
+    min-height: 110px;
     background-color: #8b0000; /* Tu rojo */
     color: white;
     box-sizing: border-box;
-    width: 100%; /* Asegura que ocupe todo el ancho */
+    width: 100%;
 }
 
 header h1 {
@@ -47,20 +42,22 @@ div.saludo {
     margin-top: 10px;
 }
 
-/* ===== NAVEGACIÓN IZQUIERDA ===== */
+/* ===== NAVEGACIÃ“N IZQUIERDA ===== */
 nav {
     padding: 15px;
-    float: left;
     width: 200px;
-    min-height: 500px;  /* Altura mínima */
-    background-color: #f0e9e2; /* Un tono más oscuro que el fondo */
+    background: #f0e9e2;
+    overflow-y: auto;
     box-sizing: border-box;
     border-right: 1px solid #d4c9c0;
 }
 
 nav ul {
+    display: flex;
+    flex-direction: column;
     list-style: none;
     padding: 0;
+    gap: 5px;
     margin: 0;
 }
 
@@ -85,7 +82,7 @@ nav a:hover {
     text-decoration: none;
 }
 
-/* Títulos dentro del nav */
+/* TÃ­tulos dentro del nav */
 nav h3, nav h4 {
     color: #333;
     margin-top: 0;
@@ -100,20 +97,22 @@ nav h4 {
     border-bottom: 1px solid #d4c9c0;
 }
 
-/* ===== NAVEGACIÓN Derecha ===== */
-navder {
+/* ===== NAVEGACIÃ“N Derecha ===== */
+navder, aside {
     padding: 15px;
-    float: right;
     width: 200px;
-    min-height: 500px;  /* Altura mínima */
-    background-color: #f0e9e2; /* Un tono más oscuro que el fondo */
+    background: #f0e9e2;
+    overflow-y: auto;
     box-sizing: border-box;
-    border-right: 1px solid #d4c9c0;
+    border-left: 1px solid #d4c9c0;
 }
 
 navder ul {
+    display: flex;
+    flex-direction: column;
     list-style: none;
     padding: 0;
+    gap: 5px;
     margin: 0;
 }
 
@@ -138,7 +137,7 @@ navder a:hover {
     text-decoration: none;
 }
 
-/* Títulos dentro del nav */
+/* TÃ­tulos dentro del nav */
 navder h3, navder h4 {
     color: #333;
     margin-top: 0;
@@ -164,10 +163,9 @@ navder h4 {
 /* ===== CONTENIDO PRINCIPAL ===== */
 main {
     padding: 20px;
-    float: left;
-    min-height: 600px;
-    width: 560px; /* 1100 - 200 (nav) - 40 (padding) - 30 (margenes) */
-    background-color: #f8f5f2;
+    flex: 1;
+    background: #f8f5f2;
+    overflow-y: auto;
     box-sizing: border-box;
     color: #333; /* IMPORTANTE: color de texto */
 }
@@ -179,7 +177,6 @@ main h1, main h2, main h3, main p, main li {
 
 /* ===== FOOTER ===== */
 footer {
-    clear: both;
     padding: 20px;
     background-color: #8b0000; /* Tu rojo */
     color: white;
@@ -188,7 +185,7 @@ footer {
     box-sizing: border-box;
 }
 
-/* ===== TÍTULOS ===== */
+/* ===== TÃTULOS ===== */
 h1 {
     margin-top: 0;
     color: #8b0000;
@@ -206,7 +203,7 @@ h3 {
     color: #8b0000;
 }
 
-/* ===== PÁRRAFOS ===== */
+/* ===== PÃRRAFOS ===== */
 p {
     line-height: 1.6;
     margin: 0 0 20px 0;
@@ -219,7 +216,7 @@ ul, ol {
     line-height: 1.6;
 }
 
-/* ===== IMÁGENES ===== */
+/* ===== IMÃGENES ===== */
 img {
     max-width: 100%;
     height: auto;
@@ -356,7 +353,7 @@ input[type="reset"]:hover, .btn-secondary:hover {
     background-color: #e0d9d2;
 }
 
-/* Botón con estilo de enlace */
+/* BotÃ³n con estilo de enlace */
 form button.enlace, form button.enlace:visited {
     color: #8b0000;
     font-weight: bold;
@@ -493,7 +490,7 @@ a.deshabilitado {
     }
     
     main {
-        width: calc(95% - 230px); /* Ajuste dinámico */
+        width: calc(95% - 230px); /* Ajuste dinÃ¡mico */
     }
 }
 
@@ -518,13 +515,13 @@ a.deshabilitado {
 }
 
     /* =========================================
-   NUEVO DISEÑO DE TARJETAS PARA EL INICIO
+   NUEVO DISEÃ‘O DE TARJETAS PARA EL INICIO
    
    ========================================= */
 
 /* Contenedor principal del contenido */
 .main-content {
-    text-align: center; /* Centra el título y subtítulo */
+    text-align: center; /* Centra el tÃ­tulo y subtÃ­tulo */
     padding: 20px;
 }
 
@@ -539,12 +536,12 @@ a.deshabilitado {
     font-size: 1.1em;
 }
 
-/* Contenedor de la cuadrícula de tarjetas */
+/* Contenedor de la cuadrÃ­cula de tarjetas */
 .panel-tarjetas {
     display: flex;
-    flex-wrap: wrap; /* Permite que bajen de línea si no caben */
+    flex-wrap: wrap; /* Permite que bajen de lÃ­nea si no caben */
     gap: 25px;       /* Espacio entre tarjetas */
-    justify-content: center; /* Centra las tarjetas en la página */
+    justify-content: center; /* Centra las tarjetas en la pÃ¡gina */
     padding: 20px 0;
 }
 
@@ -560,14 +557,14 @@ a.deshabilitado {
     display: flex;
     flex-direction: column; /* Elementos en vertical */
     align-items: center;    /* Centra elementos horizontalmente */
-    transition: all 0.3s ease; /* Animación suave para el hover */
+    transition: all 0.3s ease; /* AnimaciÃ³n suave para el hover */
     box-shadow: 0 4px 6px rgba(0,0,0,0.05); /* Sombra muy suave */
 }
 
-/* EFECTO HOVER: Al pasar el ratón */
+/* EFECTO HOVER: Al pasar el ratÃ³n */
 .tarjeta:hover {
     transform: translateY(-8px); /* Levanta la tarjeta */
-    box-shadow: 0 12px 20px rgba(139, 0, 0, 0.15); /* Sombra más pronunciada y rojiza */
+    box-shadow: 0 12px 20px rgba(139, 0, 0, 0.15); /* Sombra mÃ¡s pronunciada y rojiza */
     border-color: #8b0000; /* Borde rojo Bistro */
 }
 
@@ -576,7 +573,7 @@ a.deshabilitado {
     background-color: #fdfaf7; /* Fondo muy suave para el icono */
     width: 80px;
     height: 80px;
-    border-radius: 50%; /* Círculo */
+    border-radius: 50%; /* CÃ­rculo */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -595,7 +592,7 @@ a.deshabilitado {
     max-height: 50px;
 }
 
-/* Título de la tarjeta */
+/* TÃ­tulo de la tarjeta */
 .tarjeta h3 {
     margin: 0 0 10px 0;
     color: #8b0000; /* Rojo Bistro */
@@ -603,7 +600,7 @@ a.deshabilitado {
     border: none; /* Quita cualquier borde heredado */
 }
 
-/* Descripción de la tarjeta */
+/* DescripciÃ³n de la tarjeta */
 .tarjeta p {
     margin: 0;
     font-size: 0.95em;
@@ -613,53 +610,39 @@ a.deshabilitado {
 }
 
 
-div#contenedor {
-    display: grid;
-    /* Definimos 3 columnas: 200px, el resto (1fr), y 200px */
-    grid-template-columns: 200px 1fr 200px;
-    grid-template-areas: 
-        "header header header"
-        "navizq contenido navder"
-        "footer footer footer";
-    width: 1100px;
-    margin: 30px auto;
-    overflow: visible; /* Cambiamos de hidden a visible */
+/* ===== FASE 2: CSS FLEXBOX - COMPONENTES INTERNOS ===== */
+.lista-pedidos {
+    display: flex; flex-direction: row; flex-wrap: wrap; gap: 15px;
 }
-
-header { grid-area: header; width: 100%; }
-footer { grid-area: footer; width: 100%; clear: none; }
-
-/* Asignamos cada parte a su zona del grid */
-nav { 
-    grid-area: navizq; 
-    width: 200px !important; 
-    float: none !important; 
+.pedido-card {
+    flex: 0 1 calc(33.333% - 10px); min-width: 250px;
 }
-
-main { 
-    grid-area: contenido; 
-    width: auto !important; 
-    float: none !important; 
-    padding: 20px;
+.pedidos-dashboard-header {
+    display: flex; flex-direction: row; justify-content: space-between; align-items: center;
 }
-
-navder { 
-    grid-area: navder; 
-    width: 200px !important; 
-    float: none !important; 
+.usuario-info-badge {
+    display: flex; align-items: center; gap: 10px;
 }
-
-/* Ajuste para tu portátil (Pantalla pequeña) */
-@media (max-width: 1150px) {
-    div#contenedor {
-        width: 98%;
-        /* En pantallas pequeñas, mantenemos las 3 columnas pero el main se encoge más */
-        grid-template-columns: 180px 1fr 180px; 
-    }
+.panel-tarjetas {
+    display: flex; flex-direction: row; flex-wrap: wrap; gap: 25px; justify-content: center;
+}
+.tarjeta {
+    flex: 0 1 calc(33.333% - 17px); min-width: 200px;
+}
+.formFieldWrapper {
+    display: flex; flex-direction: column; margin-bottom: 15px; width: 100%;
+}
+.formFieldWrapper label, .formFieldWrapper input, .formFieldWrapper textarea, .formFieldWrapper select {
+    width: 100%;
+}
+.formButtons {
+    display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap;
 }
 
 
-/* ===== AVATARES Y PREVISUALIZACIÓN ===== */
+
+
+/* ===== AVATARES Y PREVISUALIZACIÃ“N ===== */
 .campo-avatar {
     margin: 20px 0;
     text-align: center;
@@ -750,7 +733,7 @@ navder {
     border: 2px solid #8b0000;
 }
 
-/* ===== ESTILOS PARA ADMINISTRACIÓN ===== */
+/* ===== ESTILOS PARA ADMINISTRACIÃ“N ===== */
 .acciones-globales {
     margin: 20px 0;
     display: flex;
@@ -855,7 +838,7 @@ navder {
     color: #8b0000;
 }
 
-/* Mensajes de éxito y error */
+/* Mensajes de Ã©xito y error */
 .mensaje-exito {
     background-color: #d4edda;
     color: #155724;
@@ -903,7 +886,7 @@ navder {
     border: 1px solid #bdbdbd;
 }
 
-/* Mejora para los botones de acción */
+/* Mejora para los botones de acciÃ³n */
 .acciones {
     display: flex;
     gap: 5px;
@@ -1045,7 +1028,7 @@ navder {
 .font-xl { font-size: 1.5em !important; }
 .btn-danger { background-color: #e74c3c !important; color: white !important; }
 
-/* Clases espec�ficas para cocina */
+/* Clases específicas para cocina */
 .btn-cocina-tomar { background-color: #e67e22 !important; }
 .btn-cocina-listo { background-color: #2ecc71 !important; }
 .texto-espera { color: #e67e22; }
@@ -1065,7 +1048,7 @@ navder {
 .estado-entregado { background-color: #95a5a6; border-left: 4px solid #95a5a6; }
 .estado-cancelado { background-color: #bdc3c7; border-left: 4px solid #bdc3c7; }
 
-/* Utilidades adicionales de dise�o */
+/* Utilidades adicionales de diseño */
 .flex-between { display: flex !important; justify-content: space-between !important; align-items: center !important; }
 .icon-small { font-size: 0.9em !important; }
 .color-gray { color: #888 !important; }
@@ -1073,7 +1056,7 @@ navder {
 .tabla-pedidos { width: 100%; border-collapse: collapse; background: white; }
 .tabla-pedidos th, .tabla-pedidos td { padding: 10px; border-bottom: 1px solid #ddd; }
 
-/* Estilos para Productos y Categor�as */
+/* Estilos para Productos y Categorías */
 .productos-grid, .categorias-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
 .categorias-grid { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); }
 
@@ -1103,7 +1086,7 @@ navder {
 .mb-5 { margin-bottom: 5px !important; }
 .mr-10 { margin-right: 10px !important; }
 
-/* M�s utilidades */
+/* Más utilidades */
 .mt-15 { margin-top: 15px !important; }
 .mb-15 { margin-bottom: 15px !important; }
 .mt-0 { margin-top: 0 !important; }
