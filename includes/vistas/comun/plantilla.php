@@ -9,6 +9,9 @@
 </head>
 <body>
     <div class="container">
+        <!-- Hamburger toggle (CSS-only, hidden on desktop) -->
+        <input type="checkbox" id="hamburger-toggle" class="hamburger-toggle" aria-hidden="true">
+
         <?php
             include RAIZ_APP . '/includes/vistas/comun/cabecera.php';
         ?>

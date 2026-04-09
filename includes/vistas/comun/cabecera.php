@@ -12,5 +12,9 @@ function mostrarSaludo() {
 ?>
 <header>
     <h1>Bistro FDI</h1>
-
+    <label for="hamburger-toggle" class="hamburger-btn" aria-label="Menú">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+    </label>
 </header>

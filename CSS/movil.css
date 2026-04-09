@@ -1,56 +1,508 @@
-/* ===== ESTILOS RESPONSIVE (MÓVILES) ===== */
-/* Archivo importado mediante media query para resolución < 768px */
+/* ===== ESTILOS RESPONSIVE (MÓVIL < 768px) ===== */
+/* Importado via media query en plantilla.php */
 
+/* ── KEYFRAMES ── */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideDown {
+    from { max-height: 0; opacity: 0; }
+    to   { max-height: 600px; opacity: 1; }
+}
+
+/* ── CONTAINER ── */
+.container {
+    margin: 0;
+    border-radius: 0;
+    box-shadow: none;
+    max-width: 100%;
+}
+
+/* ── GRID LAYOUT ── */
 .content {
     grid-template-columns: 1fr;
     grid-template-areas: "nav" "main" "aside";
 }
-nav, main, aside, navder {
+
+/* ── HEADER ── */
+header {
+    min-height: auto;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+header h1 {
+    font-size: 1.4em;
+    margin: 0;
+}
+
+/* ── HAMBURGER TOGGLE ── */
+.hamburger-toggle {
+    display: none; /* hidden on desktop */
+}
+
+.hamburger-btn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 44px;
+    height: 44px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.25s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.hamburger-btn:hover,
+.hamburger-btn:active {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+.hamburger-line {
+    display: block;
+    width: 24px;
+    height: 2.5px;
+    background: white;
+    border-radius: 2px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    margin: 3px 0;
+}
+
+/* Animación hamburger → X */
+.hamburger-toggle:checked ~ header .hamburger-btn .hamburger-line:nth-child(1) {
+    transform: translateY(8.5px) rotate(45deg);
+}
+
+.hamburger-toggle:checked ~ header .hamburger-btn .hamburger-line:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+}
+
+.hamburger-toggle:checked ~ header .hamburger-btn .hamburger-line:nth-child(3) {
+    transform: translateY(-8.5px) rotate(-45deg);
+}
+
+/* ── NAVEGACIÓN IZQUIERDA (COLAPSABLE) ── */
+nav {
+    width: 100%;
+    max-height: 0;
+    overflow: hidden;
+    padding: 0 20px;
+    border-right: none;
+    border-bottom: 1px solid #d4c9c0;
+    background: #f0e9e2;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                padding 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.3s ease;
+    opacity: 0;
+    box-sizing: border-box;
+}
+
+.hamburger-toggle:checked ~ .content nav {
+    max-height: 600px;
+    padding: 15px 20px;
+    opacity: 1;
+}
+
+nav ul {
+    gap: 2px;
+}
+
+nav ul li {
+    margin: 0;
+}
+
+nav a, nav a:visited {
+    padding: 12px 16px;
+    font-size: 1em;
+    border-radius: 8px;
+    transition: background-color 0.25s ease, padding-left 0.25s ease, transform 0.15s ease;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+}
+
+nav a:active {
+    transform: scale(0.97);
+    background-color: #e8e0d8;
+}
+
+/* ── NAVEGACIÓN DERECHA (OCULTA EN MÓVIL) ── */
+navder, aside {
+    display: none;
+}
+
+/* ── MAIN ── */
+main {
     width: 100%;
     min-height: auto;
+    overflow-y: auto;
+    padding: 16px;
+    animation: fadeInUp 0.4s ease-out;
 }
-header {
-    min-height: 80px; padding: 15px;
-}
-.lista-pedidos {
-    flex-direction: column; gap: 10px;
-}
-.pedido-card {
-    flex: 0 1 100%; min-width: 100%;
-}
-.pedidos-dashboard-header {
-    flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 10px;
-}
-.usuario-info-badge {
-    width: 100%; justify-content: flex-start;
-}
-.panel-tarjetas {
-    flex-direction: column; gap: 15px; justify-content: flex-start;
-}
-.tarjeta {
-    flex: 0 1 100%; min-width: 100%;
-}
-.formFieldWrapper input, .formFieldWrapper textarea, .formFieldWrapper select {
-    font-size: 16px; padding: 10px;
-}
-.formButtons {
-    justify-content: center; gap: 8px;
-}
-.formButtons button, .formButtons input[type="submit"], .formButtons input[type="reset"] {
-    flex: 1; min-height: 44px;
-}
-nav a, navder a {
-    padding: 10px; font-size: 0.95em;
-}
-main {
-    min-height: auto; overflow-y: auto;
-}
+
 main p {
     font-size: 0.95em;
+    line-height: 1.7;
 }
+
+/* ── TÍTULOS ── */
+h1 {
+    font-size: 1.5em;
+}
+
 h2 {
-    font-size: 1.3em;
+    font-size: 1.25em;
+    margin-top: 20px;
 }
+
+h3 {
+    font-size: 1.1em;
+}
+
+/* ── TARJETAS DEL PANEL INICIO ── */
+.panel-tarjetas {
+    flex-direction: column;
+    gap: 12px;
+    justify-content: flex-start;
+    align-items: stretch;
+    padding: 10px 0;
+}
+
+.tarjeta {
+    flex: 0 1 100%;
+    min-width: 100%;
+    flex-direction: row;
+    padding: 16px 20px;
+    border-radius: 12px;
+    gap: 16px;
+    animation: fadeInUp 0.5s ease-out both;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.tarjeta:nth-child(1) { animation-delay: 0.05s; }
+.tarjeta:nth-child(2) { animation-delay: 0.10s; }
+.tarjeta:nth-child(3) { animation-delay: 0.15s; }
+.tarjeta:nth-child(4) { animation-delay: 0.20s; }
+.tarjeta:nth-child(5) { animation-delay: 0.25s; }
+
+.tarjeta:active {
+    transform: scale(0.97);
+    box-shadow: 0 2px 8px rgba(139, 0, 0, 0.12);
+}
+
+.tarjeta:hover {
+    transform: none; /* Sin levitación en móvil, es raro al tocar */
+}
+
+.icono-contenedor {
+    width: 56px;
+    height: 56px;
+    margin-bottom: 0;
+    flex-shrink: 0;
+}
+
+.icono {
+    font-size: 28px;
+}
+
+.tarjeta h3 {
+    font-size: 1.1em;
+    margin: 0 0 4px 0;
+    text-align: left;
+}
+
+.tarjeta p {
+    font-size: 0.85em;
+    text-align: left;
+    margin: 0;
+}
+
+/* ── PEDIDOS ── */
+.pedidos-dashboard-header {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.usuario-info-badge {
+    width: 100%;
+    justify-content: flex-start;
+}
+
+.lista-pedidos {
+    flex-direction: column;
+    gap: 12px;
+}
+
+.pedido-card {
+    flex: 0 1 100%;
+    min-width: 100%;
+    border-radius: 12px;
+    animation: fadeInUp 0.4s ease-out both;
+}
+
+.pedido-card:nth-child(1) { animation-delay: 0.05s; }
+.pedido-card:nth-child(2) { animation-delay: 0.10s; }
+.pedido-card:nth-child(3) { animation-delay: 0.15s; }
+
+.pedido-card-footer {
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch;
+}
+
+/* ── FORMULARIOS TOUCH-FRIENDLY ── */
+.formFieldWrapper input,
+.formFieldWrapper textarea,
+.formFieldWrapper select {
+    font-size: 16px; /* Evita zoom en iOS */
+    padding: 12px 14px;
+    min-height: 48px;
+    border-radius: 8px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.formFieldWrapper input:focus,
+.formFieldWrapper textarea:focus,
+.formFieldWrapper select:focus {
+    box-shadow: 0 0 0 3px rgba(139, 0, 0, 0.15);
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+textarea,
+select {
+    font-size: 16px;
+    min-height: 48px;
+    border-radius: 8px;
+}
+
+.formButtons {
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.formButtons button,
+.formButtons input[type="submit"],
+.formButtons input[type="reset"] {
+    flex: 1;
+    min-height: 48px;
+    border-radius: 8px;
+    font-size: 1em;
+    transition: transform 0.15s ease, background-color 0.25s ease;
+}
+
+.formButtons button:active,
+.formButtons input[type="submit"]:active,
+.formButtons input[type="reset"]:active {
+    transform: scale(0.97);
+}
+
+/* ── BOTONES GENERALES ── */
+button, a.boton, input[type="submit"], input[type="button"], input[type="reset"] {
+    min-height: 44px;
+    border-radius: 8px;
+    transition: transform 0.15s ease, background-color 0.25s ease;
+}
+
+button:active, a.boton:active, input[type="submit"]:active, input[type="button"]:active, input[type="reset"]:active {
+    transform: scale(0.97);
+}
+
+.btn-pedido {
+    min-height: 48px;
+    width: 100%;
+    border-radius: 8px;
+    font-size: 1em;
+}
+
+/* ── TABLAS RESPONSIVE ── */
+table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 8px;
+}
+
+.tabla-usuarios {
+    min-width: 600px;
+}
+
+.acciones {
+    flex-wrap: nowrap;
+    gap: 4px;
+}
+
+.btn-ver, .btn-editar, .btn-rol, .btn-borrar, .btn-activar {
+    padding: 8px 10px;
+    min-height: 36px;
+    font-size: 0.8em;
+    border-radius: 6px;
+}
+
+/* ── DETAIL PAGES ── */
+.usuario-detalle {
+    flex-direction: column;
+    gap: 20px;
+}
+
+.detalle-avatar {
+    flex: none;
+    display: flex;
+    justify-content: center;
+}
+
+.avatar-grande {
+    width: 120px;
+    height: 120px;
+}
+
+.detalle-contenedor {
+    flex-direction: column;
+    gap: 20px;
+    padding: 15px;
+}
+
+/* ── PRODUCTOS GRID ── */
+.productos-grid, .categorias-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+}
+
+.grid-carta {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 10px;
+}
+
+.card-producto-mini {
+    border-radius: 10px;
+    transition: box-shadow 0.2s ease;
+}
+
+.img-carta {
+    height: 100px;
+    border-radius: 8px;
+}
+
+/* ── SELECTOR NUEVO PEDIDO ── */
+.btn-selector {
+    width: 100%;
+    height: auto;
+    min-height: 120px;
+    padding: 20px;
+    border-radius: 12px;
+}
+
+/* ── NAV CATEGORÍAS ── */
+.nav-categorias {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 8px;
+    gap: 6px;
+}
+
+.btn-cat {
+    flex-shrink: 0;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+}
+
+/* ── IMÁGENES ── */
 img {
     max-width: 100%;
+}
+
+.img-miembro, .w-400 {
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+    display: block;
+}
+
+/* ── MENSAJES FLOTANTES ── */
+.mensajes {
+    width: calc(100% - 20px);
+    right: 10px;
+    top: 10px;
+}
+
+/* ── OFERTAS ── */
+.offer-item {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 8px;
+}
+
+/* ── PRECIO ── */
+.precio-caja {
+    padding: 15px;
+}
+
+.precio-destacado {
+    font-size: 1.3em;
+}
+
+/* ── FOOTER ── */
+footer {
+    padding: 20px 16px;
+    font-size: 0.9em;
+}
+
+/* ── SALUDO ── */
+div.saludo {
+    text-align: center;
+    font-size: 0.9em;
+    margin-top: 8px;
+}
+
+/* ── CONFIRMAR BORRADO ── */
+.confirmar-borrado {
+    margin: 20px 10px;
+    padding: 20px;
+}
+
+/* ── AVATARES ── */
+.avatar-vista-previa {
+    width: 100px;
+    height: 100px;
+}
+
+.avatar-miniatura {
+    width: 50px;
+    height: 50px;
+}
+
+.mini-previews {
+    gap: 8px;
+    padding: 12px;
+}
+
+/* ── OPCIONES RADIO ── */
+.opciones-radio {
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* ── SUAVIZADO GLOBAL ── */
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* scroll suave */
+html {
+    scroll-behavior: smooth;
 }
