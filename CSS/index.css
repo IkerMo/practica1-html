@@ -1072,3 +1072,87 @@ navder {
 .mt-8 { margin-top: 8px !important; }
 .tabla-pedidos { width: 100%; border-collapse: collapse; background: white; }
 .tabla-pedidos th, .tabla-pedidos td { padding: 10px; border-bottom: 1px solid #ddd; }
+
+/* Estilos para Productos y Categorías */
+.productos-grid, .categorias-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+.categorias-grid { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); }
+
+.img-card { width: 100%; height: 150px; object-fit: cover; border-radius: 5px; }
+.img-detalle { width: 100%; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+.img-miniatura { width: 80px; height: 80px; object-fit: cover; border-radius: 5px; border: 2px solid transparent; cursor: pointer; transition: border-color 0.2s; }
+.img-miniatura:hover { border-color: #8b0000; }
+
+.badge-categoria { background: #e0e0e0; padding: 5px 12px; border-radius: 15px; font-size: 0.8em; color: #555; display: inline-block; }
+.precio-destacado { font-size: 1.5em; font-weight: bold; color: #333; }
+.precio-caja { background: #f9f9f9; padding: 20px; border-radius: 8px; border-left: 5px solid #2ecc71; margin: 20px 0; }
+
+.detalle-contenedor { display: flex; gap: 30px; margin-top: 20px; padding: 20px; }
+.detalle-seccion { flex: 1; }
+.detalle-info { flex: 1.5; }
+
+.btn-nuevo-verde { background-color: #2ecc71 !important; color: white !important; }
+.btn-detalle { display: block; text-align: center; background: #eee; padding: 8px; text-decoration: none; color: black; border-radius: 5px; margin-top: 10px; transition: background 0.2s; }
+.btn-detalle:hover { background: #ddd; }
+
+/* Utilidades adicionales */
+.color-blue { color: #3498db !important; }
+.color-red { color: #e74c3c !important; }
+.font-small { font-size: 0.8em !important; }
+.pt-10 { padding-top: 10px !important; }
+.border-top { border-top: 1px solid #eee !important; }
+.mb-5 { margin-bottom: 5px !important; }
+.mr-10 { margin-right: 10px !important; }
+
+/* Más utilidades */
+.mt-15 { margin-top: 15px !important; }
+.mb-15 { margin-bottom: 15px !important; }
+.mt-0 { margin-top: 0 !important; }
+
+/* Utilidades finales de limpieza */
+.no-decoration { text-decoration: none !important; }
+.ml-10 { margin-left: 10px !important; }
+.py-50 { padding: 50px 0 !important; }
+.w-100 { width: 100% !important; }
+.color-maroon { color: #8b0000 !important; }
+.text-gray-center { text-align: center; color: #888; font-size: 1.2em; margin-top: 30px; }
+.btn-sm { padding: 5px 10px; font-size: 0.85em; }
+
+/* Estilos para Carrito, Pago y Ofertas */
+.offers-box { background: #f0f8f5 !important; padding: 15px !important; border-left: 4px solid #28a745 !important; border-radius: 5px !important; margin-bottom: 20px !important; }
+.offer-item { display: flex !important; justify-content: space-between !important; align-items: center !important; margin-bottom: 10px !important; padding: 10px !important; background: white !important; border-radius: 5px !important; }
+.msg-warning { background: #fff3cd !important; padding: 15px !important; border-radius: 5px !important; border: 1px solid #ffc107 !important; margin: 15px 0 !important; }
+.color-green { color: #28a745 !important; }
+.bg-light-green { background: #f0f8f5 !important; }
+.badge-tipo { background: #f0e9e2 !important; padding: 5px 12px !important; border-radius: 15px !important; font-size: 0.9em !important; }
+.btn-checkout { background: #2ecc71 !important; color: white !important; padding: 12px 30px !important; border-radius: 5px !important; text-decoration: none !important; font-size: 1.1em !important; font-weight: bold !important; display: inline-block !important; }
+
+/* Utilidades finales de imagen */
+.img-miembro { width: 400px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+.w-400 { width: 400px; }
+.p-30 { padding: 30px !important; }
+.mb-0 { margin-bottom: 0 !important; }
+.mt-0 { margin-top: 0 !important; }
+
+/* Estilos para Nuevo Pedido (Carta) */
+.btn-selector { width: 220px; height: 220px; border: 2px solid #8b0000; border-radius: 15px; background: white; cursor: pointer; font-size: 1.2em; transition: all 0.3s; padding: 20px; }
+.btn-selector:hover { background: #fdf2f2; transform: translateY(-5px); }
+.grid-carta { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px; }
+.nav-categorias { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+.btn-cat { padding: 8px 16px; text-decoration: none; border-radius: 20px; background: #eee; color: #333; font-size: 0.9em; transition: 0.2s; }
+.btn-cat-active { background: #8b0000; color: white !important; }
+.card-producto-mini { border: 1px solid #ddd; padding: 12px; border-radius: 12px; background: white; transition: 0.2s; }
+.card-producto-mini:hover { box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+.img-carta { width: 100%; height: 130px; object-fit: cover; border-radius: 8px; }
+.badge-descuento { background: #28a745; color: white; padding: 5px 10px; border-radius: 6px; margin-bottom: 10px; text-align: center; font-weight: bold; font-size: 0.85em; }
+.max-w-500 { max-width: 500px; }
+.mx-auto { margin-left: auto; margin-right: auto; }
+
+.w-50 { width: 50px !important; }
+.border-bottom-bold { border-bottom: 2px solid #8b0000; }
+.max-w-500 { max-width: 500px; }
+.mx-auto { margin-left: auto; margin-right: auto; }
+
+/* Utilidades adicionales */
+.flex-wrap { flex-wrap: wrap; }
+.img-mini-80 { width: 80px; height: 80px; object-fit: cover; border-radius: 5px; border: 1px solid #ddd; }
+.mt-5 { margin-top: 5px !important; }

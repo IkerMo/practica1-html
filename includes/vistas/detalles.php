@@ -8,7 +8,7 @@ $contenidoPrincipal = <<<EOS
     <h1>Detalles del Proyecto</h1>
     
     <figure class="logo-principal">
-        <img src="{$rutaImgs}/logo1.png" alt="Logo Bistro FDI" style="width:400px;">
+        <img src="{$rutaImgs}/logo1.png" alt="Logo Bistro FDI" class="w-400">
         <figcaption>Logo de Bistro FDI</figcaption>
     </figure>
 

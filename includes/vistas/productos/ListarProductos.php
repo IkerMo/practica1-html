@@ -33,12 +33,12 @@ $contenidoPrincipal = "<h1>Nuestra Carta</h1>";
 
 if ($esGerente) {
     $contenidoPrincipal .= '
-        <div style="margin-bottom: 20px;">
-            <a href="formularioProducto.php" class="btn btn-primario" style="background:#2ecc71; color:white; padding:10px; text-decoration:none; border-radius:5px; display:inline-block;">+ Nuevo Producto</a>
+        <div class="mb-20">
+            <a href="formularioProducto.php" class="btn-pedido btn-nuevo-verde">+ Nuevo Producto</a>
         </div>';
 }
 
-$contenidoPrincipal .= '<div class="filtros" style="margin-bottom: 20px;">';
+$contenidoPrincipal .= '<div class="filtros mb-20">';
 $contenidoPrincipal .= '<a href="ListarProductos.php?categoria=todas" class="btn">Todas</a> ';
 
 foreach ($objetosCategorias as $cat) {
@@ -46,7 +46,7 @@ foreach ($objetosCategorias as $cat) {
 }
 $contenidoPrincipal .= '</div>';
 
-$contenidoPrincipal .= '<div class="productos-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;">';
+$contenidoPrincipal .= '<div class="productos-grid">';
 
 if (empty($productos)) {
     $contenidoPrincipal .= "<p>No hay productos disponibles en esta categoría.</p>";
@@ -57,18 +57,18 @@ if (empty($productos)) {
         $nombreCat = $mapaCategorias[$p->categoria_id] ?? "Sin categoría";
 
         $contenidoPrincipal .= "
-        <div class='card' style='border: 1px solid #ddd; padding: 15px; border-radius: 10px; background: white;'>
-            <img src='$urlImg' style='width: 100%; height: 150px; object-fit: cover; border-radius: 5px;' alt='$p->nombre'>
-            <small style='color: #888;'>$nombreCat</small>
-            <h3 style='margin: 5px 0;'>$p->nombre</h3>
-            <p><strong>".number_format($p->getPrecioFinal(), 2)." €</strong></p>
+        <div class='pedido-card'>
+            <img src='$urlImg' class='img-card' alt='$p->nombre'>
+            <small class='color-gray'>$nombreCat</small>
+            <h3 class='mb-5'>$p->nombre</h3>
+            <p><strong class='font-bold'>".number_format($p->getPrecioFinal(), 2)." €</strong></p>
             <a href='detalleProducto.php?id={$p->id}' class='btn-detalle'>Ver detalles</a>";
             
             if ($esGerente) {
                 $contenidoPrincipal .= "
-                <div style='margin-top: 10px; padding-top: 10px; border-top: 1px solid #eee; font-size: 0.8em;'>
-                    <a href='formularioProducto.php?id={$p->id}' style='color:#3498db; margin-right:10px; text-decoration:none;'>Editar</a>
-                    <a href='borrarProductos.php?id={$p->id}' style='color:#e74c3c; text-decoration:none;' onclick='return confirm(\"¿Borrar producto?\")'>Borrar</a>
+                <div class='mt-8 pt-10 border-top font-small'>
+                    <a href='formularioProducto.php?id={$p->id}' class='color-blue mr-10 no-decoration'>Editar</a>
+                    <a href='borrarProductos.php?id={$p->id}' class='color-red no-decoration' onclick='return confirm(\"¿Borrar producto?\")'>Borrar</a>
                 </div>";
             }
 

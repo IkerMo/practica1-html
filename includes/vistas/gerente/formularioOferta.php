@@ -15,7 +15,7 @@ $contenidoFormulario = $formulario->gestiona();
 $tituloPagina = $id ? 'Editar Oferta' : 'Crear Oferta';
 $contenidoPrincipal = <<<HTML
 <h1>{$tituloPagina}</h1>
-<div style="background:white;padding:20px;border-radius:10px;">{$contenidoFormulario}</div>
+<div class="bg-white p-20 rounded-8 border-light">{$contenidoFormulario}</div>
 HTML;
 
 require RAIZ_APP . '/includes/vistas/comun/plantilla.php';

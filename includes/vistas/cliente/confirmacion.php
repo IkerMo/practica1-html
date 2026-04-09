@@ -40,53 +40,53 @@ $rutaRaiz = RUTA_RAIZ;
 $lineasHtml = '';
 foreach ($pedido->lineas as $l) {
     $subtotal = number_format($l->subtotal_con_iva, 2);
-    $lineasHtml .= "<tr><td>{$l->nombre_producto}</td><td style='text-align:center;'>{$l->cantidad}</td><td style='text-align:right;'>{$subtotal} €</td></tr>";
+    $lineasHtml .= "<tr><td>{$l->nombre_producto}</td><td class='text-center'>{$l->cantidad}</td><td class='text-right'>{$subtotal} €</td></tr>";
 }
 
 if ($pedido->total_descuento > 0) {
     $tfootHtml = <<<HTML
                 <tr>
-                    <td colspan="2" style="padding:5px;">Subtotal</td>
-                    <td style="padding:5px;text-align:right;">{$total_sin_descuento} €</td>
+                    <td colspan="2" class="p-5">Subtotal</td>
+                    <td class="p-5 text-right">{$total_sin_descuento} €</td>
                 </tr>
-                <tr style="color:#8b0000;">
-                    <td colspan="2" style="padding:5px;">Descuento</td>
-                    <td style="padding:5px;text-align:right;">-{$descuento} €</td>
+                <tr class="color-maroon">
+                    <td colspan="2" class="p-5">Descuento</td>
+                    <td class="p-5 text-right">-{$descuento} €</td>
                 </tr>
-                <tr style="font-weight:bold;border-top:2px solid #333;">
-                    <td colspan="2" style="padding:10px;">TOTAL</td>
-                    <td style="padding:10px;text-align:right;">{$total} €</td>
+                <tr class="font-bold border-top">
+                    <td colspan="2" class="p-10">TOTAL</td>
+                    <td class="p-10 text-right">{$total} €</td>
                 </tr>
 HTML;
 } else {
     $tfootHtml = <<<HTML
-                <tr style="font-weight:bold;border-top:2px solid #333;">
-                    <td colspan="2" style="padding:10px;">TOTAL</td>
-                    <td style="padding:10px;text-align:right;">{$total} €</td>
+                <tr class="font-bold border-top">
+                    <td colspan="2" class="p-10">TOTAL</td>
+                    <td class="p-10 text-right">{$total} €</td>
                 </tr>
 HTML;
 }
 
 $contenidoPrincipal = <<<HTML
-<div style="text-align:center;margin-top:30px;">
-    <div style="font-size:4em;">✅</div>
+<div class="text-center mt-30">
+    <div class="font-xl">✅</div>
     <h1>¡Pedido Confirmado!</h1>
     
-    <div style="background:white;padding:30px;border-radius:10px;border:1px solid #ddd;max-width:500px;margin:20px auto;">
-        <div style="font-size:3em;color:#8b0000;font-weight:bold;">Nº {$pedido->numero_pedido}</div>
-        <p style="color:#888;">Este es tu número de pedido de hoy</p>
+    <div class="bg-white p-30 rounded-8 border-light max-w-500 mx-auto mt-20 mb-20">
+        <div class="font-xl color-maroon font-bold">Nº {$pedido->numero_pedido}</div>
+        <p class="color-gray">Este es tu número de pedido de hoy</p>
         
-        <div style="background:#f9f9f9;padding:15px;border-radius:5px;margin:15px 0;">
-            <p style="margin:0;"><strong>Estado:</strong> {$estadoActual}</p>
-            <p style="margin:5px 0 0;"><strong>Tipo:</strong> {$tipoLabel}</p>
+        <div class="bg-light p-15 rounded-5 mb-15 mt-15">
+            <p class="mb-0"><strong>Estado:</strong> {$estadoActual}</p>
+            <p class="mt-5 mb-0"><strong>Tipo:</strong> {$tipoLabel}</p>
         </div>
         
-        <table style="width:100%;border-collapse:collapse;margin:15px 0;">
+        <table class="tabla-pedidos mb-15 mt-15">
             <thead>
-                <tr style="border-bottom:2px solid #8b0000;">
-                    <th style="padding:8px;text-align:left;">Producto</th>
-                    <th style="padding:8px;text-align:center;">Cant.</th>
-                    <th style="padding:8px;text-align:right;">Subtotal</th>
+                <tr class="border-bottom-bold">
+                    <th class="p-8 text-left">Producto</th>
+                    <th class="p-8 text-center">Cant.</th>
+                    <th class="p-8 text-right">Subtotal</th>
                 </tr>
             </thead>
             <tbody>
@@ -98,12 +98,12 @@ $contenidoPrincipal = <<<HTML
         </table>
     </div>
     
-    <a href="{$rutaRaiz}inicio.php" style="background:#8b0000;color:white;padding:12px 30px;border-radius:5px;text-decoration:none;font-size:1.1em;display:inline-block;margin-top:15px;">
+    <a href="{$rutaRaiz}inicio.php" class="btn-checkout mt-15">
         Volver al Inicio
     </a>
     
-    <div style="margin-top:10px;">
-        <a href="mis-pedidos.php" style="color:#8b0000;text-decoration:none;">Ver todos mis pedidos →</a>
+    <div class="mt-10">
+        <a href="mis-pedidos.php" class="color-maroon no-decoration">Ver todos mis pedidos →</a>
     </div>
 </div>
 HTML;

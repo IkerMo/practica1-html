@@ -64,10 +64,10 @@ $tituloPagina = 'Mi Carrito';
 if (Carrito::estaVacio()) {
     $contenidoPrincipal = <<<HTML
     <h1>Mi Carrito</h1>
-    <div style="text-align:center;padding:50px 0;">
-        <div style="font-size:4em;">🛒</div>
-        <p style="font-size:1.2em;color:#888;">Tu carrito está vacío</p>
-        <a href="nuevo-pedido.php" style="background:#8b0000;color:white;padding:10px 25px;border-radius:5px;text-decoration:none;">Ver la Carta</a>
+    <div class="text-center py-50">
+        <div class="font-xl">🛒</div>
+        <p class="font-lg color-gray">Tu carrito está vacío</p>
+        <a href="nuevo-pedido.php" class="btn-pedido btn-primary no-decoration">Ver la Carta</a>
     </div>
 HTML;
 } else {
@@ -78,24 +78,24 @@ HTML;
         
         $lineasHtml .= <<<HTML
         <tr>
-            <td><img src="{$img}" style="width:50px;height:50px;object-fit:cover;border-radius:5px;"></td>
+            <td><img src="{$img}" class="img-miniatura"></td>
             <td>{$item['nombre']}</td>
             <td>{$item['iva']}%</td>
-            <td style="text-align:right;">{$subtotal} €</td>
+            <td class="text-right">{$subtotal} €</td>
             <td>
-                <form method="POST" style="display:flex;gap:5px;align-items:center;">
+                <form method="POST" class="flex-gap-5 align-center">
                     <input type="hidden" name="accion" value="actualizar">
                     <input type="hidden" name="producto_id" value="{$item['producto_id']}">
                     <input type="number" name="cantidad" value="{$item['cantidad']}" min="1" max="20" 
-                           style="width:50px;padding:4px;text-align:center;border:1px solid #ddd;border-radius:3px;"
+                           class="p-5 text-center border-light rounded-8 w-50"
                            onchange="this.form.submit()">
                 </form>
             </td>
             <td>
-                <form method="POST" style="display:inline;">
+                <form method="POST" class="inline">
                     <input type="hidden" name="accion" value="eliminar">
                     <input type="hidden" name="producto_id" value="{$item['producto_id']}">
-                    <button type="submit" style="background:#e74c3c;color:white;border:none;padding:5px 10px;border-radius:3px;cursor:pointer;">✕</button>
+                    <button type="submit" class="btn-pedido btn-danger btn-sm">✕</button>
                 </form>
             </td>
         </tr>
@@ -109,19 +109,19 @@ HTML;
     // HTML de ofertas aplicadas
     $ofertasAplicadasHtml = '';
     if (!empty($ofertasAplicadasInfo)) {
-        $ofertasAplicadasHtml = '<hr style="margin:20px 0;"><h2 style="font-size:1.2em;margin:15px 0;">🎉 Descuentos Aplicados</h2><div style="background:#f0f8f5;padding:15px;border-left:4px solid #28a745;border-radius:5px;margin-bottom:20px;">';
+        $ofertasAplicadasHtml = '<hr class="mb-20 mt-20"><h2 class="font-lg mb-15 mt-15">🎉 Descuentos Aplicados</h2><div class="offers-box">';
         foreach ($ofertasAplicadasInfo as $of) {
             $descuentoFormato = number_format($of['descuento'], 2);
             $ofertasAplicadasHtml .= <<<HTML
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;padding:10px;background:white;border-radius:5px;">
+            <div class="offer-item">
                 <div>
-                    <strong style="color:#28a745;">{$of['nombre']}</strong><br>
-                    <small style="color:#666;">Descuento: -{$descuentoFormato} €</small>
+                    <strong class="color-green">{$of['nombre']}</strong><br>
+                    <small class="color-gray">Descuento: -{$descuentoFormato} €</small>
                 </div>
-                <form method="POST" style="display:inline;">
+                <form method="POST" class="inline">
                     <input type="hidden" name="accion" value="eliminar_oferta">
                     <input type="hidden" name="oferta_id" value="{$of['id']}">
-                    <button type="submit" style="background:#e74c3c;color:white;border:none;padding:5px 10px;border-radius:3px;cursor:pointer;font-size:0.9em;">Quitar</button>
+                    <button type="submit" class="btn-pedido btn-danger btn-sm">Quitar</button>
                 </form>
             </div>
 HTML;
@@ -130,42 +130,42 @@ HTML;
     }
     
     $contenidoPrincipal = <<<HTML
-    <div style="display:flex;justify-content:space-between;align-items:center;">
+    <div class="flex-between">
         <h1>Mi Carrito</h1>
-        <span style="background:#f0e9e2;padding:5px 12px;border-radius:15px;font-size:0.9em;">{$tipoLabel}</span>
+        <span class="badge-tipo">{$tipoLabel}</span>
     </div>
     
-    <table style="width:100%;border-collapse:collapse;margin:20px 0;background:white;">
+    <table class="tabla-pedidos mb-20 mt-20">
         <thead>
-            <tr style="background:#8b0000;color:white;">
-                <th style="padding:10px;">Imagen</th>
-                <th style="padding:10px;text-align:left;">Producto</th>
-                <th style="padding:10px;">IVA</th>
-                <th style="padding:10px;text-align:right;">Subtotal</th>
-                <th style="padding:10px;">Cantidad</th>
-                <th style="padding:10px;">Quitar</th>
+            <tr class="header-maroon">
+                <th class="p-10">Imagen</th>
+                <th class="p-10 text-left">Producto</th>
+                <th class="p-10">IVA</th>
+                <th class="p-10 text-right">Subtotal</th>
+                <th class="p-10">Cantidad</th>
+                <th class="p-10">Quitar</th>
             </tr>
         </thead>
         <tbody>
             {$lineasHtml}
         </tbody>
         <tfoot>
-            <tr style="font-weight:bold;font-size:1.2em;">
-                <td colspan="3" style="padding:15px;text-align:right;">TOTAL (IVA incluido):</td>
-                <td style="padding:15px;text-align:right;">{$totalFormateado} €</td>
+            <tr class="font-bold font-lg">
+                <td colspan="3" class="p-15 text-right">TOTAL (IVA incluido):</td>
+                <td class="p-15 text-right">{$totalFormateado} €</td>
                 <td colspan="2"></td>
             </tr>
 HTML;
     if ($descuentoTotal > 0) {
         $contenidoPrincipal .= <<<HTML
-            <tr style="color:#28a745;font-weight:bold;">
-                <td colspan="3" style="padding:15px;text-align:right;">Descuento Aplicado:</td>
-                <td style="padding:15px;text-align:right;">-{$totalDescuentoFormateado} €</td>
+            <tr class="color-green font-bold">
+                <td colspan="3" class="p-15 text-right">Descuento Aplicado:</td>
+                <td class="p-15 text-right">-{$totalDescuentoFormateado} €</td>
                 <td colspan="2"></td>
             </tr>
-            <tr style="font-weight:bold;font-size:1.2em;background:#f0f8f5;">
-                <td colspan="3" style="padding:15px;text-align:right;">TOTAL A PAGAR:</td>
-                <td style="padding:15px;text-align:right;color:#28a745;">{$totalConDescuentoFormateado} €</td>
+            <tr class="font-bold font-lg bg-light-green">
+                <td colspan="3" class="p-15 text-right">TOTAL A PAGAR:</td>
+                <td class="p-15 text-right color-green">{$totalConDescuentoFormateado} €</td>
                 <td colspan="2"></td>
             </tr>
 HTML;
@@ -176,15 +176,15 @@ HTML;
 
     {$ofertasAplicadasHtml}
     
-    <div style="display:flex;gap:10px;justify-content:space-between;align-items:center;margin-top:20px;">
+    <div class="flex-between mt-20">
         <div>
-            <a href="nuevo-pedido.php" style="color:#8b0000;text-decoration:none;">← Seguir comprando</a>
-            <form method="POST" style="display:inline;margin-left:15px;">
+            <a href="nuevo-pedido.php" class="color-maroon no-decoration">← Seguir comprando</a>
+            <form method="POST" class="inline ml-15">
                 <input type="hidden" name="accion" value="vaciar">
-                <button type="submit" style="background:#e74c3c;color:white;border:none;padding:8px 15px;border-radius:5px;cursor:pointer;" onclick="return confirm('¿Vaciar todo el carrito?')">Vaciar carrito</button>
+                <button type="submit" class="btn-pedido btn-danger btn-sm" onclick="return confirm('¿Vaciar todo el carrito?')">Vaciar carrito</button>
             </form>
         </div>
-        <a href="pago.php" style="background:#2ecc71;color:white;padding:12px 30px;border-radius:5px;text-decoration:none;font-size:1.1em;font-weight:bold;">
+        <a href="pago.php" class="btn-checkout">
             Confirmar y Pagar →
         </a>
     </div>

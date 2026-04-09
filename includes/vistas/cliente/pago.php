@@ -98,12 +98,12 @@ if (!empty($errores)) {
 $resumenDescuentoHtml = '';
 if ($descuentoTotal > 0) {
     $resumenDescuentoHtml = <<<HTML
-    <p style="color:#28a745;"><strong>Descuento aplicado: -{$totalDescuentoFormateado} €</strong></p>
-    <p style="font-size:1.2em;color:#28a745;margin-top:10px;"><strong>Total a pagar: {$totalConDescuentoFormateado} €</strong></p>
+    <p class="color-green"><strong>Descuento aplicado: -{$totalDescuentoFormateado} €</strong></p>
+    <p class="font-lg color-green mt-10"><strong>Total a pagar: {$totalConDescuentoFormateado} €</strong></p>
 HTML;
 } else {
     $resumenDescuentoHtml = <<<HTML
-    <p style="font-size:1.2em;"><strong>Total a pagar: {$totalFormateado} €</strong></p>
+    <p class="font-lg"><strong>Total a pagar: {$totalFormateado} €</strong></p>
 HTML;
 }
 
@@ -112,7 +112,7 @@ $contenidoPrincipal = <<<HTML
 
 {$erroresHtml}
 
-<div style="background:white;padding:20px;border-radius:8px;border:1px solid #ddd;margin-bottom:20px;">
+<div class="bg-white p-20 rounded-8 border-light mb-20">
     <h3>Resumen del pedido</h3>
     <p><strong>Subtotal: {$totalFormateado} €</strong></p>
     {$resumenDescuentoHtml}
@@ -122,7 +122,7 @@ $contenidoPrincipal = <<<HTML
     <fieldset>
         <legend>Método de Pago</legend>
         
-        <div class="opciones-radio" style="margin-bottom:20px;">
+        <div class="opciones-radio mb-20">
             <label class="radio-option">
                 <input type="radio" name="metodo_pago" value="tarjeta" id="radio-tarjeta" checked onchange="togglePago()"> 
                 💳 Pagar con Tarjeta
@@ -139,13 +139,13 @@ $contenidoPrincipal = <<<HTML
                 <input type="text" name="num_tarjeta" placeholder="1234 5678 9012 3456" maxlength="19" 
                        oninput="this.value=this.value.replace(/[^\d\s]/g,'')">
             </div>
-            <div style="display:flex;gap:15px;">
-                <div class="bloque-entrada" style="flex:1;">
+            <div class="flex-gap-15">
+                <div class="bloque-entrada w-100">
                     <label>Fecha expiración:</label>
                     <input type="text" name="fecha_exp" placeholder="MM/AA" maxlength="5"
                            oninput="if(this.value.length===2&&!this.value.includes('/'))this.value+='/'">
                 </div>
-                <div class="bloque-entrada" style="flex:1;">
+                <div class="bloque-entrada w-100">
                     <label>CVV:</label>
                     <input type="text" name="cvv" placeholder="123" maxlength="4"
                            oninput="this.value=this.value.replace(/\D/g,'')">
@@ -153,13 +153,13 @@ $contenidoPrincipal = <<<HTML
             </div>
         </div>
         
-        <div id="msg-camarero" style="display:none;background:#fff3cd;padding:15px;border-radius:5px;border:1px solid #ffc107;margin:15px 0;">
-            <p style="margin:0;">💡 Al confirmar, tu pedido quedará pendiente de pago. Un camarero pasará a cobrarte.</p>
+        <div id="msg-camarero" class="msg-warning" style="display:none;">
+            <p class="mb-0">💡 Al confirmar, tu pedido quedará pendiente de pago. Un camarero pasará a cobrarte.</p>
         </div>
         
-        <div style="display:flex;gap:10px;margin-top:20px;">
-            <a href="carrito.php" style="color:#666;text-decoration:none;padding:10px;">← Volver al carrito</a>
-            <button type="submit" style="background:#2ecc71;color:white;border:none;padding:12px 30px;border-radius:5px;cursor:pointer;font-size:1.1em;margin-left:auto;">
+        <div class="flex-gap-10 mt-20 align-center">
+            <a href="carrito.php" class="color-gray no-decoration p-10">← Volver al carrito</a>
+            <button type="submit" class="btn-checkout ml-auto">
                 Confirmar Pedido →
             </button>
         </div>

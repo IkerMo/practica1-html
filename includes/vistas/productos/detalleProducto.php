@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__.'/../../config.php';
+require_once __DIR__ . '/../../config.php';
 
 use es\ucm\fdi\aw\Producto\ProductoAppService;
 use es\ucm\fdi\aw\Categoria\CategoriaAppService;
@@ -15,7 +15,8 @@ $esCliente = $_SESSION['esCliente'] ?? false;
 $idProducto = $_GET['id'] ?? null;
 $service = new ProductoAppService();
 $serviceCat = new CategoriaAppService();
-$p = $service->getProducto($idProducto); 
+$p = $service->getProducto($idProducto);
+
 
 if (!$p) {
     die("Producto no encontrado.");
@@ -27,7 +28,8 @@ $nombreCategoria = $cat ? $cat->nombre : 'Sin categoría';
 
 $tituloPagina = $p->nombre . ' - Detalle';
 $precioFinal = number_format($p->getPrecioFinal(), 2);
-$precioBase = number_format($p->precio_base, 2); 
+$precioBase = number_format($p->precio_base, 2);
+
 $iva = $p->iva;
 
 // Imagen principal
@@ -38,67 +40,71 @@ $urlImgPrincipal = RUTA_BASE . '/IMG/productos/' . $imgPrincipal;
 $todasImgs = $p->getTodasImagenes();
 $galeriaHtml = '';
 if (count($todasImgs) > 1) {
-    $galeriaHtml = '<div style="display:flex;gap:10px;margin-top:15px;flex-wrap:wrap;">';
+    $galeriaHtml = '<div class="flex-gap-10 mt-8 flex-wrap">';
     foreach ($todasImgs as $img) {
         $url = RUTA_BASE . '/IMG/productos/' . $img;
-        $galeriaHtml .= "<img src='$url' style='width:80px;height:80px;object-fit:cover;border-radius:5px;border:2px solid transparent;cursor:pointer;' onclick=\"document.getElementById('img-principal').src='$url'\" onmouseover=\"this.style.borderColor='#8b0000'\" onmouseout=\"this.style.borderColor='transparent'\">";
+        $galeriaHtml .= "<img src='$url' class='img-miniatura' onclick=\"document.getElementById('img-principal').src='$url'\">";
     }
     $galeriaHtml .= '</div>';
 }
 
 $contenidoPrincipal = <<<HTML
-<div class="detalle-contenedor" style="display: flex; gap: 30px; margin-top: 20px; padding: 20px;">
+$contenidoPrincipal = <<<HTML
+<div class="detalle-contenedor">
     
-    <div class="detalle-imagen" style="flex: 1;">
-        <img id="img-principal" src="{$urlImgPrincipal}" 
-             style="width: 100%; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+    <div class="detalle-seccion">
+        <img id="img-principal" src="{$urlImgPrincipal}" class="img-detalle">
         {$galeriaHtml}
     </div>
 
-    <div class="detalle-info" style="flex: 1.5;">
-        <a href="ListarProductos.php" style="text-decoration: none; color: #666;">← Volver al listado</a>
-        <h1 style="margin: 10px 0;">{$p->nombre}</h1>
-        <span class="badge-categoria" style="background: #e0e0e0; padding: 5px 10px; border-radius: 15px; font-size: 0.8em;">
+    <div class="detalle-info">
+        <a href="ListarProductos.php" class="color-gray no-decoration">← Volver al listado</a>
+        <h1 class="mt-8 mb-10">{$p->nombre}</h1>
+        <span class="badge-categoria">
             Categoría: {$nombreCategoria}
         </span>
         
-        <p style="font-size: 1.2em; color: #444; margin: 20px 0;">{$p->descripcion}</p>
+        <p class="font-lg color-gray mb-20 mt-20">{$p->descripcion}</p>
 
-        <div class="precio-box" style="background: #f9f9f9; padding: 20px; border-radius: 8px; border-left: 5px solid #2ecc71;">
-            <span style="font-size: 2em; font-weight: bold;">{$precioFinal} €</span>
-            <p style="margin: 0; color: #888;">IVA incluido ({$iva}%)</p>
+        <div class="precio-caja">
+            <span class="precio-destacado">{$precioFinal} €</span>
+            <p class="mb-0 color-gray">IVA incluido ({$iva}%)</p>
         </div>
 HTML;
 
 // --- ACCIONES POR ROL ---
 if ($esGerente) {
     $contenidoPrincipal .= <<<HTML
-        <div class="acciones-admin" style="margin-top: 30px; display: flex; gap: 10px;">
-            <a href="formularioProducto.php?id={$p->id}" class="btn" style="background:#3498db; color:white; padding:10px; border-radius:5px; text-decoration:none;">Modificar Datos</a>
-            <a href="borrarProductos.php?id={$p->id}" class="btn" style="background:#e74c3c; color:white; padding:10px; border-radius:5px; text-decoration:none;" 
+    $contenidoPrincipal .= <<<HTML
+        <div class="acciones-admin flex-gap-10 mt-20">
+            <a href="formularioProducto.php?id={$p->id}" class="btn-pedido btn-preparar">Modificar Datos</a>
+            <a href="borrarProductos.php?id={$p->id}" class="btn-pedido btn-danger" 
                onclick="return confirm('¿Seguro que quieres retirar este producto de la carta?')">Retirar de la Carta</a>
         </div>
-        <div style="margin-top: 10px; font-size: 0.9em; color: #999;">
+        <div class="mt-8 font-small color-gray">
             Precio Base: {$precioBase} € | ID Producto: {$p->id}
         </div>
 HTML;
-} 
+}
+
 elseif ($esCliente) {
     if ($p->disponible) {
         $contenidoPrincipal .= <<<HTML
-            <div style="margin-top: 30px;">
-                <form method="POST" action="../cliente/ajax-carrito.php" style="display:inline;">
+        $contenidoPrincipal .= <<<HTML
+            <div class="mt-20">
+                <form method="POST" action="../cliente/ajax-carrito.php" class="inline">
                     <input type="hidden" name="accion" value="agregar">
                     <input type="hidden" name="producto_id" value="{$p->id}">
-                    <input type="number" name="cantidad" value="1" min="1" max="20" style="width:60px;padding:10px;text-align:center;border:1px solid #ddd;border-radius:5px;">
-                    <button type="submit" style="background:#2ecc71; color:white; padding: 12px 25px; font-size: 1.1em; border:none; border-radius:5px; cursor:pointer;">
+                    <input type="number" name="cantidad" value="1" min="1" max="20" class="p-10 text-center border-light rounded-8 w-100">
+                    <button type="submit" class="btn-pedido btn-cocina-listo font-lg ml-10">
                         🛒 Añadir al Pedido
                     </button>
                 </form>
             </div>
 HTML;
-    } else {
-        $contenidoPrincipal .= "<p style='color: red; margin-top: 20px;'><strong>Temporalmente no disponible</strong></p>";
+    }
+    else {
+        $contenidoPrincipal .= "<p class='color-red mt-20'><strong>Temporalmente no disponible</strong></p>";
     }
 }
 

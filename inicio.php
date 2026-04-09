@@ -91,7 +91,7 @@ $contenidoTarjetas .= '</div>';
 $contenidoPrincipal = <<<EOS
     <div class="inicio-paneles">
         <h1>Bienvenido, $nombre</h1>
-        <p style="text-align:center;">Selecciona una gestión para continuar:</p>
+        <p class="text-center">Selecciona una gestión para continuar:</p>
         $contenidoTarjetas
     </div>
 EOS;

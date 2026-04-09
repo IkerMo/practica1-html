@@ -41,22 +41,13 @@ $htmlFormulario = $form->gestiona();
 $tituloPagina = $idProducto ? 'Editar Producto' : 'Nuevo Producto';
 
 $contenidoPrincipal = <<<HTML
-    <div style="margin-bottom: 20px;">
-        <a href="ListarProductos.php" style="
-            text-decoration: none; 
-            color: #666; 
-            font-size: 0.9em; 
-            display: inline-flex; 
-            align-items: center; 
-            gap: 5px;
-            border: none;
-            background: none;
-            padding: 0;">
-            <span style="font-size: 1.2em;">←</span> Volver al listado de productos
+    <div class="mb-20">
+        <a href="ListarProductos.php" class="color-gray font-small flex-gap-10 no-decoration">
+            <span class="font-lg">←</span> Volver al listado de productos
         </a>
     </div>
-    <h1 style="margin-top: 0;">{$tituloPagina}</h1>
-    <div class="contenedor-formulario" style="background: white; padding: 20px; border-radius: 8px; border: 1px solid #eee;">
+    <h1 class="mt-0">{$tituloPagina}</h1>
+    <div class="contenedor-formulario bg-white p-20 rounded-8 border-light">
         $htmlFormulario
     </div>
 HTML;

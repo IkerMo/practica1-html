@@ -40,10 +40,10 @@ class FormularioProducto extends Formulario {
                 // Mostrar imágenes existentes
                 $todasImgs = $p->getTodasImagenes();
                 if (!empty($todasImgs)) {
-                    $imagenesActuales = '<div style="margin:10px 0;"><strong>Imágenes actuales:</strong><div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:5px;">';
+                    $imagenesActuales = '<div class="mt-10 mb-10"><strong>Imágenes actuales:</strong><div class="flex-gap-10 flex-wrap mt-5" style="display:flex;">';
                     foreach ($todasImgs as $img) {
                         $url = RUTA_BASE . '/IMG/productos/' . $img;
-                        $imagenesActuales .= "<img src='$url' style='width:80px;height:80px;object-fit:cover;border-radius:5px;border:1px solid #ddd;'>";
+                        $imagenesActuales .= "<img src='$url' class='img-mini-80'>";
                     }
                     $imagenesActuales .= '</div></div>';
                 }
@@ -91,7 +91,7 @@ class FormularioProducto extends Formulario {
                 </select>
             </div>
 
-            <div style="margin: 10px 0; font-weight: bold;">
+            <div class="mt-10 mb-10 font-bold">
                 Precio Final: <span id="pFinal">0.00</span> €
             </div>
 

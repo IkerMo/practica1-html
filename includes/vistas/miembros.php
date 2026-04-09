@@ -32,7 +32,7 @@ $contenidoPrincipal = <<<EOS
             <strong>Aficiones:</strong> Me gusta jugar a la brisca y comer pulpo. Por las noches salgo a correr.
         </p>
         <figure>
-            <img src="{$rutaImgs}/fotocarlos.jpg" alt="Foto Carlos" style="width:400px;">
+            <img src="{$rutaImgs}/fotocarlos.jpg" alt="Foto Carlos" class="img-miembro">
             <figcaption>Carlos Lucas Ruiz</figcaption>
         </figure>
         <hr>
@@ -46,7 +46,7 @@ $contenidoPrincipal = <<<EOS
             <strong>Aficiones:</strong> Me gusta el cine, las series y leer de vez en cuando. También me gusta el Getafe C.F. Llevo 245 días de racha en Duolingo ¡qué pasada!
         </p>
         <figure>
-            <img src="{$rutaImgs}/fotoaaron.jpg" alt="Foto Aaron" style="width:400px;">
+            <img src="{$rutaImgs}/fotoaaron.jpg" alt="Foto Aaron" class="img-miembro">
             <figcaption>Aarón Fernández Herradón</figcaption>
         </figure>
         <hr>
@@ -60,7 +60,7 @@ $contenidoPrincipal = <<<EOS
             <strong>Aficiones:</strong> Soy un aficionado de la literatura. Mi obra favorita es La Celestina de Fernando de Rojas. También me gusta el sushi y dar paseos con mi perro por la mañana.
         </p>
         <figure>
-            <img src="{$rutaImgs}/fotomatin.png" alt="Foto Matin" style="width:400px;">
+            <img src="{$rutaImgs}/fotomatin.png" alt="Foto Matin" class="img-miembro">
             <figcaption>Xiangzhenhua Liu</figcaption>
         </figure>
         <hr>
@@ -74,7 +74,7 @@ $contenidoPrincipal = <<<EOS
             <strong>Aficiones:</strong> Me gusta el fútbol, soy un gran aficionado del Real Madrid. Mi juego favorito para los viernes por la noche es el Catán, ¡vaya tardes con los amigos hemos pasado!
         </p>
         <figure>
-            <img src="{$rutaImgs}/fotoiker.jpg" alt="Foto Iker" style="width:400px;">
+            <img src="{$rutaImgs}/fotoiker.jpg" alt="Foto Iker" class="img-miembro">
             <figcaption>Iker Moreno Rodríguez</figcaption>
         </figure>
     </div>

@@ -47,10 +47,10 @@ $estadoClases = [
 if (empty($pedidos)) {
     $contenidoPrincipal = <<<HTML
     <h1>Mis Pedidos</h1>
-    <div class="text-center" style="padding: 50px 0;">
+    <div class="text-center py-50">
         <div class="font-xl">📦</div>
         <p class="font-lg color-gray">No tienes pedidos todavía</p>
-        <a href="nuevo-pedido.php" class="btn-pedido btn-primary" style="text-decoration:none;">Hacer un pedido</a>
+        <a href="nuevo-pedido.php" class="btn-pedido btn-primary no-decoration">Hacer un pedido</a>
     </div>
 HTML;
 } else {
@@ -67,7 +67,7 @@ HTML;
             $accionesHtml = <<<HTML
             <form method="POST" class="inline">
                 <input type="hidden" name="cancelar_pedido" value="{$p->id}">
-                <button type="submit" class="btn-pedido btn-danger" style="padding: 5px 10px; font-size: 0.85em;" onclick="return confirm('¿Cancelar este pedido?')">Cancelar</button>
+                <button type="submit" class="btn-pedido btn-danger btn-sm" onclick="return confirm('¿Cancelar este pedido?')">Cancelar</button>
             </form>
 HTML;
         }
@@ -77,8 +77,8 @@ HTML;
             <div class="flex-between">
                 <div>
                     <strong class="font-lg">Pedido #{$p->numero_pedido}</strong>
-                    <span class="status-badge {$claseEstado}" style="margin-left: 10px;">{$estado}</span>
-                    <span class="icon-small color-gray" style="margin-left: 10px;">{$tipo}</span>
+                    <span class="status-badge {$claseEstado} ml-10">{$estado}</span>
+                    <span class="icon-small color-gray ml-10">{$tipo}</span>
                 </div>
                 <div class="text-right">
                     <strong class="font-bold">{$total} €</strong>

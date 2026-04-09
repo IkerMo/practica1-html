@@ -62,7 +62,7 @@ $contenidoPrincipal = <<<HTML
 <form method="GET" class="bg-white p-20 rounded-8 border-light mb-20">
     <label class="font-bold">Seleccionar cliente:</label>
     <div class="flex-gap-10 mt-8">
-        <select name="cliente_id" style="flex:1;">
+        <select name="cliente_id" class="w-100">
             {$selectClientes}
         </select>
         <button type="submit" class="btn-pedido btn-primary">Ver Pedidos</button>

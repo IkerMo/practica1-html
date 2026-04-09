@@ -21,13 +21,13 @@ $contenidoPrincipal = "<h1>Categorías</h1>";
 // Botón para Gerentes (Rol 4)
 if ($esGerente) {
     $contenidoPrincipal .= <<<HTML
-        <div style="margin-bottom: 20px;">
-            <a href="formularioCategoria.php" class="btn btn-primario" style="background:#2ecc71; color:white; padding:10px; text-decoration:none; border-radius:5px;">+ Nueva Categoría</a>
+        <div class="mb-20">
+            <a href="formularioCategoria.php" class="btn-pedido btn-nuevo-verde">+ Nueva Categoría</a>
         </div>
 HTML;
 }
 
-$contenidoPrincipal .= '<div class="categorias-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px;">';
+$contenidoPrincipal .= '<div class="categorias-grid">';
 
 foreach ($categorias as $cat) {
     // Usamos RUTA_BASE en lugar de resuelve()
@@ -35,18 +35,18 @@ foreach ($categorias as $cat) {
     $urlImagen = RUTA_BASE . '/img/categorias/' . $img;
     
     $contenidoPrincipal .= "
-    <div class='card-categoria' style='border: 1px solid #ddd; padding: 15px; border-radius: 10px; text-align: center; background: white;'>
-        <img src='{$urlImagen}' style='width: 100%; height: 150px; object-fit: cover; border-radius: 5px;'>
-        <h3 style='margin: 15px 0;'>{$cat->nombre}</h3>
-        <p style='color: #666; font-size: 0.9em;'>{$cat->descripcion}</p>
+    <div class='pedido-card text-center'>
+        <img src='{$urlImagen}' class='img-card'>
+        <h3 class='mt-15 mb-15'>{$cat->nombre}</h3>
+        <p class='color-gray font-small'>{$cat->descripcion}</p>
         
-        <a href='../productos/ListarProductos.php?categoria={$cat->id}' class='btn' style='display:block; margin-top:10px; font-size: 0.8em; background:#eee; padding:5px; text-decoration:none; color:black;'>Ver productos</a>";
+        <a href='../productos/ListarProductos.php?categoria={$cat->id}' class='btn-detalle font-small'>Ver productos</a>";
 
     if ($esGerente) {
         $contenidoPrincipal .= "
-        <div style='margin-top: 15px; padding-top: 10px; border-top: 1px solid #eee;'>
-            <a href='formularioCategoria.php?id={$cat->id}' class='btn-edit' style='color:#3498db; margin-right:10px;'>Editar</a>
-            <a href='borrarCategoria.php?id={$cat->id}' class='btn-delete' style='color:#e74c3c;' onclick='return confirm(\"¿Borrar categoría?\")'>Borrar</a>
+        <div class='mt-15 pt-10 border-top font-small'>
+            <a href='formularioCategoria.php?id={$cat->id}' class='color-blue mr-10 no-decoration'>Editar</a>
+            <a href='borrarCategoria.php?id={$cat->id}' class='color-red no-decoration' onclick='return confirm(\"¿Borrar categoría?\")'>Borrar</a>
         </div>";
     }
 

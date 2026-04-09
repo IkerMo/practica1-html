@@ -15,18 +15,18 @@ $lista = '';
 if (empty($ofertas)) {
     $lista = '<p>No hay ofertas registradas.</p>';
 } else {
-    $lista .= '<table style="width:100%;border-collapse:collapse;background:white;">';
-    $lista .= '<thead><tr style="background:#8b0000;color:white;"><th>Nombre</th><th>Fechas</th><th>%</th><th>Estado</th><th>Acciones</th></tr></thead><tbody>';
+    $lista .= '<table class="tabla-pedidos">';
+    $lista .= '<thead><tr class="header-maroon"><th>Nombre</th><th>Fechas</th><th>%</th><th>Estado</th><th>Acciones</th></tr></thead><tbody>';
     foreach ($ofertas as $o) {
         $estado = $o->estaActiva() ? 'Activa' : 'Caducada';
-        $lista .= '<tr style="border-bottom:1px solid #ddd;">';
+        $lista .= '<tr class="border-bottom">';
         $lista .= '<td>' . htmlspecialchars($o->nombre) . '</td>';
         $lista .= '<td>' . htmlspecialchars($o->fecha_inicio . ' - ' . $o->fecha_fin) . '</td>';
         $lista .= '<td>' . number_format($o->porcentaje_descuento, 2) . '%</td>';
         $lista .= '<td>' . $estado . '</td>';
         $lista .= '<td>' .
-            "<a href='formularioOferta.php?id={$o->id}' style='margin-right:10px;'>Editar</a>" .
-            "<a href='borrarOferta.php?id={$o->id}' onclick='return confirm(\'¿Borrar esta oferta?\')'>Borrar</a>" .
+            "<a href='formularioOferta.php?id={$o->id}' class='mr-10 no-decoration color-blue'>Editar</a>" .
+            "<a href='borrarOferta.php?id={$o->id}' class='no-decoration color-red' onclick='return confirm(\"¿Borrar esta oferta?\")'>Borrar</a>" .
             '</td>';
         $lista .= '</tr>';
     }
@@ -36,8 +36,8 @@ if (empty($ofertas)) {
 $tituloPagina = 'Ofertas';
 $contenidoPrincipal = <<<HTML
 <h1>Gestión de Ofertas</h1>
-<div style="margin-bottom: 20px;">
-    <a href="formularioOferta.php" style="background:#2ecc71;color:white;padding:10px 16px;text-decoration:none;border-radius:4px;">+ Crear oferta</a>
+<div class="mb-20">
+    <a href="formularioOferta.php" class="btn-pedido btn-nuevo-verde">+ Crear oferta</a>
 </div>
 {$lista}
 HTML;

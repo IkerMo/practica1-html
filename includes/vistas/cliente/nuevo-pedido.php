@@ -23,22 +23,22 @@ if (!$tipo) {
     $tituloPagina = 'Nuevo Pedido';
     $contenidoPrincipal = <<<HTML
     <h1>Nuevo Pedido</h1>
-    <p style="text-align:center;font-size:1.1em;">¿Cómo quieres tu pedido?</p>
-    <div style="display:flex;gap:30px;justify-content:center;margin-top:30px;">
+    <p class="text-center font-lg">¿Cómo quieres tu pedido?</p>
+    <div class="flex-gap-30 justify-center mt-30">
         <form method="POST">
             <input type="hidden" name="tipo_pedido" value="local">
-            <button type="submit" style="width:200px;height:200px;border:2px solid #8b0000;border-radius:15px;background:white;cursor:pointer;font-size:1.2em;transition:all 0.3s;">
-                <div style="font-size:3em;">🍽️</div>
+            <button type="submit" class="btn-selector">
+                <div class="font-xl">🍽️</div>
                 <strong>Para Local</strong>
-                <p style="color:#888;font-size:0.8em;">Consumir en Bistro FDI</p>
+                <p class="color-gray font-small">Consumir en Bistro FDI</p>
             </button>
         </form>
         <form method="POST">
             <input type="hidden" name="tipo_pedido" value="llevar">
-            <button type="submit" style="width:200px;height:200px;border:2px solid #8b0000;border-radius:15px;background:white;cursor:pointer;font-size:1.2em;transition:all 0.3s;">
-                <div style="font-size:3em;">🥡</div>
+            <button type="submit" class="btn-selector">
+                <div class="font-xl">🥡</div>
                 <strong>Para Llevar</strong>
-                <p style="color:#888;font-size:0.8em;">Recoger y consumir fuera</p>
+                <p class="color-gray font-small">Recoger y consumir fuera</p>
             </button>
         </form>
     </div>
@@ -71,10 +71,10 @@ $itemsCarrito = Carrito::getTotalUnidades();
 $tituloPagina = 'Nuevo Pedido - Carta';
 
 // Filtros de categoría
-$filtrosHtml = '<a href="nuevo-pedido.php?categoria=todas" class="btn" style="margin:2px;padding:5px 10px;text-decoration:none;background:#eee;border-radius:5px;">Todas</a> ';
+$filtrosHtml = '<a href="nuevo-pedido.php?categoria=todas" class="btn-cat ' . ($catSeleccionada == 'todas' ? 'btn-cat-active' : '') . '">Todas</a> ';
 foreach ($categorias as $cat) {
-    $activa = ($catSeleccionada == $cat->id) ? 'background:#8b0000;color:white;' : 'background:#eee;';
-    $filtrosHtml .= "<a href='nuevo-pedido.php?categoria={$cat->id}' class='btn' style='margin:2px;padding:5px 10px;text-decoration:none;border-radius:5px;{$activa}'>{$cat->nombre}</a> ";
+    $claseActiva = ($catSeleccionada == $cat->id) ? 'btn-cat-active' : '';
+    $filtrosHtml .= "<a href='nuevo-pedido.php?categoria={$cat->id}' class='btn-cat {$claseActiva}'>{$cat->nombre}</a> ";
 }
 
 // Productos
@@ -82,7 +82,7 @@ $productosHtml = '';
 if (empty($productos)) {
     $productosHtml = '<p>No hay productos disponibles en esta categoría.</p>';
 } else {
-    $productosHtml = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:15px;">';
+    $productosHtml = '<div class="grid-carta">';
     foreach ($productos as $p) {
         if (!$p->disponible) continue;
         $img = !empty($p->imagen_principal) ? $p->imagen_principal : 'default.jpg';
@@ -91,16 +91,16 @@ if (empty($productos)) {
         $nombreCat = $mapaCategorias[$p->categoria_id] ?? '';
         
         $productosHtml .= <<<HTML
-        <div style="border:1px solid #ddd;padding:12px;border-radius:10px;background:white;">
-            <img src="$urlImg" style="width:100%;height:120px;object-fit:cover;border-radius:5px;" alt="{$p->nombre}">
-            <small style="color:#888;">{$nombreCat}</small>
-            <h3 style="margin:5px 0;font-size:1em;">{$p->nombre}</h3>
-            <p style="margin:0;"><strong>{$precio} €</strong></p>
-            <form method="POST" action="ajax-carrito.php" style="margin-top:8px;display:flex;gap:5px;align-items:center;">
+        <div class="card-producto-mini">
+            <img src="$urlImg" class="img-carta" alt="{$p->nombre}">
+            <small class="color-gray">{$nombreCat}</small>
+            <h3 class="mt-5 mb-5 font-bold">{$p->nombre}</h3>
+            <p class="mb-0"><strong>{$precio} €</strong></p>
+            <form method="POST" action="ajax-carrito.php" class="mt-8 flex-gap-5 align-center">
                 <input type="hidden" name="accion" value="agregar">
                 <input type="hidden" name="producto_id" value="{$p->id}">
-                <input type="number" name="cantidad" value="1" min="1" max="20" style="width:50px;padding:5px;text-align:center;border:1px solid #ddd;border-radius:3px;">
-                <button type="submit" style="background:#2ecc71;color:white;border:none;padding:8px 12px;border-radius:5px;cursor:pointer;flex:1;">🛒 Añadir</button>
+                <input type="number" name="cantidad" value="1" min="1" max="20" class="p-5 text-center border-light rounded-8 w-50">
+                <button type="submit" class="btn-pedido btn-nuevo-verde flex-1">🛒 Añadir</button>
             </form>
         </div>
 HTML;
@@ -111,8 +111,8 @@ HTML;
 // Ofertas disponibles
 $ofertasHtml = '';
 if (!empty($ofertas)) {
-    $ofertasHtml .= '<h2 style="margin:30px 0 15px 0;font-size:1.3em;">📦 Ofertas Especiales</h2>';
-    $ofertasHtml .= '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:15px;">';
+    $ofertasHtml .= '<h2 class="mb-15 mt-30 font-lg">📦 Ofertas Especiales</h2>';
+    $ofertasHtml .= '<div class="grid-carta">';
     foreach ($ofertas as $oferta) {
         $descuentoTexto = number_format($oferta->porcentaje_descuento, 1);
         $productosTexto = '';
@@ -125,15 +125,15 @@ if (!empty($ofertas)) {
         $productosTexto = rtrim($productosTexto, ', ');
         
         $ofertasHtml .= <<<HTML
-        <div style="border:1px solid #ddd;padding:12px;border-radius:10px;background:white;">
-            <div style="background:#28a745;color:white;padding:4px 8px;border-radius:5px;margin-bottom:8px;text-align:center;font-weight:bold;font-size:0.85em;">-{$descuentoTexto}% DESCUENTO</div>
-            <h3 style="margin:5px 0;font-size:1em;">{$oferta->nombre}</h3>
-            <small style="color:#888;">{$oferta->descripcion}</small>
-            <p style="margin:8px 0 0;font-size:0.85em;color:#666;">{$productosTexto}</p>
-            <form method="POST" action="ajax-carrito.php" style="margin-top:8px;">
+        <div class="card-producto-mini">
+            <div class="badge-descuento">-{$descuentoTexto}% DESCUENTO</div>
+            <h3 class="mt-5 mb-5 font-bold">{$oferta->nombre}</h3>
+            <small class="color-gray">{$oferta->descripcion}</small>
+            <p class="mt-8 mb-0 font-small color-gray">{$productosTexto}</p>
+            <form method="POST" action="ajax-carrito.php" class="mt-8">
                 <input type="hidden" name="accion" value="agregar_oferta">
                 <input type="hidden" name="oferta_id" value="{$oferta->id}">
-                <button type="submit" style="background:#2ecc71;color:white;border:none;padding:8px 12px;border-radius:5px;cursor:pointer;width:100%;font-size:0.9em;">✓ Aplicar</button>
+                <button type="submit" class="btn-pedido btn-nuevo-verde w-100 font-small">✓ Aplicar</button>
             </form>
         </div>
 HTML;
@@ -142,17 +142,17 @@ HTML;
 }
 
 $contenidoPrincipal = <<<HTML
-<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
-    <h1 style="margin:0;">Nuevo Pedido</h1>
-    <div>
-        <span style="background:#f0e9e2;padding:5px 12px;border-radius:15px;font-size:0.9em;">{$tipoLabel}</span>
-        <a href="carrito.php" style="background:#8b0000;color:white;padding:8px 15px;border-radius:5px;text-decoration:none;margin-left:10px;">
+<div class="flex-between mb-20 align-center">
+    <h1 class="mb-0">Nuevo Pedido</h1>
+    <div class="flex-gap-10 align-center">
+        <span class="badge-tipo">{$tipoLabel}</span>
+        <a href="carrito.php" class="btn-pedido btn-primary no-decoration">
             🛒 Carrito ({$itemsCarrito})
         </a>
     </div>
 </div>
 
-<div style="margin-bottom:15px;">
+<div class="nav-categorias">
     {$filtrosHtml}
 </div>
 

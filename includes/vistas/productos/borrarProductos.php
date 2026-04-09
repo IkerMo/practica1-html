@@ -38,7 +38,7 @@ if ($resultado) {
     $contenidoPrincipal = <<<HTML
         <h1>Hubo un problema</h1>
         <p>No se pudo retirar el producto de la carta. Es posible que el producto no exista.</p>
-        <a href="ListarProductos.php" style="color: blue; text-decoration: underline;">Volver al listado</a>
+        <a href="ListarProductos.php" class="color-blue">Volver al listado</a>
     HTML;
     
     require RAIZ_APP . '/includes/vistas/comun/plantilla.php';

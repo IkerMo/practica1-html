@@ -7,7 +7,7 @@ $rutaRaiz = RUTA_RAIZ;
 $tituloPagina = 'Hasta pronto - Bistro FDI';
 
 $contenidoPrincipal = <<<EOS
-<div class="contenedor-logout" style="text-align: center; margin-top: 50px;">
+<div class="contenedor-logout text-center mt-50">
     <h1>¡Hasta pronto!</h1>
     <p>Has cerrado sesión correctamente.</p>
     <p><a href="{$rutaRaiz}index.php" class="boton">Volver al inicio</a></p>

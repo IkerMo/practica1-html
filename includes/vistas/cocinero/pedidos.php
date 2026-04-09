@@ -47,7 +47,7 @@ function generarTarjetaCocina($pedido, $accion, $botonTexto, $claseBoton) {
     return <<<HTML
     <div class="pedido-card">
         <div class="pedido-card-header">
-            <strong class="pedido-card-numero" style="color: #8b0000;">#{$pedido->numero_pedido}</strong>
+            <strong class="pedido-card-numero color-maroon">#{$pedido->numero_pedido}</strong>
             <span class="icon-small">{$tipo} {$hora}</span>
         </div>
         <div class="pedido-card-detalles">
@@ -56,7 +56,7 @@ function generarTarjetaCocina($pedido, $accion, $botonTexto, $claseBoton) {
         <form method="POST">
             <input type="hidden" name="pedido_id" value="{$pedido->id}">
             <input type="hidden" name="accion" value="{$accion}">
-            <button type="submit" class="btn-pedido {$claseBoton}" style="width: 100%;">
+            <button type="submit" class="btn-pedido {$claseBoton} w-100">
                 {$botonTexto}
             </button>
         </form>
@@ -98,7 +98,7 @@ $contenidoPrincipal = <<<HTML
 HTML;
 
 if (empty($esperaHtml) && empty($cocinandoHtml)) {
-    $contenidoPrincipal .= '<p style="text-align:center;color:#888;font-size:1.2em;margin-top:30px;">No hay pedidos pendientes en cocina 🎉</p>';
+    $contenidoPrincipal .= '<p class="text-gray-center">No hay pedidos pendientes en cocina 🎉</p>';
 }
 
 require RAIZ_APP . '/includes/vistas/comun/plantilla.php';

@@ -6,7 +6,7 @@ $tituloPagina = 'Portada';
 
 $contenidoPrincipal=<<<EOS
     <h1><strong>Index </strong></h1>
-        <img src="IMG/logo1.png" alt="Logo Bistro FDI" style="width:400px;">
+        <img src="IMG/logo1.png" alt="Logo Bistro FDI" class="w-400">
 
     <section class="hero">
         <h2>Bienvenido a Bistro FDI</h2>
