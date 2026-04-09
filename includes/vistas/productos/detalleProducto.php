@@ -17,26 +17,21 @@ $service = new ProductoAppService();
 $serviceCat = new CategoriaAppService();
 $p = $service->getProducto($idProducto);
 
-
 if (!$p) {
     die("Producto no encontrado.");
 }
 
-// Obtener nombre de categoría
 $cat = $serviceCat->getCategoria($p->categoria_id);
 $nombreCategoria = $cat ? $cat->nombre : 'Sin categoría';
 
 $tituloPagina = $p->nombre . ' - Detalle';
 $precioFinal = number_format($p->getPrecioFinal(), 2);
 $precioBase = number_format($p->precio_base, 2);
-
 $iva = $p->iva;
 
-// Imagen principal
 $imgPrincipal = !empty($p->imagen_principal) ? $p->imagen_principal : 'default.jpg';
 $urlImgPrincipal = RUTA_BASE . '/IMG/productos/' . $imgPrincipal;
 
-// Galería de imágenes
 $todasImgs = $p->getTodasImagenes();
 $galeriaHtml = '';
 if (count($todasImgs) > 1) {
@@ -49,9 +44,7 @@ if (count($todasImgs) > 1) {
 }
 
 $contenidoPrincipal = <<<HTML
-$contenidoPrincipal = <<<HTML
 <div class="detalle-contenedor">
-    
     <div class="detalle-seccion">
         <img id="img-principal" src="{$urlImgPrincipal}" class="img-detalle">
         {$galeriaHtml}
@@ -72,9 +65,7 @@ $contenidoPrincipal = <<<HTML
         </div>
 HTML;
 
-// --- ACCIONES POR ROL ---
 if ($esGerente) {
-    $contenidoPrincipal .= <<<HTML
     $contenidoPrincipal .= <<<HTML
         <div class="acciones-admin flex-gap-10 mt-20">
             <a href="formularioProducto.php?id={$p->id}" class="btn-pedido btn-preparar">Modificar Datos</a>
@@ -86,10 +77,8 @@ if ($esGerente) {
         </div>
 HTML;
 }
-
 elseif ($esCliente) {
     if ($p->disponible) {
-        $contenidoPrincipal .= <<<HTML
         $contenidoPrincipal .= <<<HTML
             <div class="mt-20">
                 <form method="POST" action="../cliente/ajax-carrito.php" class="inline">
@@ -97,7 +86,7 @@ elseif ($esCliente) {
                     <input type="hidden" name="producto_id" value="{$p->id}">
                     <input type="number" name="cantidad" value="1" min="1" max="20" class="p-10 text-center border-light rounded-8 w-100">
                     <button type="submit" class="btn-pedido btn-cocina-listo font-lg ml-10">
-                        🛒 Añadir al Pedido
+                        Añadir al Pedido
                     </button>
                 </form>
             </div>
