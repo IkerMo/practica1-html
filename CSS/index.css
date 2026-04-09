@@ -928,3 +928,147 @@ navder {
 .btn-ver:hover, .btn-editar:hover, .btn-rol:hover, .btn-borrar:hover {
     opacity: 0.8;
 }
+/* ===== PANELES DE PEDIDOS (Camarero/Cocinero) ===== */
+.pedidos-dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.pedidos-dashboard-header h1 {
+    margin: 0;
+    text-align: left;
+}
+
+.usuario-info-badge {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #f0e9e2;
+    padding: 8px 15px;
+    border-radius: 20px;
+}
+
+.lista-pedidos {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+}
+
+.pedido-card {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    min-width: 250px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.pedido-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.pedido-card-numero {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.pedido-card-info-extra {
+    font-size: 0.85em;
+    color: #666;
+    margin-bottom: 8px;
+}
+
+.pedido-card-detalles {
+    background: #f9f9f9;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    font-size: 0.9em;
+}
+
+.pedido-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pedido-card-total {
+    font-weight: bold;
+}
+
+.btn-pedido {
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: filter 0.2s;
+}
+
+.btn-pedido:hover {
+    filter: brightness(0.9);
+}
+
+.btn-cobrar { background-color: #f39c12; }
+.btn-preparar { background-color: #3498db; }
+.btn-entregar { background-color: #2ecc71; }
+
+/* Clases adicionales para el panel de pedidos */
+.icon-large { font-size: 1.5em; }
+.texto-pendientes { color: #f39c12; }
+.texto-cocina { color: #3498db; }
+.texto-entregar { color: #2ecc71; }
+.aviso-vacio { text-align: center; color: #888; font-size: 1.2em; margin-top: 30px; }
+
+/* Utilidades generales para vistas */
+.bg-white { background-color: white !important; }
+.p-20 { padding: 20px !important; }
+.p-15 { padding: 15px !important; }
+.rounded-8 { border-radius: 8px !important; }
+.border-light { border: 1px solid #ddd !important; }
+.mb-10 { margin-bottom: 10px !important; }
+.mb-20 { margin-bottom: 20px !important; }
+.flex { display: flex !important; }
+.flex-gap-10 { display: flex !important; gap: 10px !important; }
+.w-full { width: 100% !important; }
+.text-center { text-align: center !important; }
+.text-right { text-align: right !important; }
+.font-bold { font-weight: bold !important; }
+.font-lg { font-size: 1.2em !important; }
+.font-xl { font-size: 1.5em !important; }
+.btn-danger { background-color: #e74c3c !important; color: white !important; }
+
+/* Clases específicas para cocina */
+.btn-cocina-tomar { background-color: #e67e22 !important; }
+.btn-cocina-listo { background-color: #2ecc71 !important; }
+.texto-espera { color: #e67e22; }
+.texto-preparando { color: #e74c3c; }
+
+/* Estados de pedidos para el cliente */
+.pedido-lista-card { background: white; padding: 15px; border-radius: 8px; border: 1px solid #ddd; margin-bottom: 15px; transition: transform 0.2s; }
+.pedido-lista-card:hover { transform: translateX(5px); }
+.status-badge { padding: 3px 12px; border-radius: 12px; font-size: 0.8em; color: white; font-weight: bold; }
+
+.estado-nuevo { background-color: #3498db; border-left: 4px solid #3498db; }
+.estado-recibido { background-color: #f39c12; border-left: 4px solid #f39c12; }
+.estado-preparacion { background-color: #e67e22; border-left: 4px solid #e67e22; }
+.estado-cocinando { background-color: #e74c3c; border-left: 4px solid #e74c3c; }
+.estado-listo-cocina { background-color: #2ecc71; border-left: 4px solid #2ecc71; }
+.estado-terminado { background-color: #27ae60; border-left: 4px solid #27ae60; }
+.estado-entregado { background-color: #95a5a6; border-left: 4px solid #95a5a6; }
+.estado-cancelado { background-color: #bdc3c7; border-left: 4px solid #bdc3c7; }
+
+/* Utilidades adicionales de diseño */
+.flex-between { display: flex !important; justify-content: space-between !important; align-items: center !important; }
+.icon-small { font-size: 0.9em !important; }
+.color-gray { color: #888 !important; }
+.mt-8 { margin-top: 8px !important; }
+.tabla-pedidos { width: 100%; border-collapse: collapse; background: white; }
+.tabla-pedidos th, .tabla-pedidos td { padding: 10px; border-bottom: 1px solid #ddd; }

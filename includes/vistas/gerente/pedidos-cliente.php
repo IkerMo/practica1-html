@@ -31,15 +31,15 @@ if ($clienteId) {
     if (empty($pedidos)) {
         $pedidosHtml = "<p>No hay pedidos para este cliente.</p>";
     } else {
-        $pedidosHtml = "<h2>Pedidos de {$nombreCliente}</h2><table style='width:100%;border-collapse:collapse;background:white;'>";
-        $pedidosHtml .= "<thead><tr style='background:#8b0000;color:white;'><th style='padding:10px;'>Nº</th><th>Fecha</th><th>Tipo</th><th>Estado</th><th style='text-align:right;'>Total</th></tr></thead><tbody>";
+        $pedidosHtml = "<h2>Pedidos de {$nombreCliente}</h2><table class='tabla-pedidos'>";
+        $pedidosHtml .= "<thead><tr><th>Nº</th><th>Fecha</th><th>Tipo</th><th>Estado</th><th class='text-right'>Total</th></tr></thead><tbody>";
         
         foreach ($pedidos as $p) {
             $icono = $estadoLabels[$p->estado] ?? '';
             $fecha = date('d/m/Y H:i', strtotime($p->fecha_creacion));
             $total = number_format($p->total_con_iva, 2);
             $tipo = $p->tipo === 'local' ? 'Local' : 'Llevar';
-            $pedidosHtml .= "<tr><td style='padding:8px;text-align:center;'>#{$p->numero_pedido}</td><td>{$fecha}</td><td>{$tipo}</td><td>{$icono} {$p->estado}</td><td style='text-align:right;'>{$total} €</td></tr>";
+            $pedidosHtml .= "<tr><td class='text-center'>#{$p->numero_pedido}</td><td>{$fecha}</td><td>{$tipo}</td><td>{$icono} {$p->estado}</td><td class='text-right'>{$total} €</td></tr>";
         }
         
         $pedidosHtml .= "</tbody></table>";
@@ -59,13 +59,13 @@ $tituloPagina = 'Pedidos por Cliente';
 $contenidoPrincipal = <<<HTML
 <h1>Consultar Pedidos por Cliente</h1>
 
-<form method="GET" style="background:white;padding:20px;border-radius:8px;border:1px solid #ddd;margin-bottom:20px;">
-    <label style="font-weight:bold;">Seleccionar cliente:</label>
-    <div style="display:flex;gap:10px;margin-top:8px;">
+<form method="GET" class="bg-white p-20 rounded-8 border-light mb-20">
+    <label class="font-bold">Seleccionar cliente:</label>
+    <div class="flex-gap-10 mt-8">
         <select name="cliente_id" style="flex:1;">
             {$selectClientes}
         </select>
-        <button type="submit" style="background:#8b0000;color:white;border:none;padding:8px 20px;border-radius:5px;cursor:pointer;">Ver Pedidos</button>
+        <button type="submit" class="btn-pedido btn-primary">Ver Pedidos</button>
     </div>
 </form>
 

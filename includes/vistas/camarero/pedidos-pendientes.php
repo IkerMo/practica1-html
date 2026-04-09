@@ -41,7 +41,7 @@ $avatarCamarero = $_SESSION['nombre'] ?? 'Camarero';
 $tituloPagina = 'Panel Camarero';
 
 // Función auxiliar para generar tarjetas de pedido
-function generarTarjetaPedido($pedido, $accion, $botonTexto, $botonColor) {
+function generarTarjetaPedido($pedido, $accion, $botonTexto, $botonColorClass) {
     $tipo = $pedido->tipo === 'local' ? '🍽️' : '🥡';
     $total = number_format($pedido->total_con_iva, 2);
     $hora = date('H:i', strtotime($pedido->fecha_creacion));
@@ -53,23 +53,23 @@ function generarTarjetaPedido($pedido, $accion, $botonTexto, $botonColor) {
     }
     
     return <<<HTML
-    <div style="background:white;padding:15px;border-radius:10px;border:1px solid #ddd;min-width:250px;">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-            <strong style="font-size:1.5em;">#{$pedido->numero_pedido}</strong>
+    <div class="pedido-card">
+        <div class="pedido-card-header">
+            <strong class="pedido-card-numero">#{$pedido->numero_pedido}</strong>
             <span>{$tipo} {$hora}</span>
         </div>
-        <div style="font-size:0.85em;color:#666;margin-bottom:8px;">
+        <div class="pedido-card-info-extra">
             Cliente: {$pedido->nombre_cliente}
         </div>
-        <div style="background:#f9f9f9;padding:10px;border-radius:5px;margin-bottom:10px;font-size:0.9em;">
+        <div class="pedido-card-detalles">
             {$lineasHtml}
         </div>
-        <div style="display:flex;justify-content:space-between;align-items:center;">
-            <strong>{$total} €</strong>
+        <div class="pedido-card-footer">
+            <strong class="pedido-card-total">{$total} €</strong>
             <form method="POST">
                 <input type="hidden" name="pedido_id" value="{$pedido->id}">
                 <input type="hidden" name="accion" value="{$accion}">
-                <button type="submit" style="background:{$botonColor};color:white;border:none;padding:10px 20px;border-radius:5px;cursor:pointer;font-size:1em;">
+                <button type="submit" class="btn-pedido {$botonColorClass}">
                     {$botonTexto}
                 </button>
             </form>
@@ -81,17 +81,17 @@ HTML;
 // Generar HTML para cada sección
 $recibidosHtml = '';
 foreach ($recibidos as $p) {
-    $recibidosHtml .= generarTarjetaPedido($p, 'cobrar', '💰 Cobrar', '#f39c12');
+    $recibidosHtml .= generarTarjetaPedido($p, 'cobrar', '💰 Cobrar', 'btn-cobrar');
 }
 
 $listosHtml = '';
 foreach ($listosCocina as $p) {
-    $listosHtml .= generarTarjetaPedido($p, 'preparar_entrega', '📦 Preparar', '#3498db');
+    $listosHtml .= generarTarjetaPedido($p, 'preparar_entrega', '📦 Preparar', 'btn-preparar');
 }
 
 $terminadosHtml = '';
 foreach ($terminados as $p) {
-    $terminadosHtml .= generarTarjetaPedido($p, 'entregar', '✅ Entregar', '#2ecc71');
+    $terminadosHtml .= generarTarjetaPedido($p, 'entregar', '✅ Entregar', 'btn-entregar');
 }
 
 $numRecibidos = count($recibidos);
@@ -99,32 +99,32 @@ $numListos = count($listosCocina);
 $numTerminados = count($terminados);
 
 $contenidoPrincipal = <<<HTML
-<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
-    <h1 style="margin:0;">Panel Camarero</h1>
-    <div style="display:flex;align-items:center;gap:10px;background:#f0e9e2;padding:8px 15px;border-radius:20px;">
-        <span style="font-size:1.5em;">👤</span>
+<div class="pedidos-dashboard-header">
+    <h1>Panel Camarero</h1>
+    <div class="usuario-info-badge">
+        <span class="icon-large">👤</span>
         <strong>{$avatarCamarero}</strong>
     </div>
 </div>
 
-<h2 style="color:#f39c12;">💰 Pendientes de Cobro ({$numRecibidos})</h2>
-<div style="display:flex;gap:15px;flex-wrap:wrap;margin-bottom:30px;">
+<h2 class="texto-pendientes">💰 Pendientes de Cobro ({$numRecibidos})</h2>
+<div class="lista-pedidos">
     {$recibidosHtml}
 </div>
 
-<h2 style="color:#3498db;">📦 Listos desde Cocina ({$numListos})</h2>
-<div style="display:flex;gap:15px;flex-wrap:wrap;margin-bottom:30px;">
+<h2 class="texto-cocina">📦 Listos desde Cocina ({$numListos})</h2>
+<div class="lista-pedidos">
     {$listosHtml}
 </div>
 
-<h2 style="color:#2ecc71;">✅ Listos para Entregar ({$numTerminados})</h2>
-<div style="display:flex;gap:15px;flex-wrap:wrap;margin-bottom:30px;">
+<h2 class="texto-entregar">✅ Listos para Entregar ({$numTerminados})</h2>
+<div class="lista-pedidos">
     {$terminadosHtml}
 </div>
 HTML;
 
 if (empty($recibidosHtml) && empty($listosHtml) && empty($terminadosHtml)) {
-    $contenidoPrincipal .= '<p style="text-align:center;color:#888;font-size:1.2em;margin-top:30px;">No hay pedidos pendientes 🎉</p>';
+    $contenidoPrincipal .= '<p class="aviso-vacio">No hay pedidos pendientes 🎉</p>';
 }
 
 require RAIZ_APP . '/includes/vistas/comun/plantilla.php';

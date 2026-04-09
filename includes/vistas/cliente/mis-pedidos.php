@@ -33,31 +33,31 @@ $estadoLabels = [
     'cancelado' => '❌ Cancelado',
 ];
 
-$estadoColores = [
-    'nuevo' => '#3498db',
-    'recibido' => '#f39c12',
-    'en_preparacion' => '#e67e22',
-    'cocinando' => '#e74c3c',
-    'listo_cocina' => '#2ecc71',
-    'terminado' => '#27ae60',
-    'entregado' => '#95a5a6',
-    'cancelado' => '#bdc3c7',
+$estadoClases = [
+    'nuevo' => 'estado-nuevo',
+    'recibido' => 'estado-recibido',
+    'en_preparacion' => 'estado-preparacion',
+    'cocinando' => 'estado-cocinando',
+    'listo_cocina' => 'estado-listo-cocina',
+    'terminado' => 'estado-terminado',
+    'entregado' => 'estado-entregado',
+    'cancelado' => 'estado-cancelado',
 ];
 
 if (empty($pedidos)) {
     $contenidoPrincipal = <<<HTML
     <h1>Mis Pedidos</h1>
-    <div style="text-align:center;padding:50px 0;">
-        <div style="font-size:4em;">📦</div>
-        <p style="font-size:1.2em;color:#888;">No tienes pedidos todavía</p>
-        <a href="nuevo-pedido.php" style="background:#8b0000;color:white;padding:10px 25px;border-radius:5px;text-decoration:none;">Hacer un pedido</a>
+    <div class="text-center" style="padding: 50px 0;">
+        <div class="font-xl">📦</div>
+        <p class="font-lg color-gray">No tienes pedidos todavía</p>
+        <a href="nuevo-pedido.php" class="btn-pedido btn-primary" style="text-decoration:none;">Hacer un pedido</a>
     </div>
 HTML;
 } else {
     $pedidosHtml = '';
     foreach ($pedidos as $p) {
         $estado = $estadoLabels[$p->estado] ?? $p->estado;
-        $color = $estadoColores[$p->estado] ?? '#888';
+        $claseEstado = $estadoClases[$p->estado] ?? '';
         $fecha = date('d/m/Y H:i', strtotime($p->fecha_creacion));
         $total = number_format($p->total_con_iva, 2);
         $tipo = $p->tipo === 'local' ? '🍽️ Local' : '🥡 Llevar';
@@ -65,27 +65,27 @@ HTML;
         $accionesHtml = '';
         if (in_array($p->estado, ['nuevo', 'recibido'])) {
             $accionesHtml = <<<HTML
-            <form method="POST" style="display:inline;">
+            <form method="POST" class="inline">
                 <input type="hidden" name="cancelar_pedido" value="{$p->id}">
-                <button type="submit" style="background:#e74c3c;color:white;border:none;padding:5px 10px;border-radius:3px;cursor:pointer;font-size:0.85em;" onclick="return confirm('¿Cancelar este pedido?')">Cancelar</button>
+                <button type="submit" class="btn-pedido btn-danger" style="padding: 5px 10px; font-size: 0.85em;" onclick="return confirm('¿Cancelar este pedido?')">Cancelar</button>
             </form>
 HTML;
         }
         
         $pedidosHtml .= <<<HTML
-        <div style="background:white;padding:15px;border-radius:8px;border:1px solid #ddd;border-left:4px solid {$color};margin-bottom:10px;">
-            <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div class="pedido-lista-card {$claseEstado}">
+            <div class="flex-between">
                 <div>
-                    <strong style="font-size:1.2em;">Pedido #{$p->numero_pedido}</strong>
-                    <span style="margin-left:10px;background:{$color};color:white;padding:3px 10px;border-radius:10px;font-size:0.8em;">{$estado}</span>
-                    <span style="margin-left:10px;font-size:0.85em;color:#888;">{$tipo}</span>
+                    <strong class="font-lg">Pedido #{$p->numero_pedido}</strong>
+                    <span class="status-badge {$claseEstado}" style="margin-left: 10px;">{$estado}</span>
+                    <span class="icon-small color-gray" style="margin-left: 10px;">{$tipo}</span>
                 </div>
-                <div style="text-align:right;">
-                    <strong>{$total} €</strong>
-                    <div style="font-size:0.8em;color:#888;">{$fecha}</div>
+                <div class="text-right">
+                    <strong class="font-bold">{$total} €</strong>
+                    <div class="icon-small color-gray">{$fecha}</div>
                 </div>
             </div>
-            <div style="margin-top:8px;">
+            <div class="mt-8">
                 {$accionesHtml}
             </div>
         </div>
