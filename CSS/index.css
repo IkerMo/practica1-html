@@ -1045,7 +1045,7 @@ navder {
 .font-xl { font-size: 1.5em !important; }
 .btn-danger { background-color: #e74c3c !important; color: white !important; }
 
-/* Clases específicas para cocina */
+/* Clases especï¿½ficas para cocina */
 .btn-cocina-tomar { background-color: #e67e22 !important; }
 .btn-cocina-listo { background-color: #2ecc71 !important; }
 .texto-espera { color: #e67e22; }
@@ -1065,7 +1065,7 @@ navder {
 .estado-entregado { background-color: #95a5a6; border-left: 4px solid #95a5a6; }
 .estado-cancelado { background-color: #bdc3c7; border-left: 4px solid #bdc3c7; }
 
-/* Utilidades adicionales de diseño */
+/* Utilidades adicionales de diseï¿½o */
 .flex-between { display: flex !important; justify-content: space-between !important; align-items: center !important; }
 .icon-small { font-size: 0.9em !important; }
 .color-gray { color: #888 !important; }
@@ -1073,7 +1073,7 @@ navder {
 .tabla-pedidos { width: 100%; border-collapse: collapse; background: white; }
 .tabla-pedidos th, .tabla-pedidos td { padding: 10px; border-bottom: 1px solid #ddd; }
 
-/* Estilos para Productos y Categorías */
+/* Estilos para Productos y Categorï¿½as */
 .productos-grid, .categorias-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
 .categorias-grid { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); }
 
@@ -1103,7 +1103,7 @@ navder {
 .mb-5 { margin-bottom: 5px !important; }
 .mr-10 { margin-right: 10px !important; }
 
-/* Más utilidades */
+/* Mï¿½s utilidades */
 .mt-15 { margin-top: 15px !important; }
 .mb-15 { margin-bottom: 15px !important; }
 .mt-0 { margin-top: 0 !important; }
@@ -1156,3 +1156,30 @@ navder {
 .flex-wrap { flex-wrap: wrap; }
 .img-mini-80 { width: 80px; height: 80px; object-fit: cover; border-radius: 5px; border: 1px solid #ddd; }
 .mt-5 { margin-top: 5px !important; }
+
+.btn-activar {
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 3px;
+    text-decoration: none;
+    font-size: 0.85em;
+    transition: opacity 0.3s;
+}
+
+.btn-activar:hover {
+    opacity: 0.8;
+}
+
+.btn-desactivado {
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: #e0e0e0;
+    color: #9e9e9e;
+    border-radius: 3px;
+    font-size: 0.85em;
+    font-weight: bold;
+    cursor: not-allowed;
+    border: 1px solid #bdbdbd;
+}
