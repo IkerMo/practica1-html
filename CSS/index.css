@@ -1183,3 +1183,40 @@ navder {
     cursor: not-allowed;
     border: 1px solid #bdbdbd;
 }
+
+/* Estilos para errores de formulario */
+.error {
+    color: #d9534f;
+    font-size: 0.85em;
+    display: block;
+    margin-top: 5px;
+    font-weight: normal;
+}
+
+.errores-globales {
+    background-color: #f2dede;
+    border: 1px solid #ebccd1;
+    border-radius: 4px;
+    padding: 10px;
+    margin: 15px 0;
+}
+
+.error-message {
+    color: #a94442;
+    margin: 5px 0;
+    font-size: 0.9em;
+}
+
+/* Pequeña ayuda para los campos */
+.bloque-entrada small {
+    display: block;
+    color: #777;
+    font-size: 0.75em;
+    margin-top: 3px;
+}
+
+/* Campos con error */
+input.error-field {
+    border: 1px solid #d9534f;
+    background-color: #fff0f0;
+}

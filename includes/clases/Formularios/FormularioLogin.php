@@ -8,7 +8,8 @@ class FormularioLogin extends Formulario {
     }
 
     protected function generaCamposFormulario(&$datos) {
-        $nombreUsuario = $datos['nombreUsuario'] ?? '';
+        $nombreUsuario = htmlspecialchars($datos['nombreUsuario'] ?? '', ENT_QUOTES, 'UTF-8');
+        
         return <<<EOS
         <div class="contenedor-formulario-fdi">
             <fieldset class="form-ajustado">
@@ -23,6 +24,7 @@ class FormularioLogin extends Formulario {
                     <input type="password" name="password" />
                     {$this->getError('password')}
                 </div>
+                {$this->getGlobalErrors()}
                 <button type="submit" class="boton-rojo">Entrar</button>
             </fieldset>
         </div>
@@ -31,16 +33,48 @@ EOS;
 
     protected function procesaFormulario(&$datos) {
         $this->errores = [];
-        $nombreUsuario = trim($datos['nombreUsuario'] ?? '');
+        
+        // Obtener datos (solo trim)
+        $identificador = trim($datos['nombreUsuario'] ?? '');
         $password = trim($datos['password'] ?? '');
-        if (empty($nombreUsuario)) $this->errores['nombreUsuario'] = 'Obligatorio';
-        if (empty($password)) $this->errores['password'] = 'Obligatorio';
+        
+        // VALIDAR
+        if (empty($identificador)) {
+            $this->errores['nombreUsuario'] = 'Debes introducir tu usuario o email';
+        }
+        
+        if (empty($password)) {
+            $this->errores['password'] = 'Debes introducir tu contraseña';
+        }
+        
         if (count($this->errores) > 0) return false;
-        $usuario = Usuario::login($nombreUsuario, $password);
-        if (!$usuario) { $this->errores[] = 'Credenciales incorrectas'; return false; }
+        
+        // Intentar login
+        $usuario = Usuario::login($identificador, $password);
+        
+        if (!$usuario) { 
+            $this->errores[] = 'Credenciales incorrectas. El usuario o la contraseña no coinciden.';
+            return false; 
+        }
+        
         $usuario->guardaEnSesion();
         return true;
     }
 
-    private function getError($campo) { return self::createMensajeError($this->errores, $campo, 'span', ['class' => 'error']); }
+    private function getError($campo) { 
+        return self::createMensajeError($this->errores, $campo, 'span', ['class' => 'error']); 
+    }
+    
+    private function getGlobalErrors() {
+        $erroresGlobales = array_filter(array_keys($this->errores), 'is_numeric');
+        if (empty($erroresGlobales)) return '';
+        
+        $html = '<div class="errores-globales">';
+        foreach ($erroresGlobales as $clave) {
+            $html .= '<p class="error-message">' . htmlspecialchars($this->errores[$clave]) . '</p>';
+        }
+        $html .= '</div>';
+        return $html;
+    }
 }
+?>
