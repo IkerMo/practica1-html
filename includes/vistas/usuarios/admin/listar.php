@@ -27,11 +27,13 @@ function getIdRolPorPrioridad($prioridad) {
 
 $mensaje = '';
 if (isset($_GET['mensaje'])) {
-    if ($_GET['mensaje'] === 'usuario_borrado') {
+    if ($_GET['mensaje'] === 'usuario_activado') {
+        $mensaje = '<div class="mensaje-exito">Usuario activado correctamente</div>';
+    } elseif ($_GET['mensaje'] === 'usuario_desactivado') {
         $mensaje = '<div class="mensaje-exito">Usuario desactivado correctamente</div>';
     }
 } elseif (isset($_GET['error'])) {
-    if ($_GET['error'] === 'no_auto_borrado') {
+    if ($_GET['error'] === 'no_auto_desactivado') {
         $mensaje = '<div class="mensaje-error">No puedes desactivar tu propia cuenta</div>';
     } elseif ($_GET['error'] === 'usuario_no_encontrado') {
         $mensaje = '<div class="mensaje-error">Usuario no encontrado</div>';
@@ -63,7 +65,6 @@ foreach ($usuarios as $usuario) { // $usuario es un objeto UsuarioDTO
     
     $rolNombre = $rolNombres[$rolActual] ?? 'Cliente';
     
-    // 👇 MEJORA: Manejar el estado activo/inactivo
     $activo = isset($usuario->activo) ? $usuario->activo : true;
     $activoTexto = $activo ? 'Sí' : '<span class="inactivo">No</span>';
     $filaClase = $activo ? '' : 'usuario-inactivo';
@@ -73,12 +74,12 @@ foreach ($usuarios as $usuario) { // $usuario es un objeto UsuarioDTO
     $acciones .= '<a href="editar.php?id=' . $usuario->id . '" class="btn-editar">Editar</a>';
     $acciones .= '<a href="cambiar-rol.php?id=' . $usuario->id . '" class="btn-rol">Cambiar Rol</a>';
     
-    // 👇 Solo mostrar botón de desactivar si está activo
-    if ($activo) {
-        $acciones .= '<a href="borrar.php?id=' . $usuario->id . '" class="btn-borrar" onclick="return confirm(\'¿Estás seguro de que quieres desactivar este usuario?\')">Desactivar</a>';
-    } else {
-        $acciones .= '<span class="btn-desactivado">Desactivado</span>';
-    }
+    // Mostrar botón de Desactivar o Activar según estado
+if ($activo) {
+    $acciones .= '<a href="desactivar.php?id=' . $usuario->id . '" class="btn-borrar" onclick="return confirm(\'¿Estás seguro de que quieres desactivar este usuario?\')">Desactivar</a>';
+} else {
+    $acciones .= '<a href="activar.php?id=' . $usuario->id . '" class="btn-activar" onclick="return confirm(\'¿Estás seguro de que quieres activar este usuario?\')">Activar</a>';
+}
     
     $tablaUsuarios .= <<<EOS
     <tr class="$filaClase">

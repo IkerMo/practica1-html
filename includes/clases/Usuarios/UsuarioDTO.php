@@ -13,9 +13,10 @@ class UsuarioDTO {
     public $avatar;
     public $tipoAvatar;
     public $activo;
+    public $fechaRegistro;
 
 
-    public function __construct($nombreUsuario, $email, $nombre, $apellidos, $password, $rol = 'cliente', $avatar = 'default.png', $tipoAvatar = 'defecto', $id = null, $activo = true) {
+    public function __construct($nombreUsuario, $email, $nombre, $apellidos, $password, $rol = 'cliente', $avatar = 'default.png', $tipoAvatar = 'defecto', $id = null, $activo = true, $fechaRegistro = null) {
         $this->id = $id;
         $this->nombreUsuario = $nombreUsuario;
         $this->email = $email;
@@ -26,6 +27,7 @@ class UsuarioDTO {
         $this->tipoAvatar = $tipoAvatar;
         $this->activo = $activo;
         $this->rol = $rol;
+        $this->fechaRegistro = $fechaRegistro;
     }
 
 
