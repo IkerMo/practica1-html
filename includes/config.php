@@ -40,18 +40,20 @@ spl_autoload_register(function ($class) {
 $bdDatosConexion = [
     /*
     //LOCALHOST
-    'host' => 'localhost',
-    'bd'   => 'bistro_fdi',
-    'user' => 'root',
-    'pass' => ''
-    */
-
-    //VPS
+    
     'host' => 'vm020.db.swarm.test',
     'bd'   => 'bistro_fdi',
     'user' => 'root',
     'pass' => '_OMmSLCCsgzr_TUVC4Ip'
 
+    */
+
+    //VPS
+
+    'host' => 'localhost',
+    'bd'   => 'bistro_fdi',
+    'user' => 'root',
+    'pass' => ''
 ];
 
 try {
