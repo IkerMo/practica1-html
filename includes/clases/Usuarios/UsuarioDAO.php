@@ -7,12 +7,11 @@ class UsuarioDAO {
 
     public function buscarPorUsername(string $nombreUsuario): ?UsuarioDTO {
         $conn = Aplicacion::getInstance()->getConexionBd();
-        // CAMBIO: Usuarios (con U mayúscula)
         $stmt = $conn->prepare('SELECT * FROM Usuarios WHERE nombreUsuario = ?');
         $stmt->bind_param('s', $nombreUsuario);
         $stmt->execute();
         $result = $stmt->get_result();
-        $fila   = $result->fetch_assoc();
+        $fila = $result->fetch_assoc();
         $stmt->close();
 
         if (!$fila) return null;
@@ -21,7 +20,6 @@ class UsuarioDAO {
 
     public function buscarPorId(int $id): ?UsuarioDTO {
         $conn = Aplicacion::getInstance()->getConexionBd();
-        // CAMBIO: Usuarios (con U mayúscula)
         $stmt = $conn->prepare('SELECT * FROM Usuarios WHERE id = ?');
         $stmt->bind_param('i', $id);
         $stmt->execute();
@@ -35,15 +33,23 @@ class UsuarioDAO {
     public function crear(UsuarioDTO $u): UsuarioDTO {
         $conn = Aplicacion::getInstance()->getConexionBd();
         
-        // CAMBIO: Usuarios (con U mayúscula)
         $stmt = $conn->prepare(
-            'INSERT INTO Usuarios (nombreUsuario, email, nombre, apellidos, password, avatar) 
-             VALUES (?, ?, ?, ?, ?, ?)'
+            'INSERT INTO Usuarios (nombreUsuario, email, nombre, apellidos, password, avatar, tipoAvatar, activo) 
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
         );
-       
-        $stmt->bind_param('ssssss',
-            $u->nombreUsuario, $u->email, $u->nombre,
-            $u->apellidos, $u->password, $u->avatar
+        
+        $tipoAvatar = $u->tipoAvatar ?? 'defecto';
+        $activo = $u->activo ?? 1;
+        
+        $stmt->bind_param('sssssssi',
+            $u->nombreUsuario, 
+            $u->email, 
+            $u->nombre,
+            $u->apellidos, 
+            $u->password, 
+            $u->avatar,
+            $tipoAvatar,
+            $activo
         );
         
         $stmt->execute();
@@ -51,7 +57,6 @@ class UsuarioDAO {
         $stmt->close();
 
         $idRolCliente = 1; 
-        // CAMBIO: UsuarioRoles (Mayúsculas según tu imagen de BD)
         $stmtRol = $conn->prepare('INSERT INTO UsuarioRoles (usuario_id, rol_id) VALUES (?, ?)');
         $stmtRol->bind_param('ii', $u->id, $idRolCliente);
         $stmtRol->execute();
@@ -60,22 +65,31 @@ class UsuarioDAO {
         return $u;
     }
 
-    public function actualizar(UsuarioDTO $u): void {
+    public function actualizar(UsuarioDTO $u): bool {
         $conn = Aplicacion::getInstance()->getConexionBd();
-        // CAMBIO: Usuarios (con U mayúscula)
+        
         $stmt = $conn->prepare(
-            'UPDATE Usuarios SET email=?, nombre=?, apellidos=?, avatar=? WHERE id=?'
+            'UPDATE Usuarios SET email=?, nombre=?, apellidos=?, avatar=?, tipoAvatar=?, activo=? WHERE id=?'
         );
-        $stmt->bind_param('ssssi', 
-            $u->email, $u->nombre, $u->apellidos, $u->avatar, $u->id
+        
+        $stmt->bind_param('sssssii', 
+            $u->email, 
+            $u->nombre, 
+            $u->apellidos, 
+            $u->avatar,
+            $u->tipoAvatar ?? 'defecto',
+            $u->activo ?? 1,
+            $u->id
         );
-        $stmt->execute();
+        
+        $result = $stmt->execute();
         $stmt->close();
+        
+        return $result;
     }
 
     public function borrar(int $id): void {
         $conn = Aplicacion::getInstance()->getConexionBd();
-        // CAMBIO: Usuarios (con U mayúscula)
         $stmt = $conn->prepare('DELETE FROM Usuarios WHERE id = ?');
         $stmt->bind_param('i', $id);
         $stmt->execute();
@@ -84,7 +98,6 @@ class UsuarioDAO {
 
     public function listarTodos(): array {
         $conn = Aplicacion::getInstance()->getConexionBd();
-        // CAMBIO: Usuarios (con U mayúscula)
         $query = 'SELECT * FROM Usuarios ORDER BY nombreUsuario ASC';
         $result = $conn->query($query);
         
@@ -101,12 +114,12 @@ class UsuarioDAO {
     public function obtenerRoles(int $idUsuario): array {
         $conn = Aplicacion::getInstance()->getConexionBd();
         
-        // IMPORTANTE: Asegúrate de que las tablas se llamen Roles y UsuarioRoles en tu BD
         $query = sprintf(
             "SELECT r.id, r.nombre, r.prioridad 
              FROM Roles r 
              JOIN UsuarioRoles ur ON r.id = ur.rol_id 
-             WHERE ur.usuario_id = %d",
+             WHERE ur.usuario_id = %d
+             ORDER BY r.prioridad DESC",
             $idUsuario
         );
         
@@ -128,9 +141,13 @@ class UsuarioDAO {
             nombre:        $fila['nombre'],
             apellidos:     $fila['apellidos'],
             password:      $fila['password'],
-            rol:           null, 
+            rol:           null,
             avatar:        $fila['avatar'],
-            id:            (int)$fila['id']
+            tipoAvatar:    $fila['tipoAvatar'] ?? 'defecto',
+            id:            (int)$fila['id'],
+            activo:        (bool)($fila['activo'] ?? true),
+            fechaRegistro: $fila['fechaRegistro'] ?? null
         );
     }
 }
+?>

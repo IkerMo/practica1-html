@@ -15,21 +15,7 @@ if (!$id) {
     exit();
 }
 
-// No permitir borrarse a sí mismo
-if ($id == $_SESSION['idUsuario']) {
-    header('Location: listar.php?error=no_auto_borrado');
-    exit();
-}
-
-$dao = new \es\ucm\fdi\aw\Usuarios\UsuarioDAO();
-$usuarioDTO = $dao->buscarPorId($id);
-
-if (!$usuarioDTO) {
-    header('Location: listar.php?error=usuario_no_encontrado');
-    exit();
-}
-
-// Obtener el objeto Usuario completo
+// Obtener el usuario
 $usuario = \es\ucm\fdi\aw\Usuarios\Usuario::buscaUsuarioPorId($id);
 
 if (!$usuario) {
@@ -40,33 +26,33 @@ if (!$usuario) {
 // Procesar confirmación
 $mensajeError = '';
 if (isset($_POST['confirmar']) && $_POST['confirmar'] === 'si') {
-    // Borrado lógico: establecer activo = 0
-    if ($usuario->actualiza(['activo' => 0])) {
-        header('Location: listar.php?mensaje=usuario_borrado');
+    // Activar usuario: establecer activo = 1
+    if ($usuario->actualiza(['activo' => 1])) {
+        header('Location: listar.php?mensaje=usuario_activado');
         exit();
     } else {
-        $mensajeError = 'Error al desactivar el usuario';
+        $mensajeError = 'Error al activar el usuario';
     }
 }
 
-$tituloPagina = 'Borrar Usuario - Bistro FDI';
+$tituloPagina = 'Activar Usuario - Bistro FDI';
 
 $contenidoPrincipal = <<<EOS
-    <h1>Confirmar desactivación</h1>
+    <h1>Confirmar activación</h1>
     
     <div class="confirmar-borrado">
         $mensajeError
-        <p>¿Estás seguro de que quieres desactivar al usuario <strong>{$usuarioDTO->nombreUsuario}</strong>?</p>
-        <p>Email: {$usuarioDTO->email}</p>
-        <p>Nombre: {$usuarioDTO->nombre} {$usuarioDTO->apellidos}</p>
-        <p>Estado actual: <strong>Activo</strong></p>
+        <p>¿Estás seguro de que quieres activar al usuario <strong>{$usuario->getNombreUsuario()}</strong>?</p>
+        <p>Email: {$usuario->getEmail()}</p>
+        <p>Nombre: {$usuario->getNombreCompleto()}</p>
+        <p>Estado actual: <strong class="inactivo">Inactivo</strong></p>
         
         <form method="post" class="inline">
             <input type="hidden" name="confirmar" value="si">
-            <button type="submit" class="btn-borrar">Sí, desactivar</button>
+            <button type="submit" class="btn-activar">Sí, activar</button>
             <a href="listar.php" class="btn-secondary">Cancelar</a>
         </form>
-        <p><small>Nota: El usuario se desactivará pero sus datos permanecerán en el sistema (borrado lógico).</small></p>
+        <p><small>El usuario podrá volver a iniciar sesión después de ser activado.</small></p>
     </div>
 EOS;
 
