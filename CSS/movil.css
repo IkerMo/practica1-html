@@ -135,9 +135,14 @@ nav a:active {
     background-color: #e8e0d8;
 }
 
-/* ── NAVEGACIÓN DERECHA (OCULTA EN MÓVIL) ── */
+/* ── NAVEGACIÓN DERECHA (MOSTRADA EN MÓVIL AL FINAL) ── */
 navder, aside {
-    display: none;
+    display: block;
+    width: 100%;
+    padding: 15px;
+    border-top: 1px solid #d4c9c0;
+    box-sizing: border-box;
+    background: #f0e9e2;
 }
 
 /* ── MAIN ── */
