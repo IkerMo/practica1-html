@@ -40,7 +40,7 @@ spl_autoload_register(function ($class) {
 
 $bdDatosConexion = [
     
-    //LOCALHOST
+    //VPS
     /*
     'host' => 'vm020.db.swarm.test',
     'bd'   => 'bistro_fdi',
@@ -49,7 +49,7 @@ $bdDatosConexion = [
     */
     
 
-    //VPS
+    //LOCALHOST
 
     'host' => 'localhost',
     'bd'   => 'bistro_fdi',
