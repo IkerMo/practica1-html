@@ -4,6 +4,8 @@ require_once __DIR__ . '/../../config.php';
 use es\ucm\fdi\aw\Producto\ProductoAppService;
 use es\ucm\fdi\aw\Categoria\CategoriaAppService;
 
+$rutaImgs = RUTA_IMGS;
+
 if (!estaLogueado()) {
     header('Location: ' . RUTA_BASE . '/login.php');
     exit();
@@ -30,14 +32,14 @@ $precioBase = number_format($p->precio_base, 2);
 $iva = $p->iva;
 
 $imgPrincipal = !empty($p->imagen_principal) ? $p->imagen_principal : 'default.jpg';
-$urlImgPrincipal = RUTA_BASE . '/IMG/productos/' . $imgPrincipal;
+$urlImgPrincipal = RUTA_BASE . '/{$rutaImgs}/productos/' . $imgPrincipal;
 
 $todasImgs = $p->getTodasImagenes();
 $galeriaHtml = '';
 if (count($todasImgs) > 1) {
     $galeriaHtml = '<div class="flex-gap-10 mt-8 flex-wrap">';
     foreach ($todasImgs as $img) {
-        $url = RUTA_BASE . '/IMG/productos/' . $img;
+        $url = RUTA_BASE . '/{$rutaImgs}/productos/' . $img;
         $galeriaHtml .= "<img src='$url' class='img-miniatura' onclick=\"document.getElementById('img-principal').src='$url'\">";
     }
     $galeriaHtml .= '</div>';

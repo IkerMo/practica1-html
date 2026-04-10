@@ -101,7 +101,7 @@ $contenidoPrincipal = <<<EOS
 
     <div class="acciones-globales">
         <a href="crear.php" class="btn-primary">+ Nuevo Usuario</a>
-        <a href="../../../index.php" class="btn-secondary">Volver al inicio</a>
+        <a href="/../../../../index.php" class="btn-secondary">Volver al inicio</a>
     </div>
     
     <table class="tabla-usuarios">

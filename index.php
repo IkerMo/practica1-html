@@ -3,10 +3,11 @@
 require_once __DIR__ . '/includes/config.php';
 
 $tituloPagina = 'Portada';
+$rutaImgs = RUTA_IMGS;
 
 $contenidoPrincipal=<<<EOS
     <h1><strong>Index </strong></h1>
-        <img src="IMG/logo1.png" alt="Logo Bistro FDI" class="w-400">
+        <img src="{$rutaImgs}/logo1.png" alt="Logo Bistro FDI" class="w-400">
 
     <section class="hero">
         <h2>Bienvenido a Bistro FDI</h2>
