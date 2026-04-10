@@ -56,10 +56,11 @@ EOS;
     protected function procesaFormulario(&$datos) {
         $service = new CategoriaAppService();
         $id = $datos['idCategoria'] ?? null;
-        $nombre = trim($datos['nombre'] ?? '');
-        $desc = trim($datos['descripcion'] ?? '');
+        $nombre = filter_var(trim($datos['nombre'] ?? ''), FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $desc = filter_var(trim($datos['descripcion'] ?? ''), FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
         
-        // Imagen (simplificado)
+        // Imagen 
         $nombreImagen = $_FILES['imagen']['name'] ?? null;
 
         if (empty($nombre)) {

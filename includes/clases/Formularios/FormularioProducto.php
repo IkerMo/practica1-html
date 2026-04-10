@@ -154,24 +154,44 @@ EOS;
             }
         }
 
-        $info = [
-            'nombre' => $datos['nombre'],
-            'descripcion' => $datos['descripcion'],
-            'categoria_id' => $datos['categoria_id'],
-            'precio_base' => $datos['precio_base'],
-            'iva' => $datos['iva'],
-            'disponible' => isset($datos['disponible']),
-            'ofertado' => true,
-            'imagen_principal' => $imagenPrincipal,
-            'imagenes_adicionales' => $imagenesAdicionales
-        ];
-
-        if ($id) {
-            $res = $service->actualizarProducto($id, $info);
-        } else {
-            $res = $res = $service->registrarProducto($info);
+        $nombre = filter_var(trim($datos['nombre'] ?? ''), FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $descripcion = filter_var(trim($datos['descripcion'] ?? ''), FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $categoria_id = filter_var($datos['categoria_id'] ?? '', FILTER_VALIDATE_INT);
+        $precio_base = filter_var($datos['precio_base'] ?? '', FILTER_VALIDATE_FLOAT);
+        $iva = filter_var($datos['iva'] ?? '', FILTER_VALIDATE_INT);
+        
+        if (empty($nombre)) {
+            $this->errores['nombre'] = "El nombre es obligatorio.";
         }
-
+        if ($categoria_id === false || $categoria_id <= 0) {
+            $this->errores['categoria_id'] = "Categoría inválida.";
+        }
+        if ($precio_base === false || $precio_base < 0) {
+            $this->errores['precio_base'] = "Precio base inválido.";
+        }
+        if ($iva === false || !in_array($iva, [4, 10, 21])) {
+            $this->errores['iva'] = "IVA inválido.";
+        }
+        
+        if (count($this->errores) === 0) {
+            $info = [
+                'nombre' => $nombre,
+                'descripcion' => $descripcion,
+                'categoria_id' => $categoria_id,
+                'precio_base' => $precio_base,
+                'iva' => $iva,
+                'disponible' => isset($datos['disponible']),
+                'ofertado' => true,
+                'imagen_principal' => $imagenPrincipal,
+                'imagenes_adicionales' => $imagenesAdicionales
+            ];
+        
+            if ($id) {
+                $res = $service->actualizarProducto($id, $info);
+            } else {
+                $res = $res = $service->registrarProducto($info);
+            }
+        }
         if (!$res) {
             $this->errores[] = "Error al procesar el producto.";
         }
