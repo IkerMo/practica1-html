@@ -75,7 +75,29 @@ EOS;
 
     protected function procesaFormulario(&$datos) {
         $service = new OfertaAppService();
+        $datos['nombre'] = filter_var(trim($datos['nombre'] ?? ''), FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $datos['descripcion'] = filter_var(trim($datos['descripcion'] ?? ''), FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
+        if ($datos['nombre'] === '') {
+            $this->errores['nombre'] = "El nombre es obligatorio.";
+        }
+
+        $datos['porcentaje_descuento'] = filter_var($datos['porcentaje_descuento'] ?? '', FILTER_VALIDATE_FLOAT);
+        if ($datos['porcentaje_descuento'] === false || $datos['porcentaje_descuento'] < 0 || $datos['porcentaje_descuento'] > 100) {
+            $this->errores['porcentaje_descuento'] = "Porcentaje inválido.";
+        }
+
+        if (!empty($datos['oferta_producto_id']) && is_array($datos['oferta_producto_id'])) {
+            $datos['oferta_producto_id'] = array_map(fn($id) => filter_var($id, FILTER_VALIDATE_INT), $datos['oferta_producto_id']);
+        } else {
+            $datos['oferta_producto_id'] = [];
+        }
+
+        if (!empty($datos['oferta_producto_cantidad']) && is_array($datos['oferta_producto_cantidad'])) {
+            $datos['oferta_producto_cantidad'] = array_map(fn($cant) => filter_var($cant, FILTER_VALIDATE_INT), $datos['oferta_producto_cantidad']);
+        } else {
+            $datos['oferta_producto_cantidad'] = [];
+        }
         if (!empty($datos['id'])) {
             $res = $service->actualizarOferta($datos);
         } else {
