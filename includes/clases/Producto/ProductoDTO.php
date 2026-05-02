@@ -12,6 +12,7 @@ class ProductoDTO {
     public $iva;           
     public $disponible;       // true/false (stock)
     public $ofertado;         // true/false (si está en la carta o retirado)
+    public $requiere_cocina;  // true/false (si debe prepararse en cocina)
 
     public function getPrecioFinal() {
         return $this->precio_base * (1 + ($this->iva / 100));

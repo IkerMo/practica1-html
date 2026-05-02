@@ -89,12 +89,15 @@ if (empty($productos)) {
         $urlImg = RUTA_BASE . '/IMG/productos/' . $img;
         $precio = number_format($p->getPrecioFinal(), 2);
         $nombreCat = $mapaCategorias[$p->categoria_id] ?? '';
+        $urlDetalle = RUTA_BASE . '/includes/vistas/productos/detalleProducto.php?id=' . $p->id . '&volver=pedido';
         
         $productosHtml .= <<<HTML
         <div class="card-producto-mini">
-            <img src="$urlImg" class="img-carta" alt="{$p->nombre}">
+            <a href="{$urlDetalle}" class="no-decoration">
+                <img src="$urlImg" class="img-carta" alt="{$p->nombre}">
+            </a>
             <small class="color-gray">{$nombreCat}</small>
-            <h3 class="mt-5 mb-5 font-bold">{$p->nombre}</h3>
+            <h3 class="mt-5 mb-5 font-bold"><a href="{$urlDetalle}" class="color-maroon no-decoration">{$p->nombre}</a></h3>
             <p class="mb-0"><strong>{$precio} €</strong></p>
             <form method="POST" action="ajax-carrito.php" class="mt-8 flex-gap-5 align-center">
                 <input type="hidden" name="accion" value="agregar">

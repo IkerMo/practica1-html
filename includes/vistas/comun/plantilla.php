@@ -9,7 +9,7 @@
 </head>
 <body>
     <div class="container">
-        <!-- Hamburger toggle (CSS-only, hidden on desktop) -->
+        <!-- solo en movil -->
         <input type="checkbox" id="hamburger-toggle" class="hamburger-toggle" aria-hidden="true">
 
         <?php

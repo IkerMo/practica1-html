@@ -14,4 +14,9 @@ class LineaPedidoDTO {
     public $subtotal_descuento;
     public $observaciones;
     public $nombre_producto;   // Para display
+    public $estado_cocina;     // pendiente, listo_cocina, no_requiere_cocina
+    public $requiere_cocina;   // Para display
+    public $cocinero_id;
+    public $nombre_cocinero;   // Para display
+    public $fecha_listo_cocina;
 }

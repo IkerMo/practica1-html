@@ -48,10 +48,14 @@ CREATE TABLE LineasPedido (
     iva TINYINT NOT NULL, -- IVA aplicado
     subtotal_sin_iva DECIMAL(10,2) NOT NULL,
     subtotal_con_iva DECIMAL(10,2) NOT NULL,
+    estado_cocina ENUM('pendiente', 'listo_cocina', 'no_requiere_cocina') NOT NULL DEFAULT 'pendiente',
+    cocinero_id INT NULL,
+    fecha_listo_cocina DATETIME NULL,
     observaciones TEXT NULL,
     
     FOREIGN KEY (pedido_id) REFERENCES Pedidos(id) ON DELETE CASCADE,
-    FOREIGN KEY (producto_id) REFERENCES Productos(id) ON DELETE RESTRICT
+    FOREIGN KEY (producto_id) REFERENCES Productos(id) ON DELETE RESTRICT,
+    FOREIGN KEY (cocinero_id) REFERENCES Usuarios(id) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Historial de cambios de estado (para seguimiento)

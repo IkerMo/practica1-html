@@ -77,6 +77,7 @@ class PedidoAppService {
                     $linea->oferta_id = $oferta->id;
                     $linea->subtotal_descuento = 0; // se asignara despues
                     $linea->observaciones = 'Oferta ' . $oferta->nombre;
+                    $linea->estado_cocina = $producto->requiere_cocina ? 'pendiente' : 'no_requiere_cocina';
 
                     $lineasPaquete[] = $linea;
                     $packSubtotalConIva += $linea->subtotal_con_iva;
@@ -135,6 +136,7 @@ class PedidoAppService {
             $linea->oferta_id = null;
             $linea->subtotal_descuento = 0;
             $linea->observaciones = $item['observaciones'] ?? null;
+            $linea->estado_cocina = $producto->requiere_cocina ? 'pendiente' : 'no_requiere_cocina';
 
             $lineas[] = $linea;
             $totalSinIva += $linea->subtotal_sin_iva;
@@ -169,22 +171,47 @@ class PedidoAppService {
 
     /** Confirma pago online (recibido → en_preparacion) */
     public function pagarPedido($pedidoId) {
-        return $this->dao->cambiarEstado($pedidoId, 'en_preparacion');
+        $ok = $this->dao->cambiarEstado($pedidoId, 'en_preparacion');
+        if ($ok) {
+            $this->completarAutomaticamenteSiNoHayCocina($pedidoId);
+        }
+        return $ok;
     }
 
     /** Camarero cobra pedido (recibido → en_preparacion) */
     public function cobrarPedido($pedidoId, $camareroId) {
-        return $this->dao->cambiarEstado($pedidoId, 'en_preparacion', $camareroId);
+        $ok = $this->dao->cambiarEstado($pedidoId, 'en_preparacion', $camareroId);
+        if ($ok) {
+            $this->completarAutomaticamenteSiNoHayCocina($pedidoId);
+        }
+        return $ok;
     }
 
     /** Cocinero toma pedido (en_preparacion → cocinando) */
     public function tomarPedido($pedidoId, $cocineroId) {
+        if (!$this->dao->tieneLineasPendientesCocina($pedidoId)) {
+            return $this->dao->cambiarEstado($pedidoId, 'listo_cocina', $cocineroId);
+        }
         return $this->dao->cambiarEstado($pedidoId, 'cocinando', $cocineroId);
     }
 
     /** Cocinero completa pedido (cocinando → listo_cocina) */
     public function completarCocina($pedidoId, $cocineroId) {
         return $this->dao->cambiarEstado($pedidoId, 'listo_cocina', $cocineroId);
+    }
+
+    /** Cocinero marca una linea concreta como lista */
+    public function marcarLineaListaCocina($lineaId, $cocineroId) {
+        $pedidoId = $this->dao->buscarPedidoIdPorLinea($lineaId);
+        if (!$pedidoId) {
+            return false;
+        }
+
+        $ok = $this->dao->marcarLineaListaCocina($lineaId, $cocineroId);
+        if ($ok && !$this->dao->tieneLineasPendientesCocina($pedidoId)) {
+            $this->completarCocina($pedidoId, $cocineroId);
+        }
+        return $ok;
     }
 
     /** Camarero prepara entrega (listo_cocina → terminado) */
@@ -216,5 +243,15 @@ class PedidoAppService {
 
     public function getPedidosPorEstados(array $estados) {
         return $this->dao->listarPorEstados($estados);
+    }
+
+    public function getPedidosActivos() {
+        return $this->dao->listarPorEstados(['recibido', 'en_preparacion', 'cocinando', 'listo_cocina', 'terminado']);
+    }
+
+    private function completarAutomaticamenteSiNoHayCocina($pedidoId) {
+        if (!$this->dao->tieneLineasPendientesCocina($pedidoId)) {
+            $this->dao->cambiarEstado($pedidoId, 'listo_cocina');
+        }
     }
 }

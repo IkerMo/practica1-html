@@ -29,6 +29,7 @@ class ProductoAppService {
         $p->iva = (float)($datos['iva'] ?? 21);
         $p->disponible = isset($datos['disponible']) && $datos['disponible'];
         $p->ofertado = true;
+        $p->requiere_cocina = isset($datos['requiere_cocina']) ? (bool)$datos['requiere_cocina'] : true;
 
         return $this->dao->crear($p);
     }
@@ -63,6 +64,7 @@ class ProductoAppService {
             $p->precio_base = (float)$datos['precio_base'];
             $p->iva = (float)$datos['iva'];
             $p->disponible = $datos['disponible'];
+            $p->requiere_cocina = isset($datos['requiere_cocina']) ? (bool)$datos['requiere_cocina'] : true;
             
             return $this->dao->actualizar($p);
         }

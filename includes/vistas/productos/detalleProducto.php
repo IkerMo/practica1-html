@@ -32,14 +32,15 @@ $precioBase = number_format($p->precio_base, 2);
 $iva = $p->iva;
 
 $imgPrincipal = !empty($p->imagen_principal) ? $p->imagen_principal : 'default.jpg';
-$urlImgPrincipal = RUTA_BASE . '/{$rutaImgs}/productos/' . $imgPrincipal;
+$urlImgPrincipal = RUTA_BASE . '/IMG/productos/' . $imgPrincipal;
+$urlVolver = ($_GET['volver'] ?? '') === 'pedido' ? RUTA_BASE . '/includes/vistas/cliente/nuevo-pedido.php' : 'ListarProductos.php';
 
 $todasImgs = $p->getTodasImagenes();
 $galeriaHtml = '';
 if (count($todasImgs) > 1) {
     $galeriaHtml = '<div class="flex-gap-10 mt-8 flex-wrap">';
     foreach ($todasImgs as $img) {
-        $url = RUTA_BASE . '/{$rutaImgs}/productos/' . $img;
+        $url = RUTA_BASE . '/IMG/productos/' . $img;
         $galeriaHtml .= "<img src='$url' class='img-miniatura' onclick=\"document.getElementById('img-principal').src='$url'\">";
     }
     $galeriaHtml .= '</div>';
@@ -53,7 +54,7 @@ $contenidoPrincipal = <<<HTML
     </div>
 
     <div class="detalle-info">
-        <a href="ListarProductos.php" class="color-gray no-decoration">← Volver al listado</a>
+        <a href="{$urlVolver}" class="color-gray no-decoration">← Volver</a>
         <h1 class="mt-8 mb-10">{$p->nombre}</h1>
         <span class="badge-categoria">
             Categoría: {$nombreCategoria}

@@ -25,6 +25,7 @@ class FormularioProducto extends Formulario {
         $precioBase = $datos['precio_base'] ?? '';
         $iva = $datos['iva'] ?? 10;
         $disponible = isset($datos['disponible']) ? 'checked' : '';
+        $requiereCocina = (!array_key_exists('idProducto', $datos) || isset($datos['requiere_cocina'])) ? 'checked' : '';
         $imagenesActuales = '';
 
         if ($this->idProducto && empty($datos)) {
@@ -36,6 +37,7 @@ class FormularioProducto extends Formulario {
                 $precioBase = $p->precio_base;
                 $iva = $p->iva;
                 $disponible = $p->disponible ? 'checked' : '';
+                $requiereCocina = $p->requiere_cocina ? 'checked' : '';
                 
                 // Mostrar imágenes existentes
                 $todasImgs = $p->getTodasImagenes();
@@ -96,6 +98,7 @@ class FormularioProducto extends Formulario {
             </div>
 
             <div><label><input type="checkbox" name="disponible" $disponible> Disponible</label></div>
+            <div><label><input type="checkbox" name="requiere_cocina" $requiereCocina> Requiere preparaciÃ³n en cocina</label></div>
             
             $imagenesActuales
             
@@ -181,6 +184,7 @@ EOS;
                 'precio_base' => $precio_base,
                 'iva' => $iva,
                 'disponible' => isset($datos['disponible']),
+                'requiere_cocina' => isset($datos['requiere_cocina']),
                 'ofertado' => true,
                 'imagen_principal' => $imagenPrincipal,
                 'imagenes_adicionales' => $imagenesAdicionales

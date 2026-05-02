@@ -28,15 +28,15 @@ INSERT INTO Categorias (nombre, descripcion,imagen) VALUES
 ('Almuerzos', 'Sándwiches, bocadillos y platos combinados','almuerzo.jpg');
 
 -- Insertar productos
-INSERT INTO Productos (nombre, descripcion, categoria_id, precio_base, iva, disponible, ofertado, imagen_principal) VALUES
-('Coca-Cola', 'Refresco de cola 33cl', 1, 1.50, 21, TRUE, TRUE, 'Coca-Cola.jpg'),
-('Agua mineral', 'Agua mineral 50cl', 1, 1.00, 10, TRUE, TRUE, 'Agua-mineral.jpg'),
-('Café solo', 'Café solo tradicional', 2, 1.20, 10, TRUE, TRUE, 'CafeSolo.jpg'),
-('Café con leche', 'Café con leche', 2, 1.50, 10, TRUE, TRUE, 'CafeConLeche.jpg'),
-('Tostada aceite', 'Tostada con aceite de oliva', 3, 1.80, 10, TRUE, TRUE, 'TostadaAceite.jpg'),
-('Tostada tomate', 'Tostada con tomate triturado', 3, 2.00, 10, TRUE, TRUE, 'TostadaTomate.jpg'),
-('Bocadillo jamón', 'Bocadillo de jamón serrano', 4, 3.50, 10, TRUE, TRUE, 'BocadilloJamon.jpg'),
-('Bocadillo queso', 'Bocadillo de queso', 4, 3.00, 10, TRUE, TRUE, 'bocata-queso.jpg');
+INSERT INTO Productos (nombre, descripcion, categoria_id, precio_base, iva, disponible, ofertado, requiere_cocina, imagen_principal) VALUES
+('Coca-Cola', 'Refresco de cola 33cl', 1, 1.50, 21, TRUE, TRUE, FALSE, 'Coca-Cola.jpg'),
+('Agua mineral', 'Agua mineral 50cl', 1, 1.00, 10, TRUE, TRUE, FALSE, 'Agua-mineral.jpg'),
+('Café solo', 'Café solo tradicional', 2, 1.20, 10, TRUE, TRUE, TRUE, 'CafeSolo.jpg'),
+('Café con leche', 'Café con leche', 2, 1.50, 10, TRUE, TRUE, TRUE, 'CafeConLeche.jpg'),
+('Tostada aceite', 'Tostada con aceite de oliva', 3, 1.80, 10, TRUE, TRUE, TRUE, 'TostadaAceite.jpg'),
+('Tostada tomate', 'Tostada con tomate triturado', 3, 2.00, 10, TRUE, TRUE, TRUE, 'TostadaTomate.jpg'),
+('Bocadillo jamón', 'Bocadillo de jamón serrano', 4, 3.50, 10, TRUE, TRUE, TRUE, 'BocadilloJamon.jpg'),
+('Bocadillo queso', 'Bocadillo de queso', 4, 3.00, 10, TRUE, TRUE, TRUE, 'bocata-queso.jpg');
 
 -- Insertar algún pedido deejemplo (para pruebas)
 -- Primero, necesitamos saber el número de pedido del día

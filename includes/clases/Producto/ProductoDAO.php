@@ -40,17 +40,18 @@ class ProductoDAO {
 
     public function crear(ProductoDTO $p) {
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = "INSERT INTO Productos (nombre, descripcion, categoria_id, imagen_principal, precio_base, iva, disponible, ofertado) 
-                  VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        $query = "INSERT INTO Productos (nombre, descripcion, categoria_id, imagen_principal, precio_base, iva, disponible, ofertado, requiere_cocina) 
+                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($query);
         
         $imgPrincipal = $p->imagen_principal ?: 'default.jpg';
         $disponible = $p->disponible ? 1 : 0;
         $ofertado = $p->ofertado ? 1 : 0;
+        $requiereCocina = $p->requiere_cocina ? 1 : 0;
 
-        $stmt->bind_param('ssissdii', 
+        $stmt->bind_param('ssisddiii', 
             $p->nombre, $p->descripcion, $p->categoria_id, $imgPrincipal, 
-            $p->precio_base, $p->iva, $disponible, $ofertado
+            $p->precio_base, $p->iva, $disponible, $ofertado, $requiereCocina
         );
         
         if ($stmt->execute()) {
@@ -71,16 +72,17 @@ class ProductoDAO {
     public function actualizar(ProductoDTO $p) {
         $conn = Aplicacion::getInstance()->getConexionBd();
         $query = "UPDATE Productos SET nombre=?, descripcion=?, categoria_id=?, imagen_principal=?, 
-                  precio_base=?, iva=?, disponible=?, ofertado=? WHERE id=?";
+                  precio_base=?, iva=?, disponible=?, ofertado=?, requiere_cocina=? WHERE id=?";
         $stmt = $conn->prepare($query);
         
         $imgPrincipal = $p->imagen_principal ?: 'default.jpg';
         $disponible = $p->disponible ? 1 : 0;
         $ofertado = $p->ofertado ? 1 : 0;
+        $requiereCocina = $p->requiere_cocina ? 1 : 0;
 
-        $stmt->bind_param('ssissdiii', 
+        $stmt->bind_param('ssisddiiii', 
             $p->nombre, $p->descripcion, $p->categoria_id, $imgPrincipal, 
-            $p->precio_base, $p->iva, $disponible, $ofertado, $p->id
+            $p->precio_base, $p->iva, $disponible, $ofertado, $requiereCocina, $p->id
         );
         
         $result = $stmt->execute();
@@ -134,6 +136,7 @@ class ProductoDAO {
         $p->iva = (float)$fila['iva'];
         $p->disponible = (bool)$fila['disponible'];
         $p->ofertado = (bool)$fila['ofertado'];
+        $p->requiere_cocina = isset($fila['requiere_cocina']) ? (bool)$fila['requiere_cocina'] : true;
         return $p;
     }
 }

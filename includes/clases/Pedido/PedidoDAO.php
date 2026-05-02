@@ -39,18 +39,20 @@ class PedidoDAO {
     public function guardarLineas($pedidoId, array $lineas) {
         $conn = Aplicacion::getInstance()->getConexionBd();
         $stmt = $conn->prepare(
-            "INSERT INTO LineasPedido (pedido_id, producto_id, cantidad, precio_unitario_sin_iva, iva, subtotal_sin_iva, subtotal_con_iva, oferta_id, subtotal_descuento, observaciones) 
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+            "INSERT INTO LineasPedido (pedido_id, producto_id, cantidad, precio_unitario_sin_iva, iva, subtotal_sin_iva, subtotal_con_iva, oferta_id, subtotal_descuento, observaciones, estado_cocina) 
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
         );
         
         foreach ($lineas as $l) {
-            $stmt->bind_param('iiididdids',
+            $estadoCocina = $l->estado_cocina ?? 'pendiente';
+            $stmt->bind_param('iiididdidss',
                 $pedidoId, $l->producto_id, $l->cantidad,
                 $l->precio_unitario_sin_iva, $l->iva,
                 $l->subtotal_sin_iva, $l->subtotal_con_iva,
                 $l->oferta_id,
                 $l->subtotal_descuento,
-                $l->observaciones
+                $l->observaciones,
+                $estadoCocina
             );
             $stmt->execute();
         }
@@ -60,9 +62,10 @@ class PedidoDAO {
     public function obtenerLineas($pedidoId) {
         $conn = Aplicacion::getInstance()->getConexionBd();
         $stmt = $conn->prepare(
-            "SELECT lp.*, pr.nombre AS nombre_producto 
+            "SELECT lp.*, pr.nombre AS nombre_producto, pr.requiere_cocina, u.nombre AS nombre_cocinero
              FROM LineasPedido lp 
              JOIN Productos pr ON lp.producto_id = pr.id 
+             LEFT JOIN Usuarios u ON lp.cocinero_id = u.id
              WHERE lp.pedido_id = ?"
         );
         $stmt->bind_param('i', $pedidoId);
@@ -84,6 +87,11 @@ class PedidoDAO {
             $l->subtotal_descuento = isset($fila['subtotal_descuento']) ? (float)$fila['subtotal_descuento'] : 0.0;
             $l->observaciones = $fila['observaciones'];
             $l->nombre_producto = $fila['nombre_producto'];
+            $l->estado_cocina = $fila['estado_cocina'] ?? 'pendiente';
+            $l->requiere_cocina = isset($fila['requiere_cocina']) ? (bool)$fila['requiere_cocina'] : true;
+            $l->cocinero_id = $fila['cocinero_id'] ? (int)$fila['cocinero_id'] : null;
+            $l->nombre_cocinero = $fila['nombre_cocinero'] ?? '';
+            $l->fecha_listo_cocina = $fila['fecha_listo_cocina'] ?? null;
             $lineas[] = $l;
         }
         $stmt->close();
@@ -178,9 +186,9 @@ class PedidoDAO {
         } elseif ($nuevoEstado === 'en_preparacion') {
             $campoExtra = ', fecha_pago = NOW()';
         } elseif ($nuevoEstado === 'cocinando' && $usuarioId) {
-            $campoExtra = ", cocinero_id = $usuarioId";
+            $campoExtra = ", cocinero_id = " . (int)$usuarioId;
         } elseif ($nuevoEstado === 'terminado' && $usuarioId) {
-            $campoExtra = ", camarero_id = $usuarioId";
+            $campoExtra = ", camarero_id = " . (int)$usuarioId;
         } elseif ($nuevoEstado === 'entregado') {
             $campoExtra = ', fecha_entrega = NOW()';
         }
@@ -202,6 +210,44 @@ class PedidoDAO {
         }
         
         return $ok;
+    }
+
+    public function marcarLineaListaCocina($lineaId, $cocineroId) {
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $stmt = $conn->prepare(
+            "UPDATE LineasPedido lp
+             JOIN Productos pr ON lp.producto_id = pr.id
+             SET lp.estado_cocina = 'listo_cocina', lp.cocinero_id = ?, lp.fecha_listo_cocina = NOW()
+             WHERE lp.id = ? AND pr.requiere_cocina = 1"
+        );
+        $stmt->bind_param('ii', $cocineroId, $lineaId);
+        $ok = $stmt->execute();
+        $stmt->close();
+        return $ok;
+    }
+
+    public function buscarPedidoIdPorLinea($lineaId) {
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $stmt = $conn->prepare("SELECT pedido_id FROM LineasPedido WHERE id = ?");
+        $stmt->bind_param('i', $lineaId);
+        $stmt->execute();
+        $result = $stmt->get_result()->fetch_assoc();
+        $stmt->close();
+        return $result ? (int)$result['pedido_id'] : null;
+    }
+
+    public function tieneLineasPendientesCocina($pedidoId) {
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $stmt = $conn->prepare(
+            "SELECT COUNT(*) AS total
+             FROM LineasPedido
+             WHERE pedido_id = ? AND estado_cocina = 'pendiente'"
+        );
+        $stmt->bind_param('i', $pedidoId);
+        $stmt->execute();
+        $result = $stmt->get_result()->fetch_assoc();
+        $stmt->close();
+        return ((int)$result['total']) > 0;
     }
     private function filaADto(array $fila) {
         $p = new PedidoDTO();

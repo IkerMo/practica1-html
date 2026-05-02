@@ -23,6 +23,7 @@ CREATE TABLE Productos (
     iva TINYINT NOT NULL, -- 4, 10, 21
     disponible BOOLEAN DEFAULT TRUE, -- Si hay stock/disponible
     ofertado BOOLEAN DEFAULT TRUE, -- Si está en la carta actualmente
+    requiere_cocina BOOLEAN DEFAULT TRUE, -- Si debe prepararse en cocina
     fecha_alta DATETIME DEFAULT CURRENT_TIMESTAMP,
     fecha_baja DATETIME NULL, -- Cuando se desactiva
     imagen_principal VARCHAR(255) NULL,
