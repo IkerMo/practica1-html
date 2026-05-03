@@ -17,6 +17,8 @@ class Usuario
     private $activo;
     private $roles = [];
     private $rolActual;
+    private $bistroCoins;
+
     
     // Constructor vacío para el método buscaUsuario (creación por factory)
     private function __construct() {}
@@ -58,6 +60,7 @@ class Usuario
     public function getNombreCompleto() { return $this->nombre . ' ' . $this->apellidos; }
     public function getAvatar() { return $this->avatar; }
     public function getRolActual() { return $this->rolActual; }
+    public function getBistroCoins() { return $this->bistroCoins; }
     
 public function tieneRol($rolId)
 {
@@ -111,6 +114,7 @@ public function tieneRol($rolId)
                 $usuario->tipoAvatar = $fila['tipoAvatar'];
                 $usuario->fechaRegistro = $fila['fechaRegistro'];
                 $usuario->activo = $fila['activo'];
+                $usuario->bistroCoins = $fila['bistro_coins'] ?? 0;
                 
                 $usuario->cargaRoles();
                 
@@ -236,6 +240,11 @@ public function tieneRol($rolId)
             $passwordHash = password_hash($datos['password'], PASSWORD_DEFAULT);
             $actualizaciones[] = "password = '" . $conn->real_escape_string($passwordHash) . "'";
             $this->password = $passwordHash;
+        }
+
+        if (isset($datos['bistro_coins'])) {
+            $actualizaciones[] = "bistro_coins = " . (int)$datos['bistro_coins'];
+            $this->bistroCoins = (int)$datos['bistro_coins'];
         }
 
         if (isset($datos['nombreUsuario'])) {

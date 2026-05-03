@@ -6,7 +6,7 @@ class RecompensaDAO {
     
     public function listarRecompensas() {
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = "SELECT * FROM recompensas ORDER BY id ASC";
+        $query = "SELECT * FROM Recompensas ORDER BY id ASC";
         $rs = $conn->query($query);
         $recompensas = [];
         while ($fila = $rs->fetch_assoc()) {
@@ -18,7 +18,7 @@ class RecompensaDAO {
 
     public function buscaPorId($id) {
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = sprintf("SELECT * FROM recompensas WHERE id=%d", $id);
+        $query = sprintf("SELECT * FROM Recompensas WHERE id=%d", $id);
         $rs = $conn->query($query);
         if ($rs && $rs->num_rows == 1) {
             $fila = $rs->fetch_assoc();
@@ -31,7 +31,7 @@ class RecompensaDAO {
 
     public function crear(RecompensaDTO $dto) {
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = sprintf("INSERT INTO recompensas (producto_id, bistrocoins_requeridos) VALUES (%d, %d)",
+        $query = sprintf("INSERT INTO Recompensas (producto_id, bistrocoins_requeridos) VALUES (%d, %d)",
             $dto->producto_id,
             $dto->bistrocoins_requeridos
         );
@@ -44,7 +44,7 @@ class RecompensaDAO {
 
     public function actualizar(RecompensaDTO $dto) {
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = sprintf("UPDATE recompensas SET producto_id=%d, bistrocoins_requeridos=%d WHERE id=%d",
+        $query = sprintf("UPDATE Recompensas SET producto_id=%d, bistrocoins_requeridos=%d WHERE id=%d",
             $dto->producto_id,
             $dto->bistrocoins_requeridos,
             $dto->id
@@ -54,7 +54,7 @@ class RecompensaDAO {
 
     public function eliminar($id) {
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = sprintf("DELETE FROM recompensas WHERE id=%d", $id);
+        $query = sprintf("DELETE FROM Recompensas WHERE id=%d", $id);
         return $conn->query($query);
     }
 }

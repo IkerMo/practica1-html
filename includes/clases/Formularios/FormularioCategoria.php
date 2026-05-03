@@ -59,7 +59,6 @@ EOS;
         $nombre = filter_var(trim($datos['nombre'] ?? ''), FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $desc = filter_var(trim($datos['descripcion'] ?? ''), FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-        
         // Imagen 
         $nombreImagen = $_FILES['imagen']['name'] ?? null;
 

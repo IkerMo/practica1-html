@@ -171,8 +171,9 @@ class PedidoAppService {
 
     /** Confirma pago online (recibido → en_preparacion) */
     public function pagarPedido($pedidoId) {
-        $ok = $this->dao->cambiarEstado($pedidoId, 'en_preparacion');
+         $ok = $this->dao->cambiarEstado($pedidoId, 'en_preparacion');
         if ($ok) {
+            $this->añadirBistroCoins($pedidoId); 
             $this->completarAutomaticamenteSiNoHayCocina($pedidoId);
         }
         return $ok;
@@ -182,9 +183,10 @@ class PedidoAppService {
     public function cobrarPedido($pedidoId, $camareroId) {
         $ok = $this->dao->cambiarEstado($pedidoId, 'en_preparacion', $camareroId);
         if ($ok) {
+            $this->añadirBistroCoins($pedidoId); 
             $this->completarAutomaticamenteSiNoHayCocina($pedidoId);
         }
-        return $ok;
+        return $ok; 
     }
 
     /** Cocinero toma pedido (en_preparacion → cocinando) */
@@ -254,4 +256,25 @@ class PedidoAppService {
             $this->dao->cambiarEstado($pedidoId, 'listo_cocina');
         }
     }
+}
+
+/**
+ * Añade BistroCoins al cliente después de pagar un pedido
+ * (1 BistroCoin por cada euro gastado, redondeado hacia abajo)
+ */
+private function añadirBistroCoins($pedidoId) {
+    $pedido = $this->dao->buscarPorId($pedidoId);
+    if (!$pedido) return false;
+    
+    // Calcular BistroCoins (1 por cada euro redondeado hacia abajo)
+    $bistroCoins = floor($pedido->total_con_iva);
+    
+    if ($bistroCoins <= 0) return true;
+    
+    // Obtener usuario y actualizar su saldo
+    $usuario = \es\ucm\fdi\aw\Usuarios\Usuario::buscaUsuarioPorId($pedido->cliente_id);
+    if (!$usuario) return false;
+    
+    $saldoActual = $usuario->getBistroCoins() ?? 0;
+    return $usuario->actualiza(['bistro_coins' => $saldoActual + $bistroCoins]);
 }

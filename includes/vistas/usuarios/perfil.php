@@ -15,6 +15,8 @@ error_log("Sesión completa: " . print_r($_SESSION, true));
 $idUsuario = $_SESSION['idUsuario'] ?? 0;
 error_log("ID Usuario de sesión: " . $idUsuario);
 
+
+
 $usuario = \es\ucm\fdi\aw\Usuarios\Usuario::buscaUsuarioPorId($idUsuario);
 
 // Obtener datos del usuario de la sesión
@@ -24,6 +26,8 @@ if (!$usuario) {
     header('Location: ' . RUTA_VISTAS . '/logout.php');
     exit();
 }
+$bistroCoins = $usuario->getBistroCoins() ?? 0;
+
 
 $rutaImgs = RUTA_IMGS;
 $tituloPagina = 'Mi Perfil - Bistro FDI';
@@ -41,6 +45,7 @@ $contenidoPrincipal = <<<EOS
             <p><strong>Email:</strong> {$usuario->getEmail()}</p>
             <p><strong>Nombre completo:</strong> {$usuario->getNombreCompleto()}</p>
             <p><strong>Rol:</strong> {$_SESSION['rolNombre']}</p>
+            echo "<p><strong>💰 BistroCoins acumulados:</strong> {$bistroCoins} 🪙</p>";
         </div>
         
         <div class="perfil-acciones">

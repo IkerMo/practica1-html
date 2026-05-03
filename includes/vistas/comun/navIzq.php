@@ -33,6 +33,7 @@ function getMenuPorRol() {
         $menu['items'][] = ['url' => RUTA_VISTAS . '/productos/ListarProductos.php', 'texto' => 'Ver carta'];
         $menu['items'][] = ['url' => RUTA_VISTAS . '/cliente/nuevo-pedido.php', 'texto' => 'Nuevo pedido'];
         $menu['items'][] = ['url' => RUTA_VISTAS . '/cliente/mis-pedidos.php', 'texto' => 'Mis pedidos'];
+        $menu['items'][] = ['url' => RUTA_VISTAS . '/cliente/recompensasDisponibles.php', 'texto' => '💰 Canjear BistroCoins'];
     }
     
     // Menú para camareros
@@ -58,6 +59,7 @@ function getMenuPorRol() {
         $menu['items'][] = ['url' => RUTA_VISTAS . '/categorias/listarCategorias.php', 'texto' => 'Gestionar categorías'];
         $menu['items'][] = ['url' => RUTA_VISTAS . '/usuarios/admin/listar.php', 'texto' => 'Gestionar usuarios'];
         $menu['items'][] = ['url' => RUTA_VISTAS . '/gerente/ofertas.php', 'texto' => 'Gestionar ofertas'];
+        $menu['items'][] = ['url' => RUTA_VISTAS . '/gerente/listarRecompensas.php', 'texto' => 'Gestionar Recompensas'];
         $menu['items'][] = ['url' => RUTA_VISTAS . '/gerente/pedidos-activos.php', 'texto' => 'Pedidos activos'];
         //$menu['items'][] = ['url' => RUTA_VISTAS . '/gerente/estadisticas.php', 'texto' => 'Estadísticas'];
         $menu['items'][] = ['url' => RUTA_VISTAS . '/camarero/pedidos-pendientes.php', 'texto' => 'Pedidos pendientes'];
