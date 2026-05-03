@@ -80,4 +80,9 @@ class ProductoAppService {
         }
         return false;
     }
+
+    public function getTodosProductos() {
+        $productoDAO = new ProductoDAO();
+        return $productoDAO->listarTodos();
+    }
 }
